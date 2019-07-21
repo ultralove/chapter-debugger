@@ -51,10 +51,10 @@ public:
     size_t         ItemCount() const;
     bool           Valid() const;
 
-    size_t Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount);
+    size_t        Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount);
     inline size_t SequentialStream::Write(const uint8_t* items, const size_t itemCount);
 
-    size_t Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const;
+    size_t        Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const;
     inline size_t SequentialStream::Read(uint8_t* items, const size_t itemCount) const;
 
     void Reset();

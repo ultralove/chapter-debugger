@@ -28,6 +28,7 @@
 #define __ULTRASCHALL_ID3V2_FRAME_H_INCL__
 
 #include "Common.h"
+#include "Guid.h"
 #include "ID3V2.h"
 #include "SequentialStream.h"
 
@@ -57,30 +58,29 @@ class ID3V2_Frame
 public:
     bool ConfigureHeader(const uint32_t id, const uint32_t size, const uint16_t flags);
 
-	virtual size_t Decode(const uint8_t* data, const size_t dataSize) = 0;
+    virtual size_t Decode(const uint8_t* data, const size_t dataSize) = 0;
 
-	virtual size_t Encode(uint8_t* data, const size_t dataSize) const = 0;
-
+    virtual size_t Encode(uint8_t* data, const size_t dataSize) const = 0;
 
     static bool IsValid(const uint8_t* data, const size_t dataSize);
     bool        IsValid() const;
 
-	inline const GUID& Guid() const;
-    inline uint32_t Id() const;
-    inline uint32_t Size() const;
-    inline uint16_t Flags() const;
+    inline const Guid& UniqueId() const;
+    inline uint32_t    Id() const;
+    inline uint32_t    Size() const;
+    inline uint16_t    Flags() const;
 
 protected:
     ID3V2_Frame();
 
 private:
-    GUID     guid_;
+    Guid     guid_;
     uint32_t id_    = ID3V2_INVALID_FRAME_ID;
     uint32_t size_  = ID3V2_INVALID_FRAME_SIZE;
     uint16_t flags_ = ID3V2_INVALID_FRAME_FLAGS;
 };
 
-inline const GUID& ID3V2_Frame::Guid() const
+inline const Guid& ID3V2_Frame::UniqueId() const
 {
     return guid_;
 }

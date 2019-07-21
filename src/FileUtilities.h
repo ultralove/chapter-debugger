@@ -24,19 +24,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "CommandLineArguments.h"
+#ifndef __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__
+#define __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__
 
-#include "ID3V2.h"
-#include "FileUtilities.h"
-#include "ID3V2_FrameController.h"
-#include "ID3V2_FrameUtilities.h"
+#include "Common.h"
+#include "SequentialStream.h"
 
-int main(int argc, char** argv)
-{
-    CommandLineArguments args = CommandLineArguments::Parse(argc, argv);
-    if(args.FileName().empty() == false)
-    {
-        ultraschall::framework::SequentialStream stream = ultraschall::framework::ReadFile(args.FileName());
-        ultraschall::framework::ID3V2_FrameController::DumpFrames(stream);
-    }
-}
+namespace ultraschall { namespace framework {
+
+bool             FileExists(const std::string& filename);
+SequentialStream ReadFile(const std::string& filename);
+
+}} // namespace ultraschall::framework
+
+#endif // #ifndef __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__

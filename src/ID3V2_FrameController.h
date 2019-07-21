@@ -24,46 +24,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_COMMAND_LINE_ARGUMENTS_H_INCL__
-#define __ULTRASCHALL_COMMAND_LINE_ARGUMENTS_H_INCL__
+#ifndef __ULTRASCHALL_ID3V2_FRAME_CONTROLLER_H_INCL__
+#define __ULTRASCHALL_ID3V2_FRAME_CONTROLLER_H_INCL__
 
 #include "Common.h"
-#include "StringUtilities.h"
+#include "SequentialStream.h"
 
-class CommandLineArguments
+namespace ultraschall { namespace framework {
+
+class ID3V2_FrameController
 {
 public:
-    CommandLineArguments();
+    static size_t DumpRawFrames(const SequentialStream& stream);
 
-    static CommandLineArguments Parse(int argc, char** argv, const bool includeArg0 = false);
-    static CommandLineArguments Parse(const ultraschall::framework::StringArray& args);
-
-    inline const std::string& FileName() const;
-    inline bool DumpTags() const;
-    inline bool DryRun() const;
+    static size_t DumpFrames(const SequentialStream& stream);
 
 private:
-    std::string fileName_;
-    bool        dumpTags_ = false;
-    bool        dryRun_ = false;
-
-    static void PrintVersion();
-    static void PrintHelp();
 };
 
-inline const std::string& CommandLineArguments::FileName() const
-{
-    return fileName_;
-}
+}} // namespace ultraschall::framework
 
-inline bool CommandLineArguments::DumpTags() const
-{
-    return dumpTags_;
-}
-
-inline bool CommandLineArguments::DryRun() const
-{
-    return dryRun_;
-}
-
-#endif // #ifndef __ULTRASCHALL_COMMAND_LINE_ARGUMENTS_H_INCL__
+#endif // #ifndef __ULTRASCHALL_ID3V2_FRAME_MANAGER_H_INCL__

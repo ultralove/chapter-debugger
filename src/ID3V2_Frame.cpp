@@ -28,8 +28,7 @@
 
 namespace ultraschall { namespace framework {
 
-ID3V2_Frame::ID3V2_Frame()
-{
+ID3V2_Frame::ID3V2_Frame() : guid_(Guid::New()) {
 }
 
 bool ID3V2_Frame::ConfigureHeader(const uint32_t id, const uint32_t size, const uint16_t flags) 

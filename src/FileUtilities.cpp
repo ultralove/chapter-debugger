@@ -28,6 +28,20 @@
 
 namespace ultraschall { namespace framework {
 
+bool FileExists(const std::string& filename)
+{
+    bool fileExists = false;
+
+    std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
+    if(file.is_open() == true)
+    {
+        fileExists = true;
+        file.close();
+    }
+
+    return fileExists;
+}
+
 SequentialStream ReadFile(const std::string& filename)
 {
     PRECONDITION_RETURN(filename.empty() == false, ultraschall::framework::SequentialStream());
@@ -58,5 +72,4 @@ SequentialStream ReadFile(const std::string& filename)
 
     return stream;
 }
-
 }} // namespace ultraschall::framework

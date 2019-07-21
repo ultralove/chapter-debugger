@@ -2,7 +2,7 @@
 //
 // Copyright (c) The Ultraschall Project (http://ultraschall.fm)
 //
-// The MIT License
+// The MIT License (MIT)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -16,7 +16,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -24,33 +24,32 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_FRAMEWORK_GUID_H_INCL__
-#define __ULTRASCHALL_FRAMEWORK_GUID_H_INCL__
-
-#include <cstdint>
-
-#include <string>
-#include <vector>
+#ifndef __ULTRASCHALL_GUID_H_INCL__
+#define __ULTRASCHALL_GUID_H_INCL__
 
 namespace ultraschall { namespace framework {
 
-class GUID
+class Guid
 {
 public:
-    GUID();
+    ~Guid();
 
-    virtual ~GUID();
+    Guid(const Guid& rhs);
+    Guid& operator=(const Guid& rhs);
 
-    std::string AsString() const;
+    bool operator==(const Guid& rhs) const;
+    bool operator<(const Guid& rhs) const;
+
+    static Guid        New();
+    static const Guid& Null();
 
 private:
-    static const size_t ULTRASCHALL_MAX_GUID_SIZE = 16;
+    struct Impl;
+    mutable Impl* impl_;
 
-    std::vector<uint8_t> guid_;
+    Guid();
 };
-
-std::ostream& operator<<(std::ostream& os, const GUID& rhs);
 
 }} // namespace ultraschall::framework
 
-#endif // #ifndef __ULTRASCHALL_FRAMEWORK_GUID_H_INCL__
+#endif // #ifndef __ULTRASCHALL_GUID_H_INCL__

@@ -57,14 +57,15 @@ SequentialStream& SequentialStream::operator=(const SequentialStream& rhs)
     return *this;
 }
 
-SequentialStream::SequentialStream(SequentialStream&& rhs) noexcept : items_(std::exchange(rhs.items_, nullptr)), itemCount_(std::exchange(rhs.itemCount_, 0)) {}
+SequentialStream::SequentialStream(SequentialStream&& rhs) noexcept : items_(std::exchange(rhs.items_, nullptr)), itemCount_(std::exchange(rhs.itemCount_, 0))
+{}
 
 SequentialStream& SequentialStream::operator=(SequentialStream&& rhs) noexcept
 {
     if(this != &rhs)
     {
         delete[] items_;
-		items_ = std::exchange(rhs.items_, nullptr);
+        items_     = std::exchange(rhs.items_, nullptr);
         itemCount_ = std::exchange(rhs.itemCount_, 0);
     }
 

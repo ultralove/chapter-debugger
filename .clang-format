@@ -43,7 +43,7 @@ BreakConstructorInitializersBeforeComma: false
 BreakConstructorInitializers: AfterColon
 BreakInheritanceList: AfterColon
 BreakStringLiterals: true
-ColumnLimit: 160
+ColumnLimit: 120
 CommentPragmas: '^ IWYU pragma:'
 # CommentPragmas: ".*"
 CompactNamespaces: true

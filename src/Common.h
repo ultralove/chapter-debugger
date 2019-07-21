@@ -24,16 +24,61 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__
-#define __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__
+#ifndef __ULTRASCHALL_COMMON_H_INCL__
+#define __ULTRASCHALL_COMMON_H_INCL__
 
-#include "Common.h"
-#include "SequentialStream.h"
+#include <cstdint>
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+
+#include <algorithm>
+#include <deque>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
+
+#include <atomic>
+#include <mutex>
+
+#include "SharedObject.h"
+
+#define PRECONDITION(a) \
+    if(!(a))            \
+    {                   \
+        return;         \
+    }
+
+#define PRECONDITION_RETURN(a, b) \
+    if(!(a))                      \
+    {                             \
+        return (b);               \
+    }
 
 namespace ultraschall { namespace framework {
 
-SequentialStream ReadFile(const std::string& filename);
+#define SafeRelease(a) \
+    if((a) != 0)       \
+    {                  \
+        a->Release();  \
+        a = 0;         \
+    }
+
+template<class T> inline void SafeDelete(T*& ptr)
+{
+    delete ptr;
+    ptr = 0;
+}
+
+template<class T> inline void SafeDeleteArray(T*& ptr)
+{
+    delete[] ptr;
+    ptr = 0;
+}
 
 }} // namespace ultraschall::framework
 
-#endif // #ifndef __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__
+#endif // #ifndef __ULTRASCHALL_COMMON_H_INCL__

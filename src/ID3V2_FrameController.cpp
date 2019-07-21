@@ -29,13 +29,13 @@
 
 namespace ultraschall { namespace framework {
 
-size_t ID3V2_FrameController::DumpFrames(const SequentialStream& stream) 
+size_t ID3V2_FrameController::DumpRawFrames(const SequentialStream& stream)
 {
     PRECONDITION_RETURN(stream.Items() != 0, ID3V2_INVALID_SIZE_VALUE);
     PRECONDITION_RETURN(stream.ItemCount() > 0, ID3V2_INVALID_SIZE_VALUE);
 
-    size_t offset   = ID3V2_HEADER_SIZE;
-    bool   isValid  = ID3V2_Frame::IsValid(stream.Items(offset), stream.ItemCount() - offset);
+    size_t offset  = ID3V2_HEADER_SIZE;
+    bool   isValid = ID3V2_Frame::IsValid(stream.Items(offset), stream.ItemCount() - offset);
     while((true == isValid) && (offset < stream.ItemCount()))
     {
         offset += DumpFrame(stream.Items(offset), stream.ItemCount());
@@ -43,6 +43,11 @@ size_t ID3V2_FrameController::DumpFrames(const SequentialStream& stream)
     }
 
     return offset;
+}
+
+size_t ID3V2_FrameController::DumpFrames(const SequentialStream& stream)
+{
+    return -1;
 }
 
 }} // namespace ultraschall::framework

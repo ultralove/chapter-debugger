@@ -24,8 +24,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cstdio>
 #include <algorithm>
+#include <cstdio>
 
 #include "ID3V2_FrameUtilities.h"
 #include "StringUtilities.h"
@@ -56,9 +56,9 @@ size_t DumpFrame(const uint8_t* data, const size_t dataSize)
     static const uint32_t ID3V2_MAX_DATA_DISPLAY_SIZE = 1024;
     static const size_t   ID3V2_MAX_DATA_ROW_SIZE     = 32;
 
-	printf("Guid:   %s\n", GUID().AsString().c_str());
+    // printf("Guid:   %s\n", Guid().AsString().c_str());
 
-	const uint32_t        id                          = ID3V2_DECODE_FRAME_ID(ID3V2_DATA_OFFSET(data, ID3V2_FRAME_ID_OFFSET), ID3V2_FRAME_ID_SIZE);
+    const uint32_t id = ID3V2_DECODE_FRAME_ID(ID3V2_DATA_OFFSET(data, ID3V2_FRAME_ID_OFFSET), ID3V2_FRAME_ID_SIZE);
     printf("Id:     %c%c%c%c\n", ((uint8_t*)&id)[0], ((uint8_t*)&id)[1], ((uint8_t*)&id)[2], ((uint8_t*)&id)[3]);
 
     const uint32_t size = ID3V2_DECODE_FRAME_SIZE(ID3V2_DATA_OFFSET(data, ID3V2_FRAME_SIZE_OFFSET), ID3V2_FRAME_SIZE_SIZE);
@@ -70,10 +70,9 @@ size_t DumpFrame(const uint8_t* data, const size_t dataSize)
     printf("Data:\n");
     HexDump(ID3V2_DATA_OFFSET(data, ID3V2_FRAME_DATA_OFFSET), std::min(size, ID3V2_MAX_DATA_DISPLAY_SIZE), ID3V2_MAX_DATA_ROW_SIZE);
 
-	printf("\n");
+    printf("\n");
 
-    return ID3V2_FRAME_HEADER_SIZE + size; 
+    return ID3V2_FRAME_HEADER_SIZE + size;
 }
 
 }} // namespace ultraschall::framework
-

@@ -24,14 +24,62 @@
 #
 ################################################################################
 
-cmake_minimum_required(VERSION 3.12.0)
-project(ultraschall-norad VERSION 1.0.0)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}/include
+set(FRAMEWORK_INCLUDES
+  Guid.h
+	SharedObject.h
+	SequentialStream.h
+	Common.h
+	StringUtilities.h
+	FileUtilities.h
+	PlatformUtilities.h
 )
 
-add_subdirectory(src)
+set(FRAMEWORK_SOURCES
+  Guid.cpp
+	SequentialStream.cpp
+	StringUtilities.cpp
+	FileUtilities.cpp
+)
+
+set(ID3V2_INCLUDES
+	ID3V2.h
+	ID3V2_Frame.h
+	ID3V2_FrameData.h
+	ID3V2_FrameResource.h
+	ID3V2_FrameFactory.h
+	ID3V2_FrameController.h
+	ID3V2_FrameUtilities.h
+	ID3V2_COMM_Frame.h
+	ID3V2_Header.h
+)
+
+set(ID3V2_SOURCES
+	ID3V2.cpp
+	ID3V2_Frame.cpp
+	ID3V2_FrameData.cpp
+	ID3V2_FrameFactory.cpp
+	ID3V2_FrameController.cpp
+	ID3V2_FrameUtilities.cpp
+	ID3V2_COMM_Frame.cpp
+	ID3V2_Header.cpp
+)
+
+# set(APPLICATION_INCLUDES)
+
+set(APPLICATION_SOURCES
+	main.cpp
+)
+
+add_executable(ultraschall-norad
+	${FRAMEWORK_INCLUDES}
+	${FRAMEWORK_SOURCES}
+	${ID3V2_INCLUDES}
+	${ID3V2_SOURCES}
+	${APPLICATION_INCLUDES}
+	${APPLICATION_SOURCES}
+)
+
+target_link_libraries(ultraschall-norad rpcrt4.lib)
