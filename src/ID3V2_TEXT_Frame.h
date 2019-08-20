@@ -37,7 +37,7 @@ class ID3V2_TEXT_Frame : public ID3V2_Frame
 public:
     virtual ~ID3V2_TEXT_Frame();
 
-    static ID3V2_IFrame* Create(const uint8_t* data, const size_t dataSize);
+    static ID3V2_Frame* Create(const uint8_t* data, const size_t dataSize);
 
     virtual bool Serialize(uint8_t*& data, const size_t& dataSize) const;
 
@@ -46,7 +46,7 @@ public:
 private:
     ID3V2_TEXT_Frame(const uint8_t* data, const size_t dataSize);
 
-	uint8_t encoding_;
+    uint8_t encoding_;
 };
 
 }} // namespace ultraschall::framework

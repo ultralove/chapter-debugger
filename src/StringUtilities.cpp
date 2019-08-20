@@ -38,12 +38,6 @@ void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize)
     size_t offset = 0;
     while(offset < dataSize)
     {
-        // const size_t chunkSize = ((dataSize - offset) < rowSize) ? (dataSize - offset) : rowSize;
-        // for(size_t i = 0; i < chunkSize; i++)
-        //{
-        //    printf("%2.2x ", data[offset + i]);
-        //}
-
         for(size_t i = 0; i < rowSize; i++)
         {
             if((offset + i) < dataSize)
