@@ -24,30 +24,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "ID3V2_FrameController.h"
-#include "ID3V2_FrameUtilities.h"
+#ifndef __ULTRASCHALL_CORE_ID3V2_IFRAME_H_INCL__
+#define __ULTRASCHALL_CORE_ID3V2_IFRAME_H_INCL__
 
-namespace ultraschall { namespace framework {
+#include "Common.h"
 
-size_t ID3V2_FrameController::DumpRawFrames(const SequentialStream& stream)
+namespace ultraschall { namespace core { namespace id3v2 {
+
+class IFrame
 {
-    PRECONDITION_RETURN(stream.Items() != 0, ID3V2_INVALID_SIZE_VALUE);
-    PRECONDITION_RETURN(stream.ItemCount() > 0, ID3V2_INVALID_SIZE_VALUE);
+public:
+    virtual bool ConfigureHeader(const uint8_t* data, const size_t dataSize) = 0;
+    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize) = 0;
 
-    size_t offset  = ID3V2_HEADER_SIZE;
-    bool   isValid = ID3V2_Frame::IsValid(stream.Items(offset), stream.ItemCount() - offset);
-    while((true == isValid) && (offset < stream.ItemCount()))
-    {
-        offset += DumpFrame(stream.Items(offset), stream.ItemCount());
-        isValid = ID3V2_Frame::IsValid(stream.Items(offset), stream.ItemCount() - offset);
-    }
+protected:
+    virtual ~IFrame() {}
+};
 
-    return offset;
-}
+}}} // namespace ultraschall::core::id3v2
 
-size_t ID3V2_FrameController::DumpFrames(const SequentialStream& stream)
-{
-    return -1;
-}
-
-}} // namespace ultraschall::framework
+#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_IFRAME_H_INCL__

@@ -24,26 +24,30 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_FRAME_UTILITIES_H_INCL__
-#define __ULTRASCHALL_ID3V2_FRAME_UTILITIES_H_INCL__
+#ifndef __ULTRASCHALL_CORE_ID3V2_TABLE_OF_CONTENTS_FRAME_H_INCL__
+#define __ULTRASCHALL_CORE_ID3V2_TABLE_OF_CONTENTS_FRAME_H_INCL__
 
-#include "Common.h"
+#include "Frame.h"
+#include "FrameResource.h"
 
-#include "ID3V2_Frame.h"
-#include "ID3V2_FrameData.h"
+namespace ultraschall { namespace core { namespace id3v2 {
 
-namespace ultraschall { namespace framework {
+class TableOfContentsFrame : public Frame
+{
+public:
+    virtual ~TableOfContentsFrame();
 
-size_t DumpHeader(const uint8_t* data, const size_t dataSize);
+    static Frame* Create();
 
-size_t DumpExtendedHeader(const uint8_t* data, const size_t dataSize);
+    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
 
-size_t DumpFrame(const uint8_t* data, const size_t dataSize);
+private:
+    uint8_t* data_     = nullptr;
+    size_t   dataSize_ = ID3V2_INVALID_TEXT_SIZE;
 
-typedef std::deque<ID3V2_Frame*> ID3V2_FrameQueue;
-static const ID3V2_FrameQueue    ID3V2_EMPTY_FRAME_QUEUE;
-static const ID3V2_FrameQueue    ID3V2_INVALID_FRAME_QUEUE;
+    bool AllocStringData(const uint8_t* data, const size_t dataSize);
+};
 
-}} // namespace ultraschall::framework
+}}} // namespace ultraschall::core::id3v2
 
-#endif // #ifndef __ULTRASCHALL_ID3V2_FRAME_UTILITIES_H_INCL__
+#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_TABLE_OF_CONTENTS_FRAME_H_INCL__

@@ -24,23 +24,59 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_H_INCL__
-#define __ULTRASCHALL_ID3V2_H_INCL__
+#ifndef __ULTRASCHALL_CORE_ID3V2_H_INCL__
+#define __ULTRASCHALL_CORE_ID3V2_H_INCL__
 
 #include <cstdint>
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core { namespace id3v2 {
 
 static const size_t ID3V2_INVALID_SIZE_VALUE = static_cast<size_t>(-1);
-
 #define ID3V2_DATA_OFFSET(a, b) (&(a)[(b)])
 
-static const size_t ID3V2_HEADER_SIZE       = 10;
+static const size_t ID3V2_INVALID_HEADER = ID3V2_INVALID_SIZE_VALUE;
 
+static const uint32_t ID3V2_INVALID_FILE_ID       = 0xffffffff;
+static const uint8_t  ID3V2_INVALID_FILE_VERSION  = 0xff;
+static const uint8_t  ID3V2_INVALID_FILE_REVISION = 0xff;
+static const uint8_t  ID3V2_INVALID_FILE_FLAGS    = 0xff;
+static const uint32_t ID3V2_INVALID_FILE_SIZE     = 0xffffffff;
 
+static const size_t ID3V2_FILE_ID_SIZE       = sizeof(uint8_t) * 3;
+static const size_t ID3V2_FILE_VERSION_SIZE  = sizeof(uint8_t);
+static const size_t ID3V2_FILE_REVISION_SIZE = sizeof(uint8_t);
+static const size_t ID3V2_FILE_FLAGS_SIZE    = sizeof(uint8_t);
+static const size_t ID3V2_FILE_SIZE_SIZE     = sizeof(uint32_t);
 
+static const size_t ID3V2_FILE_HEADER_SIZE = ID3V2_FILE_ID_SIZE + ID3V2_FILE_VERSION_SIZE + ID3V2_FILE_REVISION_SIZE
+                                             + ID3V2_FILE_FLAGS_SIZE + ID3V2_FILE_SIZE_SIZE;
+static const size_t ID3V2_FILE_HEADER_OFFSET = 0;
 
-static const size_t ID3V2_FRAME_HEADER_SIZE = 10;
+static const size_t ID3V2_FILE_ID_OFFSET       = 0;
+static const size_t ID3V2_FILE_VERSION_OFFSET  = ID3V2_FILE_ID_OFFSET + ID3V2_FILE_ID_SIZE;
+static const size_t ID3V2_FILE_REVISION_OFFSET = ID3V2_FILE_REVISION_OFFSET + ID3V2_FILE_VERSION_SIZE;
+static const size_t ID3V2_FILE_FLAGS_OFFSET    = ID3V2_FILE_REVISION_OFFSET + ID3V2_FILE_REVISION_SIZE;
+static const size_t ID3V2_FILE_SIZE_OFFSET     = ID3V2_FILE_FLAGS_OFFSET + ID3V2_FILE_FLAGS_SIZE;
+static const size_t UD3V2_FILE_DATA_OFFSET     = ID3V2_FILE_SIZE_OFFSET + ID3V2_FILE_SIZE_SIZE;
+
+uint32_t ID3V2_DECODE_FILE_ID(const uint8_t* data, const size_t dataSize);
+uint32_t ID3V2_ENCODE_FILE_ID(const uint8_t* id, uint8_t* data, const size_t dataSize);
+
+uint8_t ID3V2_DECODE_FILE_VERSION(const uint8_t* data, const size_t dataSize);
+uint8_t ID3V2_ENCODE_FILE_VERSION(const uint8_t version, uint8_t* data, const size_t dataSize);
+
+uint8_t ID3V2_DECODE_FILE_REVISION(const uint8_t* data, const size_t dataSize);
+uint8_t ID3V2_ENCODE_FILE_REVISION(const uint8_t revision, uint8_t* data, const size_t dataSize);
+
+uint8_t ID3V2_DECODE_FILE_FLAGS(const uint8_t* data, const size_t dataSize);
+uint8_t ID3V2_ENCODE_FILE_FLAGS(const uint8_t flags, const uint8_t* data, const size_t dataSize);
+
+uint32_t ID3V2_DECODE_FILE_SIZE(const uint8_t* data, const size_t dataSize);
+uint32_t ID3V2_ENCODE_FILE_SIZE(const uint32_t size, const uint8_t* data, const size_t dataSize);
+
+size_t ID3V2_VALIDATE_FILE_HEADER(const uint8_t* data, const size_t dataSize);
+
+static const size_t ID3V2_INVALID_FRAME = ID3V2_INVALID_SIZE_VALUE;
 
 static const uint32_t ID3V2_INVALID_FRAME_ID    = 0xffffffff;
 static const uint32_t ID3V2_INVALID_FRAME_SIZE  = 0xffffffff;
@@ -50,10 +86,13 @@ static const size_t ID3V2_FRAME_ID_SIZE    = sizeof(uint32_t);
 static const size_t ID3V2_FRAME_SIZE_SIZE  = sizeof(uint32_t);
 static const size_t ID3V2_FRAME_FLAGS_SIZE = sizeof(uint16_t);
 
+static const size_t ID3V2_FRAME_HEADER_SIZE   = ID3V2_FRAME_ID_SIZE + ID3V2_FRAME_SIZE_SIZE + ID3V2_FRAME_FLAGS_SIZE;
+static const size_t ID3V2_FRAME_HEADER_OFFSET = ID3V2_FILE_HEADER_SIZE;
+
 static const size_t ID3V2_FRAME_ID_OFFSET    = 0;
-static const size_t ID3V2_FRAME_SIZE_OFFSET  = 4;
-static const size_t ID3V2_FRAME_FLAGS_OFFSET = 8;
-static const size_t ID3V2_FRAME_DATA_OFFSET  = 10;
+static const size_t ID3V2_FRAME_SIZE_OFFSET  = ID3V2_FRAME_ID_OFFSET + ID3V2_FRAME_ID_SIZE;
+static const size_t ID3V2_FRAME_FLAGS_OFFSET = ID3V2_FRAME_SIZE_OFFSET + ID3V2_FRAME_SIZE_SIZE;
+static const size_t ID3V2_FRAME_DATA_OFFSET  = ID3V2_FRAME_FLAGS_OFFSET + ID3V2_FRAME_FLAGS_SIZE;
 
 uint32_t ID3V2_DECODE_FRAME_ID(const uint8_t* data, const size_t dataSize);
 uint32_t ID3V2_ENCODE_FRAME_ID(const uint32_t id, uint8_t* data, const size_t dataSize);
@@ -64,6 +103,23 @@ uint32_t ID3V2_ENCODE_FRAME_SIZE(const uint32_t size, uint8_t* data, const size_
 uint16_t ID3V2_DECODE_FRAME_FLAGS(const uint8_t* data, const size_t dataSize);
 uint16_t ID3V2_ENCODE_FRAME_FLAGS(const uint16_t flags, uint8_t* data, const size_t dataSize);
 
-}} // namespace ultraschall::framework
+size_t ID3V2_VALIDATE_FRAME_HEADER(const uint8_t* data, const size_t dataSize);
 
-#endif // #ifndef __ULTRASCHALL_ID3V2_H_INCL__
+static uint8_t       ID3V2_ISO_8859_1_TEXT_ENCODING = 0x00;
+static uint8_t       ID3V2_UTF_16_TEXT_ENCODING     = 0x01;
+static uint8_t       ID3V2_UTF_16BE_TEXT_ENCODING   = 0x02;
+static uint8_t       ID3V2_UTF_8_TEXT_ENCODING      = 0x03;
+static const uint8_t ID3V2_INVALID_TEXT_ENCODING    = 0xff;
+
+static const size_t  ID3V2_TEXT_ENCODING_SIZE   = sizeof(uint8_t);
+static const uint8_t ID3V2_TEXT_ENCODING_OFFSET = 0;
+
+static const size_t ID3V2_INVALID_TEXT_SIZE = ID3V2_INVALID_SIZE_VALUE;
+static const size_t ID3V2_TEXT_OFFSET       = ID3V2_TEXT_ENCODING_OFFSET + ID3V2_TEXT_ENCODING_SIZE;
+
+uint8_t ID3V2_DECODE_TEXT_ENCODING(const uint8_t* data, const size_t dataSize);
+uint8_t ID3V2_DECODE_TEXT_ENCODING(const uint8_t encoding, uint8_t* data, const size_t dataSize);
+
+}}} // namespace ultraschall::core::id3v2
+
+#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_H_INCL__

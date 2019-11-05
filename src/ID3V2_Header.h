@@ -30,16 +30,9 @@
 #include "Common.h"
 #include "ID3V2.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core {
 
-static const std::vector<uint8_t> ID3V2_INVALID_ID       = {0xff, 0xff, 0xff};
-static const uint8_t              ID3V2_INVALID_VERSION  = 0xff;
-static const uint8_t              ID3V2_INVALID_REVISION = 0xff;
-static const uint8_t              ID3V2_INVALID_FLAGS    = 0xff;
-static const uint32_t             ID3V2_INVALID_SIZE     = 0xffffffff;
 
-uint32_t DECODE_ID3V2_FILE_SIZE(const uint8_t* data, const size_t dataSize);
-uint32_t ENCODE_ID3V2_FILE_SIZE(const uint32_t size, const uint8_t* data, const size_t dataSize);
 
 class ID3V2_Header
 {
@@ -65,31 +58,31 @@ private:
 
 inline const std::vector<uint8_t>& ID3V2_Header::Id() const
 {
-    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_ID);
+    PreconditionReturn(IsValid() == true, ID3V2_INVALID_ID);
     return id_;
 }
 
 inline uint8_t ID3V2_Header::Version() const
 {
-    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_VERSION);
+    PreconditionReturn(IsValid() == true, ID3V2_INVALID_VERSION);
     return version_;
 }
 
 inline uint8_t ID3V2_Header::Revision() const
 {
-    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_REVISION);
+    PreconditionReturn(IsValid() == true, ID3V2_INVALID_REVISION);
     return revision_;
 }
 
 inline uint8_t ID3V2_Header::Flags() const
 {
-    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FLAGS);
+    PreconditionReturn(IsValid() == true, ID3V2_INVALID_FLAGS);
     return flags_;
 }
 
 inline uint32_t ID3V2_Header::Size() const
 {
-    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_SIZE);
+    PreconditionReturn(IsValid() == true, ID3V2_INVALID_SIZE);
     return size_;
 }
 

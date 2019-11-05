@@ -24,21 +24,71 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_STRING_UTILITIES_H_INCL__
-#define __ULTRASCHALL_STRING_UTILITIES_H_INCL__
+#ifndef __ULTRASCHALL_CORE_STRING_UTILITIES_H_INCL__
+#define __ULTRASCHALL_CORE_STRING_UTILITIES_H_INCL__
 
-#include <map>
-#include <string>
-#include <vector>
+#include "Common.h"
 
-namespace ultraschall { namespace framework {
-
-typedef std::string                        String;
-typedef std::vector<String>                StringArray;
-typedef std::map<std::string, std::string> StringDictionary;
+namespace ultraschall { namespace core {
 
 void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize = 16);
 
-}} // namespace ultraschall::framework
+class UsupportedEncodingException : public std::exception
+{};
 
-#endif // #ifndef __ULTRASCHALL_STRING_UTILITIES_H_INCL__
+class String
+{
+public:
+    enum class ENCODING {
+        UTF_8 = 0,
+        UTF_16,
+        UTF_16_BE,
+        UTF_16_LE,
+        UTF_32,
+        ANSI,
+        MAX_CHARACTER_ENCODING,
+        INVALID_CHARACTER_ENCODING = MAX_CHARACTER_ENCODING
+    };
+
+    virtual ~String();
+
+    static const size_t INVALID_STRING_SIZE = -1;
+
+    void   AdoptStringData(const uint8_t* data, const size_t size);
+    size_t OrphanStringData(const uint8_t*& data);
+
+    void SetEncoding(const ENCODING encoding);
+
+    inline const uint8_t* Data() const;
+    inline size_t         Size() const;
+    inline ENCODING       Encoding() const;
+
+protected:
+    String();
+
+    void Clear();
+
+private:
+    uint8_t* data_ = nullptr;
+    size_t   size_ = INVALID_STRING_SIZE;
+    ENCODING encoding_;
+};
+
+inline const uint8_t* String::Data() const
+{
+    return data_;
+}
+
+inline size_t String::Size() const
+{
+    return size_;
+}
+
+inline String::ENCODING String::Encoding() const
+{
+    return encoding_;
+}
+
+}} // namespace ultraschall::core
+
+#endif // #ifndef __ULTRASCHALL_CORE_STRING_UTILITIES_H_INCL__

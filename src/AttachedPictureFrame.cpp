@@ -24,31 +24,55 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_TEXT_FRAME_H_INCL__
-#define __ULTRASCHALL_ID3V2_TEXT_FRAME_H_INCL__
+#include "AttachedPictureFrame.h"
 
-#include "Common.h"
-#include "ID3V2_Frame.h"
+namespace ultraschall { namespace core { namespace id3v2 {
 
-namespace ultraschall { namespace framework {
+static FrameResource<AttachedPictureFrame> registry1("APIC");
 
-class ID3V2_TEXT_Frame : public ID3V2_Frame
+AttachedPictureFrame::~AttachedPictureFrame()
 {
-public:
-    virtual ~ID3V2_TEXT_Frame();
+  SafeDeleteArray(data_);
+  dataSize_ = 0;
+}
 
-    static ID3V2_Frame* Create(const uint8_t* data, const size_t dataSize);
+Frame* AttachedPictureFrame::Create()
+{
+    return new AttachedPictureFrame();
+}
 
-    virtual bool Serialize(uint8_t*& data, const size_t& dataSize) const;
+bool AttachedPictureFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
+{
+    PreconditionReturn(data != nullptr, false);
+    PreconditionReturn(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
+    PreconditionReturn(IsValid() == true, false);
 
-    virtual bool Deserialize(const uint8_t* data, const size_t dataSize);
+    encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET], ID3V2_TEXT_ENCODING_SIZE);
+    return AllocStringData(&data[ID3V2_TEXT_OFFSET], dataSize - ID3V2_TEXT_ENCODING_SIZE);
+}
 
-private:
-    ID3V2_TEXT_Frame(const uint8_t* data, const size_t dataSize);
+bool AttachedPictureFrame::AllocStringData(const uint8_t* data, const size_t dataSize) 
+{
+    PreconditionReturn(data != nullptr, false);
+    PreconditionReturn(dataSize >= 0, false);
 
-    uint8_t encoding_;
-};
+    bool allocated = false;
 
-}} // namespace ultraschall::framework
+    SafeDeleteArray(data_);
+    dataSize_ = 0;
 
-#endif // #ifndef __ULTRASCHALL_ID3V2_TEXT_FRAME_H_INCL__
+    data_ = new uint8_t[dataSize + 1];
+    if(data_ != nullptr)
+    {
+        dataSize_ = dataSize;
+        memcpy(data_, data, dataSize_);
+        data_[dataSize_] = 0;
+
+        allocated = true;
+    }
+
+    return allocated;
+}
+
+
+}}} // namespace ultraschall::core::id3v2

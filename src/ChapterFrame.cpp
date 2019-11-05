@@ -24,32 +24,53 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "ID3V2_COMM_Frame.h"
-#include "ID3V2_FrameResource.h"
+#include "ChapterFrame.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core { namespace id3v2 {
 
-static ID3V2_FrameResource<ID3V2_COMM_Frame> resource("COMM");
+static FrameResource<ChapterFrame> registry1("CHAP");
 
-ID3V2_COMM_Frame::ID3V2_COMM_Frame() {}
-
-ID3V2_COMM_Frame::~ID3V2_COMM_Frame() {}
-
-ID3V2_Frame* ID3V2_COMM_Frame::Create()
+ChapterFrame::~ChapterFrame()
 {
-    ID3V2_FRAME_FACTORY_ENTRY();
-    return new ID3V2_COMM_Frame();
-    ID3V2_FRAME_FACTORY_EXIT();
+    SafeDeleteArray(data_);
+    dataSize_ = 0;
 }
 
-size_t ID3V2_COMM_Frame::Decode(const uint8_t* data, const size_t dataSize)
+Frame* ChapterFrame::Create()
 {
-    return ID3V2_INVALID_SIZE_VALUE;
+    return new ChapterFrame();
 }
 
-size_t ID3V2_COMM_Frame::Encode(uint8_t* data, const size_t dataSize) const
+bool ChapterFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
 {
-    return ID3V2_INVALID_SIZE_VALUE;
+    PreconditionReturn(data != nullptr, false);
+    PreconditionReturn(dataSize >= 0, false);
+    PreconditionReturn(IsValid() == true, false);
+
+    return AllocStringData(data, dataSize);
 }
 
-}} // namespace ultraschall::framework
+bool ChapterFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
+{
+    PreconditionReturn(data != nullptr, false);
+    PreconditionReturn(dataSize >= 0, false);
+
+    bool allocated = false;
+
+    SafeDeleteArray(data_);
+    dataSize_ = 0;
+
+    data_ = new uint8_t[dataSize + 1];
+    if(data_ != nullptr)
+    {
+        dataSize_ = dataSize;
+        memcpy(data_, data, dataSize_);
+        data_[dataSize_] = 0;
+
+        allocated = true;
+    }
+
+    return allocated;
+}
+
+}}} // namespace ultraschall::core::id3v2

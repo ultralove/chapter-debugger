@@ -24,47 +24,39 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_FRAME_DATA_H_INCL__
-#define __ULTRASCHALL_ID3V2_FRAME_DATA_H_INCL__
+#ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_RESOURCE_H_INCL__
+#define __ULTRASCHALL_CORE_ID3V2_FRAME_RESOURCE_H_INCL__
 
-#include "Common.h"
-#include "SequentialStream.h"
-#include "ID3V2.h"
+#include "FrameFactory.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core { namespace id3v2 {
 
-static const size_t ID3V2_INVALID_FRAME_SEQUENCE = ID3V2_INVALID_SIZE_VALUE;
-
-class ID3V2_FrameData : public SequentialStream
+template<class T> class FrameResource
 {
 public:
-    ID3V2_FrameData(const uint8_t* data, const size_t dataSize, const size_t sequence = ID3V2_INVALID_FRAME_SEQUENCE);
+    FrameResource(const std::string& name)
+    {
+        Precondition(name.size() >= ID3V2_FRAME_ID_SIZE);
 
-    inline size_t             Sequence() const;
-    inline void               Sequence(const size_t sequence);
+        id_ = ID3V2_DECODE_FRAME_ID(reinterpret_cast<const uint8_t*>(name.c_str()), ID3V2_FRAME_ID_SIZE);
+        FrameFactory& frameFactory = FrameFactory::Instance();
+        registered_                = frameFactory.RegisterFrame(id_, T::Create);
+    }
 
-    uint32_t                  Id() const;
-    uint32_t                  Size() const;
-    uint16_t                  Flags() const;
-    SequentialStream* RawData() const;
-
-    bool operator==(const ID3V2_FrameData& rhs) const;
-    bool operator<(const ID3V2_FrameData& rhs) const;
+    ~FrameResource()
+    {
+        if((id_ != ID3V2_INVALID_FRAME_ID) && (true == registered_))
+        {
+            FrameFactory& frameFactory = FrameFactory::Instance();
+            frameFactory.UnregisterFrame(id_);
+        }
+    }
 
 private:
-    size_t sequence_ = ID3V2_INVALID_FRAME_SEQUENCE;
+    uint32_t id_         = ID3V2_INVALID_FRAME_ID;
+    bool     registered_ = false;
 };
 
-inline size_t ID3V2_FrameData::Sequence() const
-{
-    return sequence_;
-}
+}}} // namespace ultraschall::core::id3v2
 
-inline void ID3V2_FrameData::Sequence(const size_t sequence)
-{
-    sequence_ = sequence;
-}
-
-}} // namespace ultraschall::framework
-
-#endif // #ifndef __ULTRASCHALL_ID3V2_FRAME_DATA_H_INCL__
+#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_RESOURCE_H_INCL__

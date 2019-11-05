@@ -27,13 +27,13 @@
 #include "StringUtilities.h"
 #include "Common.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core {
 
 void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize)
 {
-    PRECONDITION(data != 0);
-    PRECONDITION(dataSize > 0);
-    PRECONDITION(rowSize > 0);
+    Precondition(data != 0);
+    Precondition(dataSize > 0);
+    Precondition(rowSize > 0);
 
     size_t offset = 0;
     while(offset < dataSize)
@@ -42,33 +42,46 @@ void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize)
         {
             if((offset + i) < dataSize)
             {
-                printf("%2.2x ", data[offset + i]);
+                std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)data[offset + i] << " ";
             }
             else
             {
-                printf("   ");
+                std::cout << "   ";
             }
         }
 
-        printf("| ");
+        std::cout << "| ";
 
         const size_t chunkSize = ((dataSize - offset) < rowSize) ? (dataSize - offset) : rowSize;
         for(size_t j = 0; j < chunkSize; j++)
         {
-            if(isprint(data[offset + j]))
+            if(std::isprint(data[offset + j]))
             {
-                printf("%c", data[offset + j]);
+                std::cout << data[offset + j];
             }
             else
             {
-                printf(".");
+                std::cout << ".";
             }
         }
 
-        printf("\n");
-
         offset += chunkSize;
+        std::cout << std::endl;
     }
 }
 
-}} // namespace ultraschall::framework
+String::String() {}
+
+String::~String()
+{
+    Clear();
+}
+
+void String::Clear()
+{
+    SafeDeleteArray(data_);
+    size_     = INVALID_STRING_SIZE;
+    encoding_ = ENCODING::INVALID_CHARACTER_ENCODING;
+}
+
+}} // namespace ultraschall::core

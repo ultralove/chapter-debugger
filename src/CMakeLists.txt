@@ -28,43 +28,48 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(FRAMEWORK_INCLUDES
-  Guid.h
-	SharedObject.h
-	SequentialStream.h
 	Common.h
-	StringUtilities.h
 	FileUtilities.h
-	PlatformUtilities.h
+  Guid.h
+  PlatformUtilities.h
+	BinaryStream.h
+	SharedObject.h
+	StringUtilities.h
 )
 
 set(FRAMEWORK_SOURCES
-  Guid.cpp
-	SequentialStream.cpp
-	StringUtilities.cpp
 	FileUtilities.cpp
+  Guid.cpp
+	BinaryStream.cpp
+	StringUtilities.cpp
 )
 
 set(ID3V2_INCLUDES
+  AttachedPictureFrame.h
+  ChapterFrame.h
+  CommentsFrame.h
+	Frame.h
+	FrameController.h
+	FrameFactory.h
+	FrameResource.h
 	ID3V2.h
-	ID3V2_Frame.h
-	ID3V2_FrameData.h
-	ID3V2_FrameResource.h
-	ID3V2_FrameFactory.h
-	ID3V2_FrameController.h
-	ID3V2_FrameUtilities.h
-	ID3V2_COMM_Frame.h
-	ID3V2_Header.h
+  IFrame.h
+  TableOfContentsFrame.h
+  TextInformationFrame.h
+  URLLinkFrame.h
 )
 
 set(ID3V2_SOURCES
+  AttachedPictureFrame.cpp
+  ChapterFrame.cpp
+  CommentsFrame.cpp
+	Frame.cpp
+	FrameController.cpp
+	FrameFactory.cpp
 	ID3V2.cpp
-	ID3V2_Frame.cpp
-	ID3V2_FrameData.cpp
-	ID3V2_FrameFactory.cpp
-	ID3V2_FrameController.cpp
-	ID3V2_FrameUtilities.cpp
-	ID3V2_COMM_Frame.cpp
-	ID3V2_Header.cpp
+  TableOfContentsFrame.cpp
+  TextInformationFrame.cpp
+  URLLinkFrame.cpp
 )
 
 # set(APPLICATION_INCLUDES)

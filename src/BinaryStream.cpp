@@ -26,41 +26,41 @@
 
 #include "Common.h"
 
-#include "SequentialStream.h"
+#include "BinaryStream.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core {
 
-SequentialStream::SequentialStream() {}
+BinaryStream::BinaryStream() {}
 
-SequentialStream::~SequentialStream()
+BinaryStream::~BinaryStream()
 {
     Reset();
 }
 
-SequentialStream::SequentialStream(const uint8_t* items, const size_t itemCount)
+BinaryStream::BinaryStream(const uint8_t* items, const size_t itemCount)
 {
     Write(items, itemCount);
 }
 
-SequentialStream::SequentialStream(const SequentialStream& rhs)
+BinaryStream::BinaryStream(const BinaryStream& rhs)
 {
     *this = rhs;
 }
 
-SequentialStream& SequentialStream::operator=(const SequentialStream& rhs)
+BinaryStream& BinaryStream::operator=(const BinaryStream& rhs)
 {
     if(this != &rhs)
     {
-        Write(rhs.Items(), rhs.ItemCount());
+        Write(rhs.Data(), rhs.Size());
     }
 
     return *this;
 }
 
-SequentialStream::SequentialStream(SequentialStream&& rhs) noexcept : items_(std::exchange(rhs.items_, nullptr)), itemCount_(std::exchange(rhs.itemCount_, 0))
+BinaryStream::BinaryStream(BinaryStream&& rhs) noexcept : items_(std::exchange(rhs.items_, nullptr)), itemCount_(std::exchange(rhs.itemCount_, 0))
 {}
 
-SequentialStream& SequentialStream::operator=(SequentialStream&& rhs) noexcept
+BinaryStream& BinaryStream::operator=(BinaryStream&& rhs) noexcept
 {
     if(this != &rhs)
     {
@@ -72,37 +72,37 @@ SequentialStream& SequentialStream::operator=(SequentialStream&& rhs) noexcept
     return *this;
 }
 
-bool SequentialStream::operator==(const SequentialStream& rhs) const
+bool BinaryStream::operator==(const BinaryStream& rhs) const
 {
-    return (Items() == rhs.Items()) && (ItemCount() == rhs.ItemCount());
+    return (Data() == rhs.Data()) && (Size() == rhs.Size());
 }
 
-inline const uint8_t* SequentialStream::Items(const size_t itemOffset) const
+inline const uint8_t* BinaryStream::Data(const size_t itemOffset) const
 {
-    PRECONDITION_RETURN(items_ != 0, 0);
-    PRECONDITION_RETURN(itemOffset < itemCount_, 0);
+    PreconditionReturn(items_ != 0, 0);
+    PreconditionReturn(itemOffset < itemCount_, 0);
 
     return &items_[itemOffset];
 }
 
-size_t SequentialStream::Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount)
+size_t BinaryStream::Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount)
 {
-    PRECONDITION_RETURN(items != 0, false);
-    PRECONDITION_RETURN(itemCount > 0, false);
+    PreconditionReturn(items != 0, false);
+    PreconditionReturn(itemCount > 0, false);
 
     size_t itemsWritten = 0;
 
     if(Valid() == false)
     {
-        FastAllocItems(itemCount);
+        AllocItems(itemCount);
     }
     else if((itemOffset + itemCount) > itemCount_)
     {
         uint8_t* currentItems     = items_;
         size_t   currentItemCount = itemCount_;
 
-        FastAllocItems(itemCount);
-        FastReplaceItems(currentItems, currentItemCount);
+        AllocItems(itemCount);
+        ReplaceItems(currentItems, currentItemCount);
 
         SafeDeleteArray(currentItems);
         currentItemCount = 0;
@@ -117,25 +117,25 @@ size_t SequentialStream::Write(const size_t itemOffset, const uint8_t* items, co
     return itemsWritten;
 }
 
-size_t SequentialStream::Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const
+size_t BinaryStream::Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const
 {
-    PRECONDITION_RETURN(items_ != 0, 0);
-    PRECONDITION_RETURN(itemCount_ > 0, 0);
-    PRECONDITION_RETURN(items != 0, 0);
-    PRECONDITION_RETURN(itemCount > 0, 0);
+    PreconditionReturn(items_ != 0, 0);
+    PreconditionReturn(itemCount_ > 0, 0);
+    PreconditionReturn(items != 0, 0);
+    PreconditionReturn(itemCount > 0, 0);
 
     const size_t resultItemCount = ((itemOffset + itemCount) <= itemCount_) ? itemCount : (itemCount_ - itemOffset);
     memcpy(items, &items_[itemOffset * sizeof(uint8_t)], resultItemCount * sizeof(uint8_t));
     return resultItemCount;
 }
 
-void SequentialStream::Reset()
+void BinaryStream::Reset()
 {
     itemCount_ = 0;
     SafeDeleteArray(items_);
 }
 
-void SequentialStream::FastAllocItems(const size_t itemCount)
+void BinaryStream::AllocItems(const size_t itemCount)
 {
     Reset();
 
@@ -149,10 +149,10 @@ void SequentialStream::FastAllocItems(const size_t itemCount)
     }
 }
 
-void SequentialStream::FastReplaceItems(const uint8_t* items, const size_t itemCount)
+void BinaryStream::ReplaceItems(const uint8_t* items, const size_t itemCount)
 {
-    PRECONDITION(items_ != 0);
-    PRECONDITION(itemCount_ <= itemCount);
+    Precondition(items_ != 0);
+    Precondition(itemCount_ <= itemCount);
 
     memcpy(items_, items, itemCount * sizeof(uint8_t));
 }

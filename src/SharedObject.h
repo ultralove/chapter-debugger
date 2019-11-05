@@ -24,13 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_FRAMEWORK_SHARED_OBJECT_H_INCL__
-#define __ULTRASCHALL_FRAMEWORK_SHARED_OBJECT_H_INCL__
+#ifndef __ULTRASCHALL_CORE_SHARED_OBJECT_H_INCL__
+#define __ULTRASCHALL_CORE_SHARED_OBJECT_H_INCL__
 
 #include <atomic>
 #include <cstdint>
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core {
 
 class SharedObject
 {
@@ -62,4 +62,4 @@ private:
 
 }} // namespace ultraschall::framework
 
-#endif // #ifndef __ULTRASCHALL_FRAMEWORK_SHARED_OBJECT_H_INCL__
+#endif // #ifndef __ULTRASCHALL_CORE_SHARED_OBJECT_H_INCL__

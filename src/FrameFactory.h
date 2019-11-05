@@ -24,39 +24,39 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ID3V2_FRAME_RESOURCE_H_INCL__
-#define __ID3V2_FRAME_RESOURCE_H_INCL__
+#ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_FACTORY_H_INCL__
+#define __ULTRASCHALL_CORE_ID3V2_FRAME_FACTORY_H_INCL__
 
-#include "ID3V2_FrameFactory.h"
+#include "Common.h"
+#include "Frame.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core { namespace id3v2 {
 
-template<class T> class ID3V2_FrameResource
+class FrameFactory
 {
 public:
-    ID3V2_FrameResource(const std::string& name)
-    {
-        PRECONDITION(name.empty() == false);
+    typedef Frame* (*CREATE_FRAME_FUNCTION)();
 
-        id_                              = ID3V2_DECODE_FRAME_ID(reinterpret_cast<const uint8_t*>(name.c_str()), ID3V2_FRAME_ID_SIZE);
-        ID3V2_FrameFactory& frameFactory = ID3V2_FrameFactory::Instance();
-        registered_                      = frameFactory.RegisterFrame(id_, T::Create);
-    }
+    bool RegisterFrame(const uint32_t id, CREATE_FRAME_FUNCTION factoryFunction);
 
-    ~ID3V2_FrameResource()
-    {
-        if((id_ != ID3V2_INVALID_FRAME_ID) && (true == registered_))
-        {
-            ID3V2_FrameFactory& frameFactory = ID3V2_FrameFactory::Instance();
-            frameFactory.UnregisterFrame(id_);
-        }
-    }
+    void UnregisterFrame(const uint32_t id);
+
+    virtual ~FrameFactory();
+
+    static FrameFactory& Instance();
+
+    bool CanCreate(const uint8_t* data, const size_t dataSize) const;
+
+    Frame* CreateFrame(const uint8_t* data, const size_t dataSize) const;
 
 private:
-    uint32_t id_         = ID3V2_INVALID_FRAME_ID;
-    bool     registered_ = false;
+    FrameFactory();
+
+    typedef std::map<uint32_t, CREATE_FRAME_FUNCTION> FunctionDictionary;
+    FunctionDictionary                                functions_;
+    mutable std::recursive_mutex                      functionsLock_;
 };
 
-}} // namespace ultraschall::framework
+}}} // namespace ultraschall::core::id3v2
 
-#endif // #ifndef __ID3V2_FRAME_RESOURCE_H_INCL__
+#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_FACTORY_H_INCL____

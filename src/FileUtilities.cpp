@@ -24,9 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <fstream>
+#include "Common.h"
 #include "FileUtilities.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core {
 
 bool FileExists(const std::string& filename)
 {
@@ -42,11 +44,11 @@ bool FileExists(const std::string& filename)
     return fileExists;
 }
 
-SequentialStream ReadFile(const std::string& filename)
+BinaryStream ReadFile(const std::string& filename)
 {
-    PRECONDITION_RETURN(filename.empty() == false, ultraschall::framework::SequentialStream());
+    PreconditionReturn(filename.empty() == false, ultraschall::core::BinaryStream());
 
-    SequentialStream stream;
+    BinaryStream stream;
     std::ifstream    file(filename, std::ios::in | std::ios::binary | std::ios::ate);
     if(file.is_open() == true)
     {

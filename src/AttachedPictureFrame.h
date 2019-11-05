@@ -24,38 +24,31 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_FRAME_FACTORY_H_INCL__
-#define __ULTRASCHALL_ID3V2_FRAME_FACTORY_H_INCL__
+#ifndef __ULTRASCHALL_CORE_ID3V2_ATTACHED_PICTURE_FRAME_H_INCL__
+#define __ULTRASCHALL_CORE_ID3V2_ATTACHED_PICTURE_FRAME_H_INCL__
 
-#include "Common.h"
-#include "ID3V2_Frame.h"
-#include "ID3V2_FrameData.h"
+#include "Frame.h"
+#include "FrameResource.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core { namespace id3v2 {
 
-class ID3V2_FrameFactory
+class AttachedPictureFrame : public Frame
 {
 public:
-    typedef ID3V2_Frame* (*CREATE_FRAME_FUNCTION)();
+    virtual ~AttachedPictureFrame();
 
-    bool RegisterFrame(const uint32_t id, CREATE_FRAME_FUNCTION factoryFunction);
+    static Frame* Create();
 
-    void UnregisterFrame(const uint32_t id);
-
-    virtual ~ID3V2_FrameFactory();
-
-    static ID3V2_FrameFactory& Instance();
-
-    ID3V2_Frame* CreateFrame(const uint32_t id, const uint32_t size, const uint16_t flags) const;
+    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
 
 private:
-    ID3V2_FrameFactory();
+    uint8_t encoding_ = ID3V2_INVALID_TEXT_ENCODING; 
+    uint8_t* data_     = nullptr;
+    size_t   dataSize_ = ID3V2_INVALID_TEXT_SIZE;
 
-    typedef std::map<uint32_t, CREATE_FRAME_FUNCTION> FactoryFunctionDictionary;
-    FactoryFunctionDictionary                         factoryFunctions_;
-    mutable std::recursive_mutex                      factoryFunctionsLock_;
+    bool AllocStringData(const uint8_t* data, const size_t dataSize);
 };
 
-}} // namespace ultraschall::id3v2
+}}} // namespace ultraschall::core::id3v2
 
-#endif // #ifndef __ULTRASCHALL_ID3V2_FRAME_FACTORY_H_INCL____
+#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_ATTACHED_PICTURE_FRAME_H_INCL__

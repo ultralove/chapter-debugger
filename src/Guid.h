@@ -24,10 +24,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_GUID_H_INCL__
-#define __ULTRASCHALL_GUID_H_INCL__
+#ifndef __ULTRASCHALL_CORE_GUID_H_INCL__
+#define __ULTRASCHALL_CORE_GUID_H_INCL__
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core {
 
 class Guid
 {
@@ -52,4 +52,4 @@ private:
 
 }} // namespace ultraschall::framework
 
-#endif // #ifndef __ULTRASCHALL_GUID_H_INCL__
+#endif // #ifndef __ULTRASCHALL_CORE_GUID_H_INCL__

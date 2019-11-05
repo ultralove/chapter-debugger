@@ -24,8 +24,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_FAST_BYTE_SWAP_H_INCL__
-#define __ULTRASCHALL_FAST_BYTE_SWAP_H_INCL__
+#ifndef __ULTRASCHALL_CORE_PLATFORM_UTILITIES_H_INCL__
+#define __ULTRASCHALL_CORE_PLATFORM_UTILITIES_H_INCL__
 
 namespace ultraschall {
 
@@ -43,4 +43,4 @@ namespace ultraschall {
 
 } // namespace ultraschall
 
-#endif // #ifndef __ULTRASCHALL_FAST_BYTE_SWAP_H_INCL__
+#endif // #ifndef __ULTRASCHALL_CORE_PLATFORM_UTILITIES_H_INCL__

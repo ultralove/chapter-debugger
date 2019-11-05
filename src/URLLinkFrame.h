@@ -24,29 +24,30 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_COMM_FRAME_H_INCL__
-#define __ULTRASCHALL_ID3V2_COMM_FRAME_H_INCL__
+#ifndef __ULTRASCHALL_CORE_ID3V2_URL_LINK_FRAME_H_INCL__
+#define __ULTRASCHALL_CORE_ID3V2_URL_LINK_FRAME_H_INCL__
 
-#include "Common.h"
-#include "ID3V2_Frame.h"
+#include "Frame.h"
+#include "FrameResource.h"
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core { namespace id3v2 {
 
-class ID3V2_COMM_Frame : public ID3V2_Frame
+class URLLinkFrame : public Frame
 {
 public:
-    virtual ~ID3V2_COMM_Frame();
+    virtual ~URLLinkFrame();
 
-    static ID3V2_Frame* Create();
+    static Frame* Create();
 
-    virtual size_t Decode(const uint8_t* data, const size_t dataSize);
-
-    virtual size_t Encode(uint8_t* data, const size_t dataSize) const;
+    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
 
 private:
-    ID3V2_COMM_Frame();
+    uint8_t* data_     = nullptr;
+    size_t   dataSize_ = ID3V2_INVALID_TEXT_SIZE;
+
+    bool AllocStringData(const uint8_t* data, const size_t dataSize);
 };
 
-}} // namespace ultraschall::id3v2
+}}} // namespace ultraschall::core::id3v2
 
-#endif // #ifndef __ULTRASCHALL_ID3V2_COMM_FRAME_H_INCL__
+#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_URL_LINK_FRAME_H_INCL__

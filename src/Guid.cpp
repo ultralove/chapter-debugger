@@ -36,8 +36,8 @@
 
 void InitializeGuid(uint8_t* data, const size_t dataSize)
 {
-    PRECONDITION(data != nullptr);
-    PRECONDITION(dataSize >= sizeof(UUID));
+    Precondition(data != nullptr);
+    Precondition(dataSize >= sizeof(UUID));
 
     UUID       uuid   = {0};
     RPC_STATUS status = UuidCreate(&uuid);
@@ -48,7 +48,7 @@ void InitializeGuid(uint8_t* data, const size_t dataSize)
 }
 #endif
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core {
 
 struct Guid::Impl
 {
@@ -87,7 +87,7 @@ struct Guid::Impl
     }
 };
 
-Guid::Guid() : impl_(nullptr) {}
+Guid::Guid() : impl_(new Guid::Impl()) {}
 
 Guid::~Guid()
 {
@@ -104,7 +104,7 @@ Guid& Guid::operator=(const Guid& rhs)
     if(this != &rhs)
     {
         SafeDelete(impl_);
-        impl_ = new Impl(*impl_);
+        impl_ = new Impl(*rhs.impl_);
     }
 
     return *this;

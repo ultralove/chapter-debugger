@@ -26,10 +26,10 @@
 
 #include "CLI11.hpp"
 
+#include "Common.h"
+#include "BinaryStream.h"
 #include "FileUtilities.h"
-#include "ID3V2.h"
-#include "ID3V2_FrameController.h"
-#include "ID3V2_FrameUtilities.h"
+#include "FrameController.h"
 
 bool suppressLogo = false;
 bool printVersion = false;
@@ -64,25 +64,33 @@ int main(int argc, char** argv)
         app.exit(e);
     }
 
-    for(std::string arg : app.remaining())
+    if(app.remaining_size() > 0)
     {
-        if(ultraschall::framework::FileExists(arg) == true)
+        for(std::string arg : app.remaining())
         {
-            ultraschall::framework::SequentialStream stream = ultraschall::framework::ReadFile(arg);
-            if(rawFrames == false)
+            if(ultraschall::core::FileExists(arg) == true)
             {
-                ultraschall::framework::ID3V2_FrameController::DumpFrames(stream);
+                ultraschall::core::id3v2::FrameController controller;
+                ultraschall::core::BinaryStream stream = ultraschall::core::ReadFile(arg);
+                if(false == rawFrames)
+                {
+                  ultraschall::core::id3v2::FrameList frames = controller.ParseFrames(stream);
+                }
+                else
+                {
+                    ultraschall::core::id3v2::FrameController::DumpRawFrames(stream);
+                }
             }
             else
             {
-                ultraschall::framework::ID3V2_FrameController::DumpRawFrames(stream);
+                errorMessage = "Can't open '" + arg + "' for read.";
+                PrintError(errorMessage);
             }
         }
-        else
-        {
-            errorMessage = "Can't open '" + arg + "' for read.";
-            PrintError(errorMessage);
-        }
+    }
+    else
+    {
+      std::cout << app.help() << std::endl;
     }
 
     return 0;
@@ -93,7 +101,7 @@ void PrintLogo()
     if((false == suppressLogo) && (false == printVersion))
     {
         std::cout << "Ultraschall ID3V2 Frame Analyzer for x64 version " << Version() << std::endl
-                  << "Copyright (c) 2019 ultraschall.fm, All rights reserved." << std::endl
+                  << "Copyright (c) ultraschall.fm. All rights reserved." << std::endl
                   << std::endl;
     }
 }

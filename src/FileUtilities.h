@@ -24,17 +24,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__
-#define __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__
+#ifndef __ULTRASCHALL_CORE_FILE_UTILITIES_H_INCL__
+#define __ULTRASCHALL_CORE_FILE_UTILITIES_H_INCL__
 
-#include "Common.h"
-#include "SequentialStream.h"
+#include <string>
 
-namespace ultraschall { namespace framework {
+#include "BinaryStream.h"
 
-bool             FileExists(const std::string& filename);
-SequentialStream ReadFile(const std::string& filename);
+namespace ultraschall { namespace core {
 
-}} // namespace ultraschall::framework
+bool         FileExists(const std::string& filename);
+BinaryStream ReadFile(const std::string& filename);
 
-#endif // #ifndef __ULTRASCHALL_ID3V2_FILE_UTILITIES_H_INCL__
+}} // namespace ultraschall::core
+
+#endif // #ifndef __ULTRASCHALL_CORE_FILE_UTILITIES_H_INCL__

@@ -24,39 +24,26 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "ID3V2_Header.h"
+#ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_CONTROLLER_H_INCL__
+#define __ULTRASCHALL_CORE_ID3V2_FRAME_CONTROLLER_H_INCL__
 
-namespace ultraschall { namespace core {
+#include "Common.h"
+#include "BinaryStream.h"
+#include "Frame.h"
 
-ID3V2_Header::ID3V2_Header() {}
+namespace ultraschall { namespace core { namespace id3v2 {
 
-ID3V2_Header::ID3V2_Header(const uint8_t* data, const size_t dataSize)
+class FrameController
 {
-    Precondition(data != 0);
-    Precondition(dataSize >= ID3V2_HEADER_SIZE);
+public:
+  static size_t DumpRawFrames(const BinaryStream& stream);
 
-    id_[0]    = data[0];
-    id_[1]    = data[1];
-    id_[2]    = data[2];
-    version_  = data[3];
-    revision_ = data[4];
-    flags_    = data[5];
-    size_     = DECODE_ID3V2_FILE_SIZE(&data[6], sizeof(uint32_t));
-}
+  FrameList ParseFrames(const BinaryStream& stream);
 
-bool ID3V2_Header::IsValid() const
-{
-    // clang-format off
-    const bool isInitialized = (id_ != ID3V2_INVALID_ID) && 
-    						   (version_ != ID3V2_INVALID_VERSION) && 
-    						   (revision_ != ID3V2_INVALID_REVISION) && 
-    						   (flags_ != ID3V2_INVALID_FLAGS) && 
-    						   (size_ != ID3V2_INVALID_SIZE);
-    // clang-format on
-    const bool isVersion2     = (2 == version_);
-    const bool isRevision3or4 = (3 == revision_) || (4 == revision_);
+private:
+  static size_t DumpRawFrame(const uint8_t* data, const size_t dataSize);
+};
 
-    return isInitialized && isVersion2 && isRevision3or4;
-}
+}}} // namespace ultraschall::core::id3v2
 
-}} // namespace ultraschall::framework
+#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_MANAGER_H_INCL__

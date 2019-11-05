@@ -24,38 +24,36 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_SEQUENTIAL_STREAM_H_INCL__
-#define __ULTRASCHALL_SEQUENTIAL_STREAM_H_INCL__
+#ifndef __ULTRASCHALL_CORE_BINARY_STREAM_H_INCL__
+#define __ULTRASCHALL_CORE_BINARY_STREAM_H_INCL__
 
-#include <cstdint>
+namespace ultraschall { namespace core {
 
-namespace ultraschall { namespace framework {
-
-class SequentialStream
+class BinaryStream
 {
 public:
-    SequentialStream();
-    SequentialStream(const uint8_t* items, const size_t itemCount);
+    BinaryStream();
+    BinaryStream(const uint8_t* items, const size_t itemCount);
 
-    virtual ~SequentialStream();
+    virtual ~BinaryStream();
 
-    SequentialStream(const SequentialStream& rhs);
-    SequentialStream& operator=(const SequentialStream& rhs);
+    BinaryStream(const BinaryStream& rhs);
+    BinaryStream& operator=(const BinaryStream& rhs);
 
-    SequentialStream(SequentialStream&& rhs) noexcept;
-    SequentialStream& operator=(SequentialStream&& rhs) noexcept;
+    BinaryStream(BinaryStream&& rhs) noexcept;
+    BinaryStream& operator=(BinaryStream&& rhs) noexcept;
 
-    bool operator==(const SequentialStream& rhs) const;
+    bool operator==(const BinaryStream& rhs) const;
 
-    const uint8_t* Items(const size_t itemOffset = 0) const;
-    size_t         ItemCount() const;
+    const uint8_t* Data(const size_t itemOffset = 0) const;
+    size_t         Size() const;
     bool           Valid() const;
 
     size_t        Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount);
-    inline size_t SequentialStream::Write(const uint8_t* items, const size_t itemCount);
+    inline size_t Write(const uint8_t* items, const size_t itemCount);
 
     size_t        Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const;
-    inline size_t SequentialStream::Read(uint8_t* items, const size_t itemCount) const;
+    inline size_t Read(uint8_t* items, const size_t itemCount) const;
 
     void Reset();
 
@@ -63,30 +61,30 @@ private:
     uint8_t* items_     = 0;
     size_t   itemCount_ = 0;
 
-    void FastAllocItems(const size_t itemCount = 0);
-    void FastReplaceItems(const uint8_t* items, const size_t itemCount);
+    void AllocItems(const size_t itemCount = 0);
+    void ReplaceItems(const uint8_t* items, const size_t itemCount);
 };
 
-inline size_t SequentialStream::ItemCount() const
+inline size_t BinaryStream::Size() const
 {
     return itemCount_;
 }
 
-inline bool SequentialStream::Valid() const
+inline bool BinaryStream::Valid() const
 {
     return (items_ != 0) && (itemCount_ > 0);
 }
 
-inline size_t SequentialStream::Write(const uint8_t* items, const size_t itemCount)
+inline size_t BinaryStream::Write(const uint8_t* items, const size_t itemCount)
 {
     return Write(0, items, itemCount);
 }
 
-inline size_t SequentialStream::Read(uint8_t* items, const size_t itemCount) const
+inline size_t BinaryStream::Read(uint8_t* items, const size_t itemCount) const
 {
     return Read(0, items, itemCount);
 }
 
-}} // namespace ultraschall::framework
+}} // namespace ultraschall::core
 
-#endif // #ifdef __ULTRASCHALL_SEQUENTIAL_STREAM_H_INCL__
+#endif // #ifdef __ULTRASCHALL_CORE_BINARY_STREAM_H_INCL__

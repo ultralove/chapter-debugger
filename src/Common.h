@@ -24,8 +24,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_COMMON_H_INCL__
-#define __ULTRASCHALL_COMMON_H_INCL__
+#ifndef __ULTRASCHALL_CORE_COMMON_H_INCL__
+#define __ULTRASCHALL_CORE_COMMON_H_INCL__
 
 #include <cstdint>
 
@@ -33,32 +33,36 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-
 #include <algorithm>
 #include <deque>
 #include <map>
 #include <set>
 #include <string>
 #include <vector>
-
 #include <atomic>
 #include <mutex>
 
+#ifndef _WIN32
+#define IN
+#define OUT
+#define INOUT
+#endif // #ifndef _WIN32
+
 #include "SharedObject.h"
 
-#define PRECONDITION(a) \
+#define Precondition(a) \
     if(!(a))            \
     {                   \
         return;         \
     }
 
-#define PRECONDITION_RETURN(a, b) \
+#define PreconditionReturn(a, b) \
     if(!(a))                      \
     {                             \
         return (b);               \
     }
 
-namespace ultraschall { namespace framework {
+namespace ultraschall { namespace core {
 
 #define SafeRelease(a) \
     if((a) != 0)       \
@@ -81,4 +85,4 @@ template<class T> inline void SafeDeleteArray(T*& ptr)
 
 }} // namespace ultraschall::framework
 
-#endif // #ifndef __ULTRASCHALL_COMMON_H_INCL__
+#endif // #ifndef __ULTRASCHALL_CORE_COMMON_H_INCL__
