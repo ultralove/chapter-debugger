@@ -341,7 +341,7 @@ ASALocalRun/
 healthchecksdb
 
 # CMake
-_build/
+build/
 samples/
 .vscode/
 .vs/
