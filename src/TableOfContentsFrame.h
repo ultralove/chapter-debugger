@@ -24,13 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_ID3V2_TABLE_OF_CONTENTS_FRAME_H_INCL__
-#define __ULTRASCHALL_CORE_ID3V2_TABLE_OF_CONTENTS_FRAME_H_INCL__
+#ifndef __TABLE_OF_CONTENTS_FRAME_H_INCL__
+#define __TABLE_OF_CONTENTS_FRAME_H_INCL__
 
 #include "Frame.h"
 #include "FrameResource.h"
 
-namespace ultraschall { namespace core { namespace id3v2 {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 class TableOfContentsFrame : public Frame
 {
@@ -42,12 +42,12 @@ public:
     virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
 
 private:
-    uint8_t* data_     = nullptr;
-    size_t   dataSize_ = ID3V2_INVALID_TEXT_SIZE;
+    uint8_t* data_   = nullptr;
+    size_t dataSize_ = ID3V2_INVALID_TEXT_SIZE;
 
     bool AllocStringData(const uint8_t* data, const size_t dataSize);
 };
 
-}}} // namespace ultraschall::core::id3v2
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_TABLE_OF_CONTENTS_FRAME_H_INCL__
+#endif // #ifndef __TABLE_OF_CONTENTS_FRAME_H_INCL__

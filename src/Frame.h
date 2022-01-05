@@ -24,21 +24,21 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_H_INCL__
-#define __ULTRASCHALL_CORE_ID3V2_FRAME_H_INCL__
+#ifndef __FRAME_H_INCL__
+#define __FRAME_H_INCL__
 
 #include "Common.h"
 #include "Guid.h"
 #include "ID3V2.h"
 #include "IFrame.h"
 
-namespace ultraschall { namespace core { namespace id3v2 {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 class Frame : public IFrame
 {
 public:
     static bool IsValid(const uint8_t* data, const size_t dataSize);
-    bool        IsValid() const;
+    bool IsValid() const;
 
     inline uint32_t Id() const;
     inline uint32_t Size() const;
@@ -52,32 +52,32 @@ protected:
     void SetFlags(const uint16_t flags);
 
 private:
-    uint32_t  id_    = ID3V2_INVALID_FRAME_ID;
-    uint32_t  size_  = ID3V2_INVALID_FRAME_SIZE;
-    uint16_t  flags_ = ID3V2_INVALID_FRAME_FLAGS;
+    uint32_t id_    = ID3V2_INVALID_FRAME_ID;
+    uint32_t size_  = ID3V2_INVALID_FRAME_SIZE;
+    uint16_t flags_ = ID3V2_INVALID_FRAME_FLAGS;
 };
 
 inline uint32_t Frame::Id() const
 {
-    PreconditionReturn(IsValid() == true, ID3V2_INVALID_FRAME_ID);
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_ID);
     return id_;
 }
 
 inline uint32_t Frame::Size() const
 {
-    PreconditionReturn(IsValid() == true, ID3V2_INVALID_FRAME_SIZE);
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_SIZE);
     return size_;
 }
 
 inline uint16_t Frame::Flags() const
 {
-    PreconditionReturn(IsValid() == true, ID3V2_INVALID_FRAME_FLAGS);
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_FLAGS);
     return flags_;
 }
 
-typedef std::set<Frame*>       FrameList;
+typedef std::set<Frame*> FrameList;
 typedef std::map<Guid, Frame*> FrameDictionary;
 
-}}} // namespace ultraschall::core::id3v2
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_H_INCL__
+#endif // #ifndef __FRAME_H_INCL__

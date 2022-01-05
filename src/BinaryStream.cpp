@@ -24,11 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "Common.h"
-
 #include "BinaryStream.h"
 
-namespace ultraschall { namespace core {
+#include "Common.h"
+
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 BinaryStream::BinaryStream() {}
 
@@ -49,21 +49,18 @@ BinaryStream::BinaryStream(const BinaryStream& rhs)
 
 BinaryStream& BinaryStream::operator=(const BinaryStream& rhs)
 {
-    if(this != &rhs)
-    {
+    if (this != &rhs) {
         Write(rhs.Data(), rhs.Size());
     }
 
     return *this;
 }
 
-BinaryStream::BinaryStream(BinaryStream&& rhs) noexcept : items_(std::exchange(rhs.items_, nullptr)), itemCount_(std::exchange(rhs.itemCount_, 0))
-{}
+BinaryStream::BinaryStream(BinaryStream&& rhs) noexcept : items_(std::exchange(rhs.items_, nullptr)), itemCount_(std::exchange(rhs.itemCount_, 0)) {}
 
 BinaryStream& BinaryStream::operator=(BinaryStream&& rhs) noexcept
 {
-    if(this != &rhs)
-    {
+    if (this != &rhs) {
         delete[] items_;
         items_     = std::exchange(rhs.items_, nullptr);
         itemCount_ = std::exchange(rhs.itemCount_, 0);
@@ -79,27 +76,25 @@ bool BinaryStream::operator==(const BinaryStream& rhs) const
 
 inline const uint8_t* BinaryStream::Data(const size_t itemOffset) const
 {
-    PreconditionReturn(items_ != 0, 0);
-    PreconditionReturn(itemOffset < itemCount_, 0);
+    PRECONDITION_RETURN(items_ != 0, 0);
+    PRECONDITION_RETURN(itemOffset < itemCount_, 0);
 
     return &items_[itemOffset];
 }
 
 size_t BinaryStream::Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount)
 {
-    PreconditionReturn(items != 0, false);
-    PreconditionReturn(itemCount > 0, false);
+    PRECONDITION_RETURN(items != 0, false);
+    PRECONDITION_RETURN(itemCount > 0, false);
 
     size_t itemsWritten = 0;
 
-    if(Valid() == false)
-    {
+    if (Valid() == false) {
         AllocItems(itemCount);
     }
-    else if((itemOffset + itemCount) > itemCount_)
-    {
-        uint8_t* currentItems     = items_;
-        size_t   currentItemCount = itemCount_;
+    else if ((itemOffset + itemCount) > itemCount_) {
+        uint8_t* currentItems   = items_;
+        size_t currentItemCount = itemCount_;
 
         AllocItems(itemCount);
         ReplaceItems(currentItems, currentItemCount);
@@ -108,8 +103,7 @@ size_t BinaryStream::Write(const size_t itemOffset, const uint8_t* items, const 
         currentItemCount = 0;
     }
 
-    if((Valid() == true) && (itemCount_ >= (itemOffset + itemCount)))
-    {
+    if ((Valid() == true) && (itemCount_ >= (itemOffset + itemCount))) {
         memcpy(&items_[itemOffset * sizeof(uint8_t)], items, itemCount * sizeof(uint8_t));
         itemsWritten = itemCount;
     }
@@ -119,10 +113,10 @@ size_t BinaryStream::Write(const size_t itemOffset, const uint8_t* items, const 
 
 size_t BinaryStream::Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const
 {
-    PreconditionReturn(items_ != 0, 0);
-    PreconditionReturn(itemCount_ > 0, 0);
-    PreconditionReturn(items != 0, 0);
-    PreconditionReturn(itemCount > 0, 0);
+    PRECONDITION_RETURN(items_ != 0, 0);
+    PRECONDITION_RETURN(itemCount_ > 0, 0);
+    PRECONDITION_RETURN(items != 0, 0);
+    PRECONDITION_RETURN(itemCount > 0, 0);
 
     const size_t resultItemCount = ((itemOffset + itemCount) <= itemCount_) ? itemCount : (itemCount_ - itemOffset);
     memcpy(items, &items_[itemOffset * sizeof(uint8_t)], resultItemCount * sizeof(uint8_t));
@@ -139,11 +133,9 @@ void BinaryStream::AllocItems(const size_t itemCount)
 {
     Reset();
 
-    if(itemCount > 0)
-    {
+    if (itemCount > 0) {
         items_ = new uint8_t[itemCount * sizeof(uint8_t)];
-        if(items_ != 0)
-        {
+        if (items_ != 0) {
             itemCount_ = itemCount;
         }
     }
@@ -151,10 +143,10 @@ void BinaryStream::AllocItems(const size_t itemCount)
 
 void BinaryStream::ReplaceItems(const uint8_t* items, const size_t itemCount)
 {
-    Precondition(items_ != 0);
-    Precondition(itemCount_ <= itemCount);
+    PRECONDITION(items_ != 0);
+    PRECONDITION(itemCount_ <= itemCount);
 
     memcpy(items_, items, itemCount * sizeof(uint8_t));
 }
 
-}} // namespace ultraschall::framework
+}}} // namespace ultraschall::tools::chapdbg

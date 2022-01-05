@@ -24,39 +24,38 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_RESOURCE_H_INCL__
-#define __ULTRASCHALL_CORE_ID3V2_FRAME_RESOURCE_H_INCL__
+#ifndef __FRAME_RESOURCE_H_INCL__
+#define __FRAME_RESOURCE_H_INCL__
 
 #include "FrameFactory.h"
 
-namespace ultraschall { namespace core { namespace id3v2 {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 template<class T> class FrameResource
 {
 public:
     FrameResource(const std::string& name)
     {
-        Precondition(name.size() >= ID3V2_FRAME_ID_SIZE);
+        PRECONDITION(name.size() >= ID3V2_FRAME_ID_SIZE);
 
-        id_ = ID3V2_DECODE_FRAME_ID(reinterpret_cast<const uint8_t*>(name.c_str()), ID3V2_FRAME_ID_SIZE);
+        id_                        = ID3V2_DECODE_FRAME_ID(reinterpret_cast<const uint8_t*>(name.c_str()), ID3V2_FRAME_ID_SIZE);
         FrameFactory& frameFactory = FrameFactory::Instance();
         registered_                = frameFactory.RegisterFrame(id_, T::Create);
     }
 
     ~FrameResource()
     {
-        if((id_ != ID3V2_INVALID_FRAME_ID) && (true == registered_))
-        {
+        if ((id_ != ID3V2_INVALID_FRAME_ID) && (true == registered_)) {
             FrameFactory& frameFactory = FrameFactory::Instance();
             frameFactory.UnregisterFrame(id_);
         }
     }
 
 private:
-    uint32_t id_         = ID3V2_INVALID_FRAME_ID;
-    bool     registered_ = false;
+    uint32_t id_     = ID3V2_INVALID_FRAME_ID;
+    bool registered_ = false;
 };
 
-}}} // namespace ultraschall::core::id3v2
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_RESOURCE_H_INCL__
+#endif // #ifndef __FRAME_RESOURCE_H_INCL__

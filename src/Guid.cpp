@@ -24,31 +24,38 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "Guid.h"
+
+#include "Common.h"
+
 #include <cstdint>
 #include <cstdlib>
 
-#include "Common.h"
-#include "Guid.h"
-
 #ifdef _WIN32
-#include <rpc.h>
-#include <windows.h>
-
+    #include <rpc.h>
+    #include <windows.h>
 void InitializeGuid(uint8_t* data, const size_t dataSize)
 {
-    Precondition(data != nullptr);
-    Precondition(dataSize >= sizeof(UUID));
+    PRECONDITION(data != nullptr);
+    PRECONDITION(dataSize >= sizeof(UUID));
 
-    UUID       uuid   = {0};
+    UUID uuid         = {0};
     RPC_STATUS status = UuidCreate(&uuid);
-    if(RPC_S_OK == status)
-    {
+    if (RPC_S_OK == status) {
         memcpy(data, &uuid, dataSize);
     }
 }
+#elif __APPLE__
+    #include <CoreFoundation/CoreFoundation.h>
+void InitializeGuid(uint8_t* data, const size_t dataSize)
+{
+    CFUUIDRef uuidRef = CFUUIDCreate(nullptr);
+}
+#else
+    #error "Unsupported platform"
 #endif
 
-namespace ultraschall { namespace core {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 struct Guid::Impl
 {
@@ -68,8 +75,7 @@ struct Guid::Impl
 
     Impl& operator=(const Impl& rhs)
     {
-        if(this != &rhs)
-        {
+        if (this != &rhs) {
             memcpy(data_, rhs.data_, sizeof(uint8_t) * 16);
         }
 
@@ -101,8 +107,7 @@ Guid::Guid(const Guid& rhs) : impl_(nullptr)
 
 Guid& Guid::operator=(const Guid& rhs)
 {
-    if(this != &rhs)
-    {
+    if (this != &rhs) {
         SafeDelete(impl_);
         impl_ = new Impl(*rhs.impl_);
     }
@@ -133,4 +138,4 @@ const Guid& Guid::Null()
     return self;
 }
 
-}} // namespace ultraschall::framework
+}}} // namespace ultraschall::tools::chapdbg

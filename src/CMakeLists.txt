@@ -24,10 +24,8 @@
 #
 ################################################################################
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(FRAMEWORK_INCLUDES
+  Globals.h
 	Common.h
 	FileUtilities.h
   Guid.h
@@ -38,8 +36,10 @@ set(FRAMEWORK_INCLUDES
 )
 
 set(FRAMEWORK_SOURCES
+  Globals.cpp
 	FileUtilities.cpp
   Guid.cpp
+  PlatformUtilities.cpp
 	BinaryStream.cpp
 	StringUtilities.cpp
 )
@@ -78,7 +78,7 @@ set(APPLICATION_SOURCES
 	main.cpp
 )
 
-add_executable(ultraschall-norad
+add_executable(norad
 	${FRAMEWORK_INCLUDES}
 	${FRAMEWORK_SOURCES}
 	${ID3V2_INCLUDES}
@@ -87,4 +87,8 @@ add_executable(ultraschall-norad
 	${APPLICATION_SOURCES}
 )
 
-target_link_libraries(ultraschall-norad rpcrt4.lib)
+if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "win32")
+  target_link_libraries(norad rpcrt4.lib)
+else(ULTRASCHALL_TARGET_SYSTEM} STREQUAL "macos")
+  target_link_libraries(norad "-framework CoreFoundation")
+endif()

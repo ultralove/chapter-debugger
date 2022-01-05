@@ -24,49 +24,46 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_COMMON_H_INCL__
-#define __ULTRASCHALL_CORE_COMMON_H_INCL__
+#ifndef __COMMON_H_INCL__
+#define __COMMON_H_INCL__
 
+#include <algorithm>
+#include <atomic>
+#include <cstddef>
 #include <cstdint>
-
+#include <deque>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <deque>
 #include <map>
+#include <mutex>
 #include <set>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <atomic>
-#include <mutex>
 
 #ifndef _WIN32
-#define IN
-#define OUT
-#define INOUT
+    #define IN
+    #define OUT
+    #define INOUT
 #endif // #ifndef _WIN32
 
 #include "SharedObject.h"
 
-#define Precondition(a) \
-    if(!(a))            \
-    {                   \
+#define PRECONDITION(a) \
+    if (!(a)) {         \
         return;         \
     }
 
-#define PreconditionReturn(a, b) \
-    if(!(a))                      \
-    {                             \
+#define PRECONDITION_RETURN(a, b) \
+    if (!(a)) {                   \
         return (b);               \
     }
 
-namespace ultraschall { namespace core {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 #define SafeRelease(a) \
-    if((a) != 0)       \
-    {                  \
+    if ((a) != 0) {    \
         a->Release();  \
         a = 0;         \
     }
@@ -83,6 +80,6 @@ template<class T> inline void SafeDeleteArray(T*& ptr)
     ptr = 0;
 }
 
-}} // namespace ultraschall::framework
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_COMMON_H_INCL__
+#endif // #ifndef __COMMON_H_INCL__

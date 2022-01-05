@@ -24,23 +24,26 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_PLATFORM_UTILITIES_H_INCL__
-#define __ULTRASCHALL_CORE_PLATFORM_UTILITIES_H_INCL__
+#ifndef __PLATFORM_UTILITIES_H_INCL__
+#define __PLATFORM_UTILITIES_H_INCL__
 
-namespace ultraschall {
+#include <cstdint>
 
-#ifdef _MSC_VER
-#define _Fast_Byte_Swap_16(x) _byteswap_ushort(x)
-#define _Fast_Byte_Swap_32(x) _byteswap_ulong(x)
-#define _Fast_Byte_Swap_64(x) _byteswap_uint64(x)
+#ifdef __MSCVER
+    #define _Fast_Byte_Swap_16(x) _byteswap_ushort(x)
+    #define _Fast_Byte_Swap_32(x) _byteswap_ulong(x)
+    #define _Fast_Byte_Swap_64(x) _byteswap_uint64(x)
 #else
-#ifdef __GCC__
-#define _Fast_Byte_Swap_16(x) __builtin_bswap16(x)
-#define _Fast_Byte_Swap_32(x) __builtin_bswap32(x)
-#define _Fast_Byte_Swap_64(x) __builtin_bswap64(x)
-#endif // #ifdef __GCC__
-#endif // #ifdef _MSC_VER
+    #define _Fast_Byte_Swap_16(x) __builtin_bswap16(x)
+    #define _Fast_Byte_Swap_32(x) __builtin_bswap32(x)
+    #define _Fast_Byte_Swap_64(x) __builtin_bswap64(x)
+#endif
 
-} // namespace ultraschall
+namespace ultraschall { namespace tools { namespace chapdbg {
 
-#endif // #ifndef __ULTRASCHALL_CORE_PLATFORM_UTILITIES_H_INCL__
+uint32_t _Fast_Sync_Int_Decode_32(const uint32_t value);
+uint32_t _Fast_Sync_Int_Encode_32(const uint32_t value);
+
+}}} // namespace ultraschall::tools::chapdbg
+
+#endif // #ifndef __PLATFORM_UTILITIES_H_INCL__

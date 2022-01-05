@@ -24,13 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_SHARED_OBJECT_H_INCL__
-#define __ULTRASCHALL_CORE_SHARED_OBJECT_H_INCL__
+#ifndef __SHARED_OBJECT_H_INCL__
+#define __SHARED_OBJECT_H_INCL__
 
 #include <atomic>
 #include <cstdint>
 
-namespace ultraschall { namespace core {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 class SharedObject
 {
@@ -43,23 +43,20 @@ public:
     inline int32_t Release() const
     {
         const int32_t refCount = --refCount_;
-        if(refCount == 0)
-        {
+        if (refCount == 0) {
             delete this;
         }
-
         return refCount;
     }
 
 protected:
     SharedObject() : refCount_(1) {}
-
     virtual ~SharedObject() {}
 
 private:
     mutable std::atomic<int32_t> refCount_;
 };
 
-}} // namespace ultraschall::framework
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_SHARED_OBJECT_H_INCL__
+#endif // #ifndef __SHARED_OBJECT_H_INCL__

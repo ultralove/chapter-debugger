@@ -24,39 +24,36 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_FACTORY_H_INCL__
-#define __ULTRASCHALL_CORE_ID3V2_FRAME_FACTORY_H_INCL__
+#ifndef __FRAME_FACTORY_H_INCL__
+#define __FRAME_FACTORY_H_INCL__
 
 #include "Common.h"
 #include "Frame.h"
 
-namespace ultraschall { namespace core { namespace id3v2 {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 class FrameFactory
 {
 public:
     typedef Frame* (*CREATE_FRAME_FUNCTION)();
 
-    bool RegisterFrame(const uint32_t id, CREATE_FRAME_FUNCTION factoryFunction);
-
-    void UnregisterFrame(const uint32_t id);
-
+    static FrameFactory& Instance();
     virtual ~FrameFactory();
 
-    static FrameFactory& Instance();
+    bool RegisterFrame(const uint32_t id, CREATE_FRAME_FUNCTION factoryFunction);
+    void UnregisterFrame(const uint32_t id);
 
     bool CanCreate(const uint8_t* data, const size_t dataSize) const;
-
-    Frame* CreateFrame(const uint8_t* data, const size_t dataSize) const;
+    Frame* Create(const uint8_t* data, const size_t dataSize) const;
 
 private:
     FrameFactory();
 
     typedef std::map<uint32_t, CREATE_FRAME_FUNCTION> FunctionDictionary;
-    FunctionDictionary                                functions_;
-    mutable std::recursive_mutex                      functionsLock_;
+    FunctionDictionary functions_;
+    mutable std::recursive_mutex functionsLock_;
 };
 
-}}} // namespace ultraschall::core::id3v2
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_FACTORY_H_INCL____
+#endif // #ifndef __FRAME_FACTORY_H_INCL____

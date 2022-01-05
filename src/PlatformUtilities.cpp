@@ -2,7 +2,7 @@
 //
 // Copyright (c) The Ultraschall Project (http://ultraschall.fm)
 //
-// The MIT License (MIT)
+// The MIT License
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -16,7 +16,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -24,32 +24,40 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __GUID_H_INCL__
-#define __GUID_H_INCL__
+#include "PlatformUtilities.h"
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 
-class Guid
+uint32_t _Fast_Sync_Int_Decode_32(const uint32_t value)
 {
-public:
-    ~Guid();
+    uint32_t a, b, c, d, result = 0x0;
+    a      = value & 0xFF;
+    b      = (value >> 8) & 0xFF;
+    c      = (value >> 16) & 0xFF;
+    d      = (value >> 24) & 0xFF;
 
-    Guid(const Guid& rhs);
-    Guid& operator=(const Guid& rhs);
+    result = result | a;
+    result = result | (b << 7);
+    result = result | (c << 14);
+    result = result | (d << 21);
 
-    bool operator==(const Guid& rhs) const;
-    bool operator<(const Guid& rhs) const;
+    return result;
+}
 
-    static Guid New();
-    static const Guid& Null();
+uint32_t _Fast_Sync_Int_Encode_32(const uint32_t value)
+{
+    uint32_t in = value;
+    uint32_t out, mask = 0x7F;
 
-private:
-    struct Impl;
-    mutable Impl* impl_;
+    while (mask ^ 0x7FFFFFFF) {
+        out = in & ~mask;
+        out <<= 1;
+        out |= in & mask;
+        mask = ((mask + 1) << 8) - 1;
+        in   = out;
+    }
 
-    Guid();
-};
+    return out;
+}
 
 }}} // namespace ultraschall::tools::chapdbg
-
-#endif // #ifndef __GUID_H_INCL__

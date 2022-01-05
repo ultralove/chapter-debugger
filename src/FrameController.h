@@ -24,26 +24,30 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_CONTROLLER_H_INCL__
-#define __ULTRASCHALL_CORE_ID3V2_FRAME_CONTROLLER_H_INCL__
+#ifndef __FRAME_CONTROLLER_H_INCL__
+#define __FRAME_CONTROLLER_H_INCL__
 
-#include "Common.h"
 #include "BinaryStream.h"
+#include "Common.h"
 #include "Frame.h"
 
-namespace ultraschall { namespace core { namespace id3v2 {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 class FrameController
 {
 public:
-  static size_t DumpRawFrames(const BinaryStream& stream);
+    static size_t DumpRawFrames(const BinaryStream& stream);
 
-  FrameList ParseFrames(const BinaryStream& stream);
+    FrameList ParseFrames(const BinaryStream& stream);
 
 private:
-  static size_t DumpRawFrame(const uint8_t* data, const size_t dataSize);
+    static bool CompareRawFrameId(const uint32_t rawFrameId, const char* frameId, const size_t frameIdSize);
+    static size_t ComputeSubframeOffset(const uint8_t* data, const size_t dataSize);
+
+    static void DumpRawHeader(const uint8_t* data, const size_t dataSize);
+    static size_t DumpRawFrame(const size_t indentLevel, const uint8_t* data, const size_t dataSize);
 };
 
-}}} // namespace ultraschall::core::id3v2
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_FRAME_MANAGER_H_INCL__
+#endif // #ifndef __FRAME_CONTROLLER_H_INCL__

@@ -24,15 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_ID3V2_HEADER_H_INCL__
-#define __ULTRASCHALL_ID3V2_HEADER_H_INCL__
+#ifndef __ID3V2_HEADER_H_INCL__
+#define __ID3V2_HEADER_H_INCL__
 
 #include "Common.h"
 #include "ID3V2.h"
 
-namespace ultraschall { namespace core {
-
-
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 class ID3V2_Header
 {
@@ -41,51 +39,51 @@ public:
     ID3V2_Header(const uint8_t* data, const size_t dataSize);
 
     inline const std::vector<uint8_t>& Id() const;
-    inline uint8_t                     Version() const;
-    inline uint8_t                     Revision() const;
-    inline uint8_t                     Flags() const;
-    inline uint32_t                    Size() const;
+    inline uint8_t Version() const;
+    inline uint8_t Revision() const;
+    inline uint8_t Flags() const;
+    inline uint32_t Size() const;
 
     bool IsValid() const;
 
 private:
-    std::vector<uint8_t> id_       = ID3V2_INVALID_ID;
-    uint8_t              version_  = ID3V2_INVALID_VERSION;
-    uint8_t              revision_ = ID3V2_INVALID_REVISION;
-    uint8_t              flags_    = ID3V2_INVALID_FLAGS;
-    uint32_t             size_     = ID3V2_INVALID_SIZE;
+    std::vector<uint8_t> id_ = ID3V2_INVALID_ID;
+    uint8_t version_         = ID3V2_INVALID_VERSION;
+    uint8_t revision_        = ID3V2_INVALID_REVISION;
+    uint8_t flags_           = ID3V2_INVALID_FLAGS;
+    uint32_t size_           = ID3V2_INVALID_SIZE;
 };
 
 inline const std::vector<uint8_t>& ID3V2_Header::Id() const
 {
-    PreconditionReturn(IsValid() == true, ID3V2_INVALID_ID);
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_ID);
     return id_;
 }
 
 inline uint8_t ID3V2_Header::Version() const
 {
-    PreconditionReturn(IsValid() == true, ID3V2_INVALID_VERSION);
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_VERSION);
     return version_;
 }
 
 inline uint8_t ID3V2_Header::Revision() const
 {
-    PreconditionReturn(IsValid() == true, ID3V2_INVALID_REVISION);
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_REVISION);
     return revision_;
 }
 
 inline uint8_t ID3V2_Header::Flags() const
 {
-    PreconditionReturn(IsValid() == true, ID3V2_INVALID_FLAGS);
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FLAGS);
     return flags_;
 }
 
 inline uint32_t ID3V2_Header::Size() const
 {
-    PreconditionReturn(IsValid() == true, ID3V2_INVALID_SIZE);
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_SIZE);
     return size_;
 }
 
-}} // namespace ultraschall::framework
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_ID3V2_HEADER_H_INCL__
+#endif // #ifndef __ID3V2_HEADER_H_INCL__

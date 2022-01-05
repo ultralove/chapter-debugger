@@ -24,11 +24,53 @@
 #
 ################################################################################
 
-cmake_minimum_required(VERSION 3.12.0)
-project(ultraschall-norad VERSION 1.0.0)
+cmake_minimum_required(VERSION 3.21)
+project(norad VERSION 1.0.0)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(WIN32)
+    set(ULTRASCHALL_TARGET_SYSTEM "win32")
+elseif(APPLE)
+    set(ULTRASCHALL_TARGET_SYSTEM "macos")
+elseif(UNIX)
+  execute_process(COMMAND uname -a RESULT_VARIABLE UNAME_RESULT OUTPUT_VARIABLE UNAME_OUTPUT OUTPUT_STRIP_TRAILING_WHITESPACE)
+  if(UNAME_RESULT EQUAL 0)
+    if(${UNAME_OUTPUT} MATCHES "[U|u]buntu")
+        set(ULTRASCHALL_TARGET_SYSTEM "linux")
+    else()
+      message(WARNING "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, macOS and Ubuntu Linux.")
+    endif()
+  else()
+    message(WARNING "Failed to run uname, result: ${UNAME_RESULT}")
+  endif()
+else()
+  message(FATAL_ERROR "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, macOS and Ubuntu Linux.")
+endif()
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+
+if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "win32")
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+else()
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+endif()
+
+if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "macos")
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
+    message(STATUS "Building for x86_64 using clang ${CMAKE_CXX_COMPILER_VERSION}.")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE INTERNAL "")
+    set(CMAKE_OSX_ARCHITECTURES x86_64 CACHE INTERNAL "")
+    add_compile_options(-mmacosx-version-min=10.13)
+  else()
+    message(STATUS "Building for x86_64 and arm64 using clang ${CMAKE_CXX_COMPILER_VERSION}.")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.15 CACHE INTERNAL "")
+    set(CMAKE_OSX_ARCHITECTURES arm64 x86_64 CACHE INTERNAL "")
+    add_compile_options(-mmacosx-version-min=10.15)
+  endif()
+endif()
 
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/include

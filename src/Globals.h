@@ -2,7 +2,7 @@
 //
 // Copyright (c) The Ultraschall Project (http://ultraschall.fm)
 //
-// The MIT License (MIT)
+// The MIT License
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -16,7 +16,7 @@
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
@@ -24,32 +24,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __GUID_H_INCL__
-#define __GUID_H_INCL__
+#ifndef __GLOBALS_H_INCL__
+#define __GLOBALS_H_INCL__
+
+#include <string>
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 
-class Guid
+struct Globals
 {
-public:
-    ~Guid();
-
-    Guid(const Guid& rhs);
-    Guid& operator=(const Guid& rhs);
-
-    bool operator==(const Guid& rhs) const;
-    bool operator<(const Guid& rhs) const;
-
-    static Guid New();
-    static const Guid& Null();
-
-private:
-    struct Impl;
-    mutable Impl* impl_;
-
-    Guid();
+    static const char* version;
 };
 
 }}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __GUID_H_INCL__
+#endif // #ifndef __GLOBALS_H_INCL__

@@ -342,6 +342,11 @@ healthchecksdb
 
 # CMake
 build/
+bin/
+lib/
 samples/
 .vscode/
 .vs/
+
+# macOS
+.DS_Store

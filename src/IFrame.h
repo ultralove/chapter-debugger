@@ -24,23 +24,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_ID3V2_IFRAME_H_INCL__
-#define __ULTRASCHALL_CORE_ID3V2_IFRAME_H_INCL__
+#ifndef __IFRAME_H_INCL__
+#define __IFRAME_H_INCL__
 
 #include "Common.h"
 
-namespace ultraschall { namespace core { namespace id3v2 {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 class IFrame
 {
 public:
     virtual bool ConfigureHeader(const uint8_t* data, const size_t dataSize) = 0;
-    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize) = 0;
+    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize)   = 0;
 
 protected:
     virtual ~IFrame() {}
 };
 
-}}} // namespace ultraschall::core::id3v2
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_IFRAME_H_INCL__
+#endif // #ifndef __IFRAME_H_INCL__

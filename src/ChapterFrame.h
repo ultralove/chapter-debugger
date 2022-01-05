@@ -24,13 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_ID3V2_CHAPTER_FRAME_H_INCL__
-#define __ULTRASCHALL_CORE_ID3V2_CHAPTER_FRAME_H_INCL__
+#ifndef __CHAPTER_FRAME_H_INCL__
+#define __CHAPTER_FRAME_H_INCL__
 
 #include "Frame.h"
 #include "FrameResource.h"
 
-namespace ultraschall { namespace core { namespace id3v2 {
+namespace ultraschall { namespace tools { namespace chapdbg {
 
 class ChapterFrame : public Frame
 {
@@ -42,12 +42,12 @@ public:
     virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
 
 private:
-    uint8_t* data_     = nullptr;
-    size_t   dataSize_ = ID3V2_INVALID_TEXT_SIZE;
+    uint8_t* data_   = nullptr;
+    size_t dataSize_ = ID3V2_INVALID_TEXT_SIZE;
 
     bool AllocStringData(const uint8_t* data, const size_t dataSize);
 };
 
-}}} // namespace ultraschall::core::id3v2
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_ID3V2_CHAPTER_FRAME_H_INCL__
+#endif // #ifndef __CHAPTER_FRAME_H_INCL__

@@ -24,25 +24,27 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "CLI11.hpp"
-
-#include "Common.h"
 #include "BinaryStream.h"
+#include "Common.h"
 #include "FileUtilities.h"
 #include "FrameController.h"
+#include "Globals.h"
+
+#include <CLI11.hpp>
+
+namespace dbg     = ultraschall::tools::chapdbg;
 
 bool suppressLogo = false;
 bool printVersion = false;
 bool rawFrames    = false;
 
-void        PrintLogo();
-void        PrintVersion();
-const char* Version();
-void        PrintError(const std::string& errorMessage);
+void PrintLogo();
+void PrintVersion();
+void PrintError(const std::string& errorMessage);
 
 int main(int argc, char** argv)
 {
-    // CLI::App app{"Ultraschall ID3V2 Frame Analyzer version 0.1.0 for x64"};
+    // CLI::App app{"Ultraschall ID3v2 Frame Analyzer version 0.1.0 for x64"};
     CLI::App app;
     app.allow_extras();
     app.add_flag("--nologo", suppressLogo, "Do not display the startup banner and copyright message");
@@ -50,47 +52,38 @@ int main(int argc, char** argv)
     app.add_flag("-r,--raw", rawFrames, "Print unprocessed frame data");
 
     std::string errorMessage;
-    int         errorCode = 0;
-    try
-    {
+    int errorCode = 0;
+    try {
         app.parse(argc, argv);
         PrintLogo();
         PrintVersion();
     }
-    catch(const CLI::ParseError& e)
-    {
+    catch (const CLI::ParseError& e) {
         PrintLogo();
         PrintVersion();
         app.exit(e);
     }
 
-    if(app.remaining_size() > 0)
-    {
-        for(std::string arg : app.remaining())
-        {
-            if(ultraschall::core::FileExists(arg) == true)
-            {
-                ultraschall::core::id3v2::FrameController controller;
-                ultraschall::core::BinaryStream stream = ultraschall::core::ReadFile(arg);
-                if(false == rawFrames)
-                {
-                  ultraschall::core::id3v2::FrameList frames = controller.ParseFrames(stream);
+    if (app.remaining_size() > 0) {
+        for (std::string arg : app.remaining()) {
+            if (dbg::FileExists(arg) == true) {
+                dbg::FrameController controller;
+                dbg::BinaryStream stream = dbg::ReadFile(arg);
+                if (false == rawFrames) {
+                    dbg::FrameList frames = controller.ParseFrames(stream);
                 }
-                else
-                {
-                    ultraschall::core::id3v2::FrameController::DumpRawFrames(stream);
+                else {
+                    dbg::FrameController::DumpRawFrames(stream);
                 }
             }
-            else
-            {
+            else {
                 errorMessage = "Can't open '" + arg + "' for read.";
                 PrintError(errorMessage);
             }
         }
     }
-    else
-    {
-      std::cout << app.help() << std::endl;
+    else {
+        std::cout << app.help() << std::endl;
     }
 
     return 0;
@@ -98,9 +91,8 @@ int main(int argc, char** argv)
 
 void PrintLogo()
 {
-    if((false == suppressLogo) && (false == printVersion))
-    {
-        std::cout << "Ultraschall ID3V2 Frame Analyzer for x64 version " << Version() << std::endl
+    if ((false == suppressLogo) && (false == printVersion)) {
+        std::cout << "Ultraschall ID3v2 Frame Analyzer version " << dbg::Globals::version << std::endl
                   << "Copyright (c) ultraschall.fm. All rights reserved." << std::endl
                   << std::endl;
     }
@@ -108,15 +100,9 @@ void PrintLogo()
 
 void PrintVersion()
 {
-    if(true == printVersion)
-    {
-        std::cout << Version() << std::endl << std::endl;
+    if (true == printVersion) {
+        std::cout << dbg::Globals::version << std::endl << std::endl;
     }
-}
-
-const char* Version()
-{
-    return "0.1.0";
 }
 
 void PrintError(const std::string& errorMessage)

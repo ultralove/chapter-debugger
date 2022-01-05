@@ -24,18 +24,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ULTRASCHALL_CORE_FILE_UTILITIES_H_INCL__
-#define __ULTRASCHALL_CORE_FILE_UTILITIES_H_INCL__
-
-#include <string>
+#ifndef __UTILITIES_H_INCL__
+#define __UTILITIES_H_INCL__
 
 #include "BinaryStream.h"
 
-namespace ultraschall { namespace core {
+#include <string>
 
-bool         FileExists(const std::string& filename);
+namespace ultraschall { namespace tools { namespace chapdbg {
+
+bool FileExists(const std::string& filename);
 BinaryStream ReadFile(const std::string& filename);
 
-}} // namespace ultraschall::core
+}}} // namespace ultraschall::tools::chapdbg
 
-#endif // #ifndef __ULTRASCHALL_CORE_FILE_UTILITIES_H_INCL__
+#endif // #ifndef __FILE_UTILITIES_H_INCL__
