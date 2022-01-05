@@ -44,21 +44,19 @@ FrameList FrameController::ParseFrames(const BinaryStream& stream)
         const uint8_t* data    = stream.Data(offset);
         const size_t dataSize  = stream.Size() - offset;
         const size_t frameSize = ID3V2_DECODE_FRAME_SIZE(&data[ID3V2_FRAME_SIZE_OFFSET], ID3V2_FRAME_SIZE_SIZE);
-        if (frameSize != ID3V2_INVALID_FRAME_SIZE) {
+        if (frameSize > 0) {
             if (frameFactory.CanCreate(data, ID3V2_FRAME_ID_SIZE) == true) {
                 Frame* pFrame = frameFactory.Create(data, dataSize);
                 if (pFrame != nullptr) {
                     frameDictionary.insert(std::make_pair(Guid::New(), pFrame));
                 }
-                else {
-                    isValid = false;
-                }
             }
-            else {
-                isValid = false;
-            }
-            offset += frameSize + ID3V2_FRAME_HEADER_SIZE;
         }
+        else { // invalid frame size
+            std::cout << "Invalid frame size" << std::endl;
+            isValid = false;
+        }
+        offset += (frameSize + ID3V2_FRAME_HEADER_SIZE);
     }
 
     FrameList frameList;

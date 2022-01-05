@@ -26,6 +26,8 @@
 
 #include "TextInformationFrame.h"
 
+#include "StringUtilities.h"
+
 namespace ultraschall { namespace tools { namespace chapdbg {
 
 static FrameResource<TextInformationFrame> registry1("TALB");
@@ -83,6 +85,8 @@ bool TextInformationFrame::ConfigureData(const uint8_t* data, const size_t dataS
     PRECONDITION_RETURN(data != nullptr, false);
     PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
     PRECONDITION_RETURN(IsValid() == true, false);
+
+    HexDump(data, dataSize);
 
     encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET], ID3V2_TEXT_ENCODING_SIZE);
     return AllocStringData(&data[ID3V2_TEXT_OFFSET], dataSize - ID3V2_TEXT_ENCODING_SIZE);
