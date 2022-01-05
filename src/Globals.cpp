@@ -28,6 +28,6 @@
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 
-const char* Globals::version = "0.1.0";
+const char* Globals::version = "5.0.3";
 
 }}} // namespace ultraschall::tools::chapdbg
