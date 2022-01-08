@@ -53,7 +53,7 @@ FrameList FrameController::ParseFrames(const BinaryStream& stream)
             }
         }
         else { // invalid frame size
-            std::cout << "Invalid frame size" << std::endl;
+            // std::cout << "Invalid frame size" << std::endl;
             isValid = false;
         }
         offset += (frameSize + ID3V2_FRAME_HEADER_SIZE);

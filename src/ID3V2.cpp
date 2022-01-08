@@ -27,7 +27,7 @@
 #include "ID3V2.h"
 
 #include "Common.h"
-#include "PlatformUtilities.h"
+#include "FastRoutines.h"
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 

@@ -24,40 +24,49 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "PlatformUtilities.h"
+#ifndef __MALLOC_H_INCL__
+#define __MALLOC_H_INCL__
+
+#include <cstdlib>
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 
-uint32_t _Fast_Sync_Int_Decode_32(const uint32_t value)
+template<typename T> class Malloc
 {
-    uint32_t a, b, c, d, result = 0x0;
-    a      = value & 0xFF;
-    b      = (value >> 8) & 0xFF;
-    c      = (value >> 16) & 0xFF;
-    d      = (value >> 24) & 0xFF;
-
-    result = result | a;
-    result = result | (b << 7);
-    result = result | (c << 14);
-    result = result | (d << 21);
-
-    return result;
-}
-
-uint32_t _Fast_Sync_Int_Encode_32(const uint32_t value)
-{
-    uint32_t in = value;
-    uint32_t out, mask = 0x7F;
-
-    while (mask ^ 0x7FFFFFFF) {
-        out = in & ~mask;
-        out <<= 1;
-        out |= in & mask;
-        mask = ((mask + 1) << 8) - 1;
-        in   = out;
+public:
+    static size_t Size(const size_t size)
+    {
+        return (size > 0) ? (size * sizeof(T)) : sizeof(T);
     }
 
-    return out;
-}
+    static T* Alloc(const size_t size)
+    {
+        T* ptr = (T*)malloc(Size(size));
+        memset(ptr, 0, Size(size));
+        return ptr;
+    }
+
+    static T* Alloc(const T* data, const size_t dataSize)
+    {
+        T* ptr = nullptr;
+        if ((dataSize == 0) && (data == nullptr)) {
+            ptr = Alloc(dataSize);
+            if (ptr != nullptr) {
+                memcpy(ptr, data, dataSize);
+            }
+        }
+        return ptr;
+    }
+
+    static void Free(T*& ptr)
+    {
+        if (ptr != nullptr) {
+            free(ptr);
+            ptr = 0;
+        }
+    }
+};
 
 }}} // namespace ultraschall::tools::chapdbg
+
+#endif // #ifndef __MALLOC_H_INCL__

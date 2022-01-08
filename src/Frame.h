@@ -31,6 +31,7 @@
 #include "Guid.h"
 #include "ID3V2.h"
 #include "IFrame.h"
+#include "Malloc.h"
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 

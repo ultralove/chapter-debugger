@@ -29,7 +29,7 @@ set(FRAMEWORK_INCLUDES
 	Common.h
 	FileUtilities.h
   Guid.h
-  PlatformUtilities.h
+  FastRoutines.h
 	BinaryStream.h
 	SharedObject.h
 	StringUtilities.h
@@ -39,7 +39,7 @@ set(FRAMEWORK_SOURCES
   Globals.cpp
 	FileUtilities.cpp
   Guid.cpp
-  PlatformUtilities.cpp
+  FastRoutines.cpp
 	BinaryStream.cpp
 	StringUtilities.cpp
 )
