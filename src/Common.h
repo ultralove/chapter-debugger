@@ -43,41 +43,41 @@
 #include <vector>
 
 #ifndef _WIN32
-    #define IN
-    #define OUT
-    #define INOUT
+   #define IN
+   #define OUT
+   #define INOUT
 #endif // #ifndef _WIN32
 
 #include "SharedObject.h"
 
 #define PRECONDITION(a) \
-    if (!(a)) {         \
-        return;         \
-    }
+   if (!(a)) {          \
+      return;           \
+   }
 
 #define PRECONDITION_RETURN(a, b) \
-    if (!(a)) {                   \
-        return (b);               \
-    }
+   if (!(a)) {                    \
+      return (b);                 \
+   }
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 
 #define SafeRelease(a) \
-    if ((a) != 0) {    \
-        a->Release();  \
-        a = 0;         \
-    }
+   if ((a) != 0) {     \
+      a->Release();    \
+      a = 0;           \
+   }
 
 template<class T> inline void SafeDelete(T*& ptr)
 {
-    delete ptr;
-    ptr = 0;
+   delete ptr;
+   ptr = 0;
 }
 
 template<class T> inline void SafeDeleteArray(T*& ptr)
 {
-    delete[] ptr;
-    ptr = 0;
+   delete[] ptr;
+   ptr = 0;
 }
 
 }}} // namespace ultraschall::tools::chapdbg

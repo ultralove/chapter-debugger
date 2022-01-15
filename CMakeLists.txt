@@ -49,15 +49,6 @@ else()
   message(FATAL_ERROR "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, macOS and Ubuntu Linux.")
 endif()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
-
-if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "win32")
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-else()
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
-endif()
-
 if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "macos")
   if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
     message(STATUS "Building for x86_64 using clang ${CMAKE_CXX_COMPILER_VERSION}.")
@@ -77,3 +68,6 @@ include_directories(
 )
 
 add_subdirectory(src)
+
+# binary goes to '${CMAKE_INSTALL_PREFIX}/bin' by default, this is '/usr/local/bin'.
+install(TARGETS norad DESTINATION bin)

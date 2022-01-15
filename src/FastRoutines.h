@@ -31,13 +31,13 @@
 #include <cstdlib>
 
 #ifdef __MSCVER
-    #define _Fast_Byte_Swap_16(x) _byteswap_ushort(x)
-    #define _Fast_Byte_Swap_32(x) _byteswap_ulong(x)
-    #define _Fast_Byte_Swap_64(x) _byteswap_uint64(x)
+   #define _Fast_Byte_Swap_16(x) _byteswap_ushort(x)
+   #define _Fast_Byte_Swap_32(x) _byteswap_ulong(x)
+   #define _Fast_Byte_Swap_64(x) _byteswap_uint64(x)
 #else
-    #define _Fast_Byte_Swap_16(x) __builtin_bswap16(x)
-    #define _Fast_Byte_Swap_32(x) __builtin_bswap32(x)
-    #define _Fast_Byte_Swap_64(x) __builtin_bswap64(x)
+   #define _Fast_Byte_Swap_16(x) __builtin_bswap16(x)
+   #define _Fast_Byte_Swap_32(x) __builtin_bswap32(x)
+   #define _Fast_Byte_Swap_64(x) __builtin_bswap64(x)
 #endif
 
 namespace ultraschall { namespace tools { namespace chapdbg {

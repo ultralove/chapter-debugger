@@ -34,11 +34,11 @@ namespace ultraschall { namespace tools { namespace chapdbg {
 class IFrame
 {
 public:
-    virtual bool ConfigureHeader(const uint8_t* data, const size_t dataSize) = 0;
-    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize)   = 0;
+   virtual bool ConfigureHeader(const uint8_t* data, const size_t dataSize) = 0;
+   virtual bool ConfigureData(const uint8_t* data, const size_t dataSize)   = 0;
 
 protected:
-    virtual ~IFrame() {}
+   virtual ~IFrame() {}
 };
 
 }}} // namespace ultraschall::tools::chapdbg

@@ -33,7 +33,7 @@ namespace ultraschall { namespace tools { namespace chapdbg {
 
 struct Globals
 {
-    static const char* version;
+   static const char* version;
 };
 
 }}} // namespace ultraschall::tools::chapdbg

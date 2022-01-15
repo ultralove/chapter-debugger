@@ -32,110 +32,110 @@
 #include <cstdlib>
 
 #ifdef _WIN32
-    #include <rpc.h>
-    #include <windows.h>
+   #include <rpc.h>
+   #include <windows.h>
 void InitializeGuid(uint8_t* data, const size_t dataSize)
 {
-    PRECONDITION(data != nullptr);
-    PRECONDITION(dataSize >= sizeof(UUID));
+   PRECONDITION(data != nullptr);
+   PRECONDITION(dataSize >= sizeof(UUID));
 
-    UUID uuid         = {0};
-    RPC_STATUS status = UuidCreate(&uuid);
-    if (RPC_S_OK == status) {
-        memcpy(data, &uuid, dataSize);
-    }
+   UUID uuid         = {0};
+   RPC_STATUS status = UuidCreate(&uuid);
+   if (RPC_S_OK == status) {
+      memcpy(data, &uuid, dataSize);
+   }
 }
 #elif __APPLE__
-    #include <CoreFoundation/CoreFoundation.h>
+   #include <CoreFoundation/CoreFoundation.h>
 void InitializeGuid(uint8_t* data, const size_t dataSize)
 {
-    CFUUIDRef uuidRef = CFUUIDCreate(nullptr);
+   CFUUIDRef uuidRef = CFUUIDCreate(nullptr);
 }
 #else
-    #error "Unsupported platform"
+   #error "Unsupported platform"
 #endif
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 
 struct Guid::Impl
 {
-    uint8_t data_[16];
+   uint8_t data_[16];
 
-    Impl() : data_{0} {}
+   Impl() : data_{0} {}
 
-    ~Impl()
-    {
-        memset(data_, 0, sizeof(uint8_t) * 16);
-    }
+   ~Impl()
+   {
+      memset(data_, 0, sizeof(uint8_t) * 16);
+   }
 
-    Impl(const Impl& rhs) : data_{0}
-    {
-        *this = rhs;
-    }
+   Impl(const Impl& rhs) : data_{0}
+   {
+      *this = rhs;
+   }
 
-    Impl& operator=(const Impl& rhs)
-    {
-        if (this != &rhs) {
-            memcpy(data_, rhs.data_, sizeof(uint8_t) * 16);
-        }
+   Impl& operator=(const Impl& rhs)
+   {
+      if (this != &rhs) {
+         memcpy(data_, rhs.data_, sizeof(uint8_t) * 16);
+      }
 
-        return *this;
-    }
+      return *this;
+   }
 
-    bool operator==(const Impl& rhs) const
-    {
-        return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) == 0;
-    }
+   bool operator==(const Impl& rhs) const
+   {
+      return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) == 0;
+   }
 
-    bool operator<(const Impl& rhs) const
-    {
-        return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) < 0;
-    }
+   bool operator<(const Impl& rhs) const
+   {
+      return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) < 0;
+   }
 };
 
 Guid::Guid() : impl_(new Guid::Impl()) {}
 
 Guid::~Guid()
 {
-    SafeDelete(impl_);
+   SafeDelete(impl_);
 }
 
 Guid::Guid(const Guid& rhs) : impl_(nullptr)
 {
-    *this = rhs;
+   *this = rhs;
 }
 
 Guid& Guid::operator=(const Guid& rhs)
 {
-    if (this != &rhs) {
-        SafeDelete(impl_);
-        impl_ = new Impl(*rhs.impl_);
-    }
+   if (this != &rhs) {
+      SafeDelete(impl_);
+      impl_ = new Impl(*rhs.impl_);
+   }
 
-    return *this;
+   return *this;
 }
 
 bool Guid::operator==(const Guid& rhs) const
 {
-    return impl_->operator==(*rhs.impl_);
+   return impl_->operator==(*rhs.impl_);
 }
 
 bool Guid::operator<(const Guid& rhs) const
 {
-    return impl_->operator<(*rhs.impl_);
+   return impl_->operator<(*rhs.impl_);
 }
 
 Guid Guid::New()
 {
-    Guid guid;
-    InitializeGuid(guid.impl_->data_, sizeof(uint8_t) * 16);
-    return guid;
+   Guid guid;
+   InitializeGuid(guid.impl_->data_, sizeof(uint8_t) * 16);
+   return guid;
 }
 
 const Guid& Guid::Null()
 {
-    static Guid self;
-    return self;
+   static Guid self;
+   return self;
 }
 
 }}} // namespace ultraschall::tools::chapdbg

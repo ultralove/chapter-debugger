@@ -32,44 +32,44 @@ static FrameResource<ChapterFrame> registry1("CHAP");
 
 ChapterFrame::~ChapterFrame()
 {
-    SafeDeleteArray(data_);
-    dataSize_ = 0;
+   SafeDeleteArray(data_);
+   dataSize_ = 0;
 }
 
 Frame* ChapterFrame::Create()
 {
-    return new ChapterFrame();
+   return new ChapterFrame();
 }
 
 bool ChapterFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
 {
-    PRECONDITION_RETURN(data != nullptr, false);
-    PRECONDITION_RETURN(dataSize >= 0, false);
-    PRECONDITION_RETURN(IsValid() == true, false);
+   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(dataSize >= 0, false);
+   PRECONDITION_RETURN(IsValid() == true, false);
 
-    return AllocStringData(data, dataSize);
+   return AllocStringData(data, dataSize);
 }
 
 bool ChapterFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
 {
-    PRECONDITION_RETURN(data != nullptr, false);
-    PRECONDITION_RETURN(dataSize >= 0, false);
+   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(dataSize >= 0, false);
 
-    bool allocated = false;
+   bool allocated = false;
 
-    SafeDeleteArray(data_);
-    dataSize_ = 0;
+   SafeDeleteArray(data_);
+   dataSize_ = 0;
 
-    data_     = new uint8_t[dataSize + 1];
-    if (data_ != nullptr) {
-        dataSize_ = dataSize;
-        memcpy(data_, data, dataSize_);
-        data_[dataSize_] = 0;
+   data_     = new uint8_t[dataSize + 1];
+   if (data_ != nullptr) {
+      dataSize_ = dataSize;
+      memcpy(data_, data, dataSize_);
+      data_[dataSize_] = 0;
 
-        allocated        = true;
-    }
+      allocated        = true;
+   }
 
-    return allocated;
+   return allocated;
 }
 
 }}} // namespace ultraschall::tools::chapdbg

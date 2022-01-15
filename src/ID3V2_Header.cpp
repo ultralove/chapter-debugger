@@ -32,31 +32,31 @@ ID3V2_Header::ID3V2_Header() {}
 
 ID3V2_Header::ID3V2_Header(const uint8_t* data, const size_t dataSize)
 {
-    PRECONDITION(data != 0);
-    PRECONDITION(dataSize >= ID3V2_HEADER_SIZE);
+   PRECONDITION(data != 0);
+   PRECONDITION(dataSize >= ID3V2_HEADER_SIZE);
 
-    id_[0]    = data[0];
-    id_[1]    = data[1];
-    id_[2]    = data[2];
-    version_  = data[3];
-    revision_ = data[4];
-    flags_    = data[5];
-    size_     = DECODE_ID3V2_FILE_SIZE(&data[6], sizeof(uint32_t));
+   id_[0]    = data[0];
+   id_[1]    = data[1];
+   id_[2]    = data[2];
+   version_  = data[3];
+   revision_ = data[4];
+   flags_    = data[5];
+   size_     = DECODE_ID3V2_FILE_SIZE(&data[6], sizeof(uint32_t));
 }
 
 bool ID3V2_Header::IsValid() const
 {
-    // clang-format off
+   // clang-format off
     const bool isInitialized = (id_ != ID3V2_INVALID_ID) &&
     						   (version_ != ID3V2_INVALID_VERSION) &&
     						   (revision_ != ID3V2_INVALID_REVISION) &&
     						   (flags_ != ID3V2_INVALID_FLAGS) &&
     						   (size_ != ID3V2_INVALID_SIZE);
-    // clang-format on
-    const bool isVersion2     = (2 == version_);
-    const bool isRevision3or4 = (3 == revision_) || (4 == revision_);
+   // clang-format on
+   const bool isVersion2     = (2 == version_);
+   const bool isRevision3or4 = (3 == revision_) || (4 == revision_);
 
-    return isInitialized && isVersion2 && isRevision3or4;
+   return isInitialized && isVersion2 && isRevision3or4;
 }
 
 }}} // namespace ultraschall::tools::chapdbg

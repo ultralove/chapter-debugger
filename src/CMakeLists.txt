@@ -78,6 +78,7 @@ set(APPLICATION_SOURCES
 	main.cpp
 )
 
+
 add_executable(norad
 	${FRAMEWORK_INCLUDES}
 	${FRAMEWORK_SOURCES}
@@ -85,6 +86,10 @@ add_executable(norad
 	${ID3V2_SOURCES}
 	${APPLICATION_INCLUDES}
 	${APPLICATION_SOURCES}
+)
+
+target_precompile_headers(norad PRIVATE
+  Common.h
 )
 
 if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "win32")

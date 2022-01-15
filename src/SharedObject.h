@@ -35,26 +35,26 @@ namespace ultraschall { namespace tools { namespace chapdbg {
 class SharedObject
 {
 public:
-    inline int32_t AddRef() const
-    {
-        return ++refCount_;
-    }
+   inline int32_t AddRef() const
+   {
+      return ++refCount_;
+   }
 
-    inline int32_t Release() const
-    {
-        const int32_t refCount = --refCount_;
-        if (refCount == 0) {
-            delete this;
-        }
-        return refCount;
-    }
+   inline int32_t Release() const
+   {
+      const int32_t refCount = --refCount_;
+      if (refCount == 0) {
+         delete this;
+      }
+      return refCount;
+   }
 
 protected:
-    SharedObject() : refCount_(1) {}
-    virtual ~SharedObject() {}
+   SharedObject() : refCount_(1) {}
+   virtual ~SharedObject() {}
 
 private:
-    mutable std::atomic<int32_t> refCount_;
+   mutable std::atomic<int32_t> refCount_;
 };
 
 }}} // namespace ultraschall::tools::chapdbg

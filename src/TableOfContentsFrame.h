@@ -35,17 +35,17 @@ namespace ultraschall { namespace tools { namespace chapdbg {
 class TableOfContentsFrame : public Frame
 {
 public:
-    virtual ~TableOfContentsFrame();
+   virtual ~TableOfContentsFrame();
 
-    static Frame* Create();
+   static Frame* Create();
 
-    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
+   virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
 
 private:
-    uint8_t* data_   = nullptr;
-    size_t dataSize_ = ID3V2_INVALID_TEXT_SIZE;
+   uint8_t* data_   = nullptr;
+   size_t dataSize_ = ID3V2_INVALID_TEXT_SIZE;
 
-    bool AllocStringData(const uint8_t* data, const size_t dataSize);
+   bool AllocStringData(const uint8_t* data, const size_t dataSize);
 };
 
 }}} // namespace ultraschall::tools::chapdbg

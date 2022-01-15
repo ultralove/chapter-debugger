@@ -34,119 +34,119 @@ BinaryStream::BinaryStream() {}
 
 BinaryStream::~BinaryStream()
 {
-    Reset();
+   Reset();
 }
 
 BinaryStream::BinaryStream(const uint8_t* items, const size_t itemCount)
 {
-    Write(items, itemCount);
+   Write(items, itemCount);
 }
 
 BinaryStream::BinaryStream(const BinaryStream& rhs)
 {
-    *this = rhs;
+   *this = rhs;
 }
 
 BinaryStream& BinaryStream::operator=(const BinaryStream& rhs)
 {
-    if (this != &rhs) {
-        Write(rhs.Data(), rhs.Size());
-    }
+   if (this != &rhs) {
+      Write(rhs.Data(), rhs.Size());
+   }
 
-    return *this;
+   return *this;
 }
 
 BinaryStream::BinaryStream(BinaryStream&& rhs) noexcept : items_(std::exchange(rhs.items_, nullptr)), itemCount_(std::exchange(rhs.itemCount_, 0)) {}
 
 BinaryStream& BinaryStream::operator=(BinaryStream&& rhs) noexcept
 {
-    if (this != &rhs) {
-        delete[] items_;
-        items_     = std::exchange(rhs.items_, nullptr);
-        itemCount_ = std::exchange(rhs.itemCount_, 0);
-    }
+   if (this != &rhs) {
+      delete[] items_;
+      items_     = std::exchange(rhs.items_, nullptr);
+      itemCount_ = std::exchange(rhs.itemCount_, 0);
+   }
 
-    return *this;
+   return *this;
 }
 
 bool BinaryStream::operator==(const BinaryStream& rhs) const
 {
-    return (Data() == rhs.Data()) && (Size() == rhs.Size());
+   return (Data() == rhs.Data()) && (Size() == rhs.Size());
 }
 
 inline const uint8_t* BinaryStream::Data(const size_t itemOffset) const
 {
-    PRECONDITION_RETURN(items_ != 0, 0);
-    PRECONDITION_RETURN(itemOffset < itemCount_, 0);
+   PRECONDITION_RETURN(items_ != 0, 0);
+   PRECONDITION_RETURN(itemOffset < itemCount_, 0);
 
-    return &items_[itemOffset];
+   return &items_[itemOffset];
 }
 
 size_t BinaryStream::Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount)
 {
-    PRECONDITION_RETURN(items != 0, false);
-    PRECONDITION_RETURN(itemCount > 0, false);
+   PRECONDITION_RETURN(items != 0, false);
+   PRECONDITION_RETURN(itemCount > 0, false);
 
-    size_t itemsWritten = 0;
+   size_t itemsWritten = 0;
 
-    if (Valid() == false) {
-        AllocItems(itemCount);
-    }
-    else if ((itemOffset + itemCount) > itemCount_) {
-        uint8_t* currentItems   = items_;
-        size_t currentItemCount = itemCount_;
+   if (Valid() == false) {
+      AllocItems(itemCount);
+   }
+   else if ((itemOffset + itemCount) > itemCount_) {
+      uint8_t* currentItems   = items_;
+      size_t currentItemCount = itemCount_;
 
-        AllocItems(itemCount);
-        ReplaceItems(currentItems, currentItemCount);
+      AllocItems(itemCount);
+      ReplaceItems(currentItems, currentItemCount);
 
-        SafeDeleteArray(currentItems);
-        currentItemCount = 0;
-    }
+      SafeDeleteArray(currentItems);
+      currentItemCount = 0;
+   }
 
-    if ((Valid() == true) && (itemCount_ >= (itemOffset + itemCount))) {
-        memcpy(&items_[itemOffset * sizeof(uint8_t)], items, itemCount * sizeof(uint8_t));
-        itemsWritten = itemCount;
-    }
+   if ((Valid() == true) && (itemCount_ >= (itemOffset + itemCount))) {
+      memcpy(&items_[itemOffset * sizeof(uint8_t)], items, itemCount * sizeof(uint8_t));
+      itemsWritten = itemCount;
+   }
 
-    return itemsWritten;
+   return itemsWritten;
 }
 
 size_t BinaryStream::Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const
 {
-    PRECONDITION_RETURN(items_ != 0, 0);
-    PRECONDITION_RETURN(itemCount_ > 0, 0);
-    PRECONDITION_RETURN(items != 0, 0);
-    PRECONDITION_RETURN(itemCount > 0, 0);
+   PRECONDITION_RETURN(items_ != 0, 0);
+   PRECONDITION_RETURN(itemCount_ > 0, 0);
+   PRECONDITION_RETURN(items != 0, 0);
+   PRECONDITION_RETURN(itemCount > 0, 0);
 
-    const size_t resultItemCount = ((itemOffset + itemCount) <= itemCount_) ? itemCount : (itemCount_ - itemOffset);
-    memcpy(items, &items_[itemOffset * sizeof(uint8_t)], resultItemCount * sizeof(uint8_t));
-    return resultItemCount;
+   const size_t resultItemCount = ((itemOffset + itemCount) <= itemCount_) ? itemCount : (itemCount_ - itemOffset);
+   memcpy(items, &items_[itemOffset * sizeof(uint8_t)], resultItemCount * sizeof(uint8_t));
+   return resultItemCount;
 }
 
 void BinaryStream::Reset()
 {
-    itemCount_ = 0;
-    SafeDeleteArray(items_);
+   itemCount_ = 0;
+   SafeDeleteArray(items_);
 }
 
 void BinaryStream::AllocItems(const size_t itemCount)
 {
-    Reset();
+   Reset();
 
-    if (itemCount > 0) {
-        items_ = new uint8_t[itemCount * sizeof(uint8_t)];
-        if (items_ != 0) {
-            itemCount_ = itemCount;
-        }
-    }
+   if (itemCount > 0) {
+      items_ = new uint8_t[itemCount * sizeof(uint8_t)];
+      if (items_ != 0) {
+         itemCount_ = itemCount;
+      }
+   }
 }
 
 void BinaryStream::ReplaceItems(const uint8_t* items, const size_t itemCount)
 {
-    PRECONDITION(items_ != 0);
-    PRECONDITION(itemCount_ <= itemCount);
+   PRECONDITION(items_ != 0);
+   PRECONDITION(itemCount_ <= itemCount);
 
-    memcpy(items_, items, itemCount * sizeof(uint8_t));
+   memcpy(items_, items, itemCount * sizeof(uint8_t));
 }
 
 }}} // namespace ultraschall::tools::chapdbg

@@ -34,37 +34,37 @@ namespace ultraschall { namespace tools { namespace chapdbg {
 template<typename T> class Malloc
 {
 public:
-    static size_t Size(const size_t size)
-    {
-        return (size > 0) ? (size * sizeof(T)) : sizeof(T);
-    }
+   static size_t Size(const size_t size)
+   {
+      return (size > 0) ? (size * sizeof(T)) : sizeof(T);
+   }
 
-    static T* Alloc(const size_t size)
-    {
-        T* ptr = (T*)malloc(Size(size));
-        memset(ptr, 0, Size(size));
-        return ptr;
-    }
+   static T* Alloc(const size_t size)
+   {
+      T* ptr = (T*)malloc(Size(size));
+      memset(ptr, 0, Size(size));
+      return ptr;
+   }
 
-    static T* Alloc(const T* data, const size_t dataSize)
-    {
-        T* ptr = nullptr;
-        if ((dataSize == 0) && (data == nullptr)) {
-            ptr = Alloc(dataSize);
-            if (ptr != nullptr) {
-                memcpy(ptr, data, dataSize);
-            }
-        }
-        return ptr;
-    }
+   static T* Alloc(const T* data, const size_t dataSize)
+   {
+      T* ptr = nullptr;
+      if ((dataSize == 0) && (data == nullptr)) {
+         ptr = Alloc(dataSize);
+         if (ptr != nullptr) {
+            memcpy(ptr, data, dataSize);
+         }
+      }
+      return ptr;
+   }
 
-    static void Free(T*& ptr)
-    {
-        if (ptr != nullptr) {
-            free(ptr);
-            ptr = 0;
-        }
-    }
+   static void Free(T*& ptr)
+   {
+      if (ptr != nullptr) {
+         free(ptr);
+         ptr = 0;
+      }
+   }
 };
 
 }}} // namespace ultraschall::tools::chapdbg

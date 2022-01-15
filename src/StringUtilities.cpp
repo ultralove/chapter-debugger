@@ -32,62 +32,59 @@ namespace ultraschall { namespace tools { namespace chapdbg {
 
 void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize)
 {
-    HexDump(0, data, dataSize, rowSize);
+   HexDump(0, data, dataSize, rowSize);
 }
 
 void HexDump(const size_t identLevel, const uint8_t* data, const size_t dataSize, const size_t rowSize)
 {
-    PRECONDITION(data != 0);
-    PRECONDITION(dataSize > 0);
-    PRECONDITION(rowSize > 0);
+   HexDump(identLevel, data, dataSize, dataSize, rowSize);
+}
 
-    size_t offset = 0;
-    while (offset < dataSize) {
-        std::cout << IndentString(identLevel);
+void HexDump(const size_t identLevel, const uint8_t* data, const size_t dataSize, const size_t displayDataSize, const size_t rowSize)
+{
+   PRECONDITION(data != 0);
+   PRECONDITION(dataSize > 0);
+   PRECONDITION(displayDataSize > 0);
+   PRECONDITION(rowSize > 0);
 
-        for (size_t i = 0; i < rowSize; i++) {
-            if ((offset + i) < dataSize) {
-                std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)data[offset + i] << " ";
-            }
-            else {
-                std::cout << "   ";
-            }
-        }
+   const size_t actualDataSize = std::min(dataSize, displayDataSize);
+   size_t offset               = 0;
+   while (offset < actualDataSize) {
+      std::cout << IndentString(identLevel);
 
-        std::cout << "| ";
+      for (size_t i = 0; i < rowSize; i++) {
+         if ((offset + i) < actualDataSize) {
+            std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)data[offset + i] << " ";
+         }
+         else {
+            std::cout << "   ";
+         }
+      }
 
-        const size_t chunkSize = ((dataSize - offset) < rowSize) ? (dataSize - offset) : rowSize;
-        for (size_t j = 0; j < chunkSize; j++) {
-            if (std::isprint(data[offset + j])) {
-                std::cout << data[offset + j];
-            }
-            else {
-                std::cout << ".";
-            }
-        }
+      std::cout << "| ";
 
-        offset += chunkSize;
-        std::cout << std::endl;
-    }
+      const size_t chunkSize = ((actualDataSize - offset) < rowSize) ? (actualDataSize - offset) : rowSize;
+      for (size_t j = 0; j < chunkSize; j++) {
+         if (std::isprint(data[offset + j])) {
+            std::cout << data[offset + j];
+         }
+         else {
+            std::cout << ".";
+         }
+      }
+
+      offset += chunkSize;
+      std::cout << std::endl;
+   }
+
+   if (displayDataSize < dataSize) {
+      std::cout << IndentString(identLevel) << "<truncated>" << std::endl;
+   }
 }
 
 std::string IndentString(const size_t indentLevel)
 {
-    return std::string(indentLevel * 4, ' ');
-}
-
-String::String() {}
-
-String::~String()
-{
-    Clear();
-}
-
-void String::Clear()
-{
-    SafeDeleteArray(data_);
-    dataSize_ = INVALID_STRING_SIZE;
-    encoding_ = ENCODING::INVALID_CHARACTER_ENCODING;
+   return std::string(indentLevel * 4, ' ');
 }
 
 }}} // namespace ultraschall::tools::chapdbg

@@ -33,45 +33,45 @@ static FrameResource<CommentsFrame> registry2("USLT");
 
 CommentsFrame::~CommentsFrame()
 {
-    SafeDeleteArray(data_);
-    dataSize_ = 0;
+   SafeDeleteArray(data_);
+   dataSize_ = 0;
 }
 
 Frame* CommentsFrame::Create()
 {
-    return new CommentsFrame();
+   return new CommentsFrame();
 }
 
 bool CommentsFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
 {
-    PRECONDITION_RETURN(data != nullptr, false);
-    PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
-    PRECONDITION_RETURN(IsValid() == true, false);
+   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
+   PRECONDITION_RETURN(IsValid() == true, false);
 
-    encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET], ID3V2_TEXT_ENCODING_SIZE);
-    return AllocStringData(&data[ID3V2_TEXT_OFFSET], dataSize - ID3V2_TEXT_ENCODING_SIZE);
+   encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET], ID3V2_TEXT_ENCODING_SIZE);
+   return AllocStringData(&data[ID3V2_TEXT_OFFSET], dataSize - ID3V2_TEXT_ENCODING_SIZE);
 }
 
 bool CommentsFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
 {
-    PRECONDITION_RETURN(data != nullptr, false);
-    PRECONDITION_RETURN(dataSize >= 0, false);
+   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(dataSize >= 0, false);
 
-    bool allocated = false;
+   bool allocated = false;
 
-    SafeDeleteArray(data_);
-    dataSize_ = 0;
+   SafeDeleteArray(data_);
+   dataSize_ = 0;
 
-    data_     = new uint8_t[dataSize + 1];
-    if (data_ != nullptr) {
-        dataSize_ = dataSize;
-        memcpy(data_, data, dataSize_);
-        data_[dataSize_] = 0;
+   data_     = new uint8_t[dataSize + 1];
+   if (data_ != nullptr) {
+      dataSize_ = dataSize;
+      memcpy(data_, data, dataSize_);
+      data_[dataSize_] = 0;
 
-        allocated        = true;
-    }
+      allocated        = true;
+   }
 
-    return allocated;
+   return allocated;
 }
 
 }}} // namespace ultraschall::tools::chapdbg

@@ -33,65 +33,12 @@ namespace ultraschall { namespace tools { namespace chapdbg {
 
 void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize = 16);
 void HexDump(const size_t indentLevel, const uint8_t* data, const size_t dataSize, const size_t rowSize = 16);
+void HexDump(const size_t indentLevel, const uint8_t* data, const size_t dataSize, const size_t displayDataSize, const size_t rowSize);
 
 std::string IndentString(const size_t indentLevel);
 
 class UsupportedEncodingException : public std::exception
 {};
-
-class String
-{
-public:
-    enum class ENCODING
-    {
-        UTF_8 = 0,
-        UTF_16,
-        UTF_16_BE,
-        UTF_16_LE,
-        UTF_32,
-        ANSI,
-        MAX_CHARACTER_ENCODING,
-        INVALID_CHARACTER_ENCODING = MAX_CHARACTER_ENCODING
-    };
-
-    virtual ~String();
-
-    static const size_t INVALID_STRING_SIZE = -1;
-
-    void AdoptStringData(const uint8_t* data, const size_t size);
-    size_t OrphanStringData(const uint8_t*& data);
-
-    void SetEncoding(const ENCODING encoding);
-
-    inline const uint8_t* Data() const;
-    inline size_t DataSize() const;
-    inline ENCODING Encoding() const;
-
-protected:
-    String();
-
-    void Clear();
-
-private:
-    uint8_t* data_   = nullptr;
-    size_t dataSize_ = INVALID_STRING_SIZE;
-    ENCODING encoding_;
-};
-
-inline const uint8_t* String::Data() const
-{
-    return data_;
-}
-
-inline size_t String::DataSize() const
-{
-    return dataSize_;
-}
-
-inline String::ENCODING String::Encoding() const
-{
-    return encoding_;
-}
 
 }}} // namespace ultraschall::tools::chapdbg
 

@@ -32,22 +32,22 @@ namespace ultraschall { namespace tools { namespace chapdbg {
 class Guid
 {
 public:
-    ~Guid();
+   ~Guid();
 
-    Guid(const Guid& rhs);
-    Guid& operator=(const Guid& rhs);
+   Guid(const Guid& rhs);
+   Guid& operator=(const Guid& rhs);
 
-    bool operator==(const Guid& rhs) const;
-    bool operator<(const Guid& rhs) const;
+   bool operator==(const Guid& rhs) const;
+   bool operator<(const Guid& rhs) const;
 
-    static Guid New();
-    static const Guid& Null();
+   static Guid New();
+   static const Guid& Null();
 
 private:
-    struct Impl;
-    mutable Impl* impl_;
+   struct Impl;
+   mutable Impl* impl_;
 
-    Guid();
+   Guid();
 };
 
 }}} // namespace ultraschall::tools::chapdbg
