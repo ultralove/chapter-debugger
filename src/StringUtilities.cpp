@@ -84,7 +84,7 @@ void HexDump(const size_t identLevel, const uint8_t* data, const size_t dataSize
 
 std::string IndentString(const size_t indentLevel)
 {
-   return std::string(indentLevel * 4, ' ');
+   return std::string(indentLevel * 8, ' ');
 }
 
 }}} // namespace ultraschall::tools::chapdbg
