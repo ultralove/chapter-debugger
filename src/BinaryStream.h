@@ -27,8 +27,7 @@
 #ifndef __BINARY_STREAM_H_INCL__
 #define __BINARY_STREAM_H_INCL__
 
-#include <cstddef>
-#include <cstdint>
+#include "Common.h"
 
 namespace ultraschall { namespace tools { namespace chapdbg {
 
