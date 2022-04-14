@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -31,11 +31,11 @@
 
 #include <string>
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 bool FileExists(const std::string& filename);
 BinaryStream ReadFile(const std::string& filename);
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
 
 #endif // #ifndef __FILE_UTILITIES_H_INCL__

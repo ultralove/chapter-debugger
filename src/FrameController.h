@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -31,7 +31,7 @@
 #include "Common.h"
 #include "Frame.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 class FrameController
 {
@@ -48,6 +48,6 @@ private:
    static size_t DumpRawFrame(const size_t indentLevel, const uint8_t* data, const size_t dataSize);
 };
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
 
 #endif // #ifndef __FRAME_CONTROLLER_H_INCL__

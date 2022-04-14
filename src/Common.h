@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -60,7 +60,7 @@
       return (b);                 \
    }
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 #define SafeRelease(a) \
    if ((a) != 0) {     \
@@ -80,6 +80,6 @@ template<class T> inline void SafeDeleteArray(T*& ptr)
    ptr = 0;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
 
 #endif // #ifndef __COMMON_H_INCL__

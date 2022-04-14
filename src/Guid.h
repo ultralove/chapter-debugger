@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License (MIT)
 //
@@ -27,7 +27,7 @@
 #ifndef __GUID_H_INCL__
 #define __GUID_H_INCL__
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 class Guid
 {
@@ -44,12 +44,11 @@ public:
    static const Guid& Null();
 
 private:
-   struct Impl;
-   mutable Impl* impl_;
+   uint8_t data_[16];
 
    Guid();
 };
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
 
 #endif // #ifndef __GUID_H_INCL__

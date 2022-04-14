@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,13 +26,12 @@
 
 #include "Frame.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 bool Frame::ConfigureHeader(const uint8_t* data, const size_t dataSize)
 {
    PRECONDITION_RETURN(data != nullptr, false);
    PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_HEADER_SIZE, false);
-
    PRECONDITION_RETURN(id_ == ID3V2_INVALID_FRAME_ID, false);
    PRECONDITION_RETURN(size_ == ID3V2_INVALID_FRAME_SIZE, false);
    PRECONDITION_RETURN(flags_ == ID3V2_INVALID_FRAME_FLAGS, false);
@@ -42,7 +41,7 @@ bool Frame::ConfigureHeader(const uint8_t* data, const size_t dataSize)
    flags_             = ID3V2_DECODE_FRAME_FLAGS(&data[ID3V2_FRAME_FLAGS_OFFSET], ID3V2_FRAME_FLAGS_SIZE);
 
    const bool isValid = IsValid();
-   if (false == IsValid()) {
+   if (false == isValid) {
       id_    = ID3V2_INVALID_FRAME_ID;
       size_  = ID3V2_INVALID_FRAME_SIZE;
       flags_ = ID3V2_INVALID_FRAME_FLAGS;
@@ -68,4 +67,4 @@ bool Frame::IsValid() const
    return isInitialized && isConforming;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

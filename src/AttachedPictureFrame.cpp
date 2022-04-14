@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,7 +26,7 @@
 
 #include "AttachedPictureFrame.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 static FrameResource<AttachedPictureFrame> registry1("APIC");
 
@@ -73,4 +73,4 @@ bool AttachedPictureFrame::AllocStringData(const uint8_t* data, const size_t dat
    return allocated;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

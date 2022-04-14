@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,7 +29,7 @@
 #include "Common.h"
 #include "FastRoutines.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 uint32_t ID3V2_DECODE_FILE_ID(const uint8_t* data, const size_t dataSize)
 {
@@ -124,7 +124,7 @@ uint32_t ID3V2_DECODE_FILE_SIZE(const uint8_t* data, const size_t dataSize)
 
    const uint32_t rawValue = _Fast_Byte_Swap_32(*((uint32_t*)&data[ID3V2_FILE_SIZE_OFFSET]));
 
-   return _Fast_Sync_Int_Decode_32(rawValue);
+   return _Fast_Unsynchronize_32(rawValue);
 }
 
 uint32_t ID3V2_ENCODE_FILE_SIZE(const uint32_t size, uint8_t* data, const size_t dataSize)
@@ -133,7 +133,7 @@ uint32_t ID3V2_ENCODE_FILE_SIZE(const uint32_t size, uint8_t* data, const size_t
    PRECONDITION_RETURN(data != 0, ID3V2_INVALID_FILE_SIZE);
    PRECONDITION_RETURN(dataSize >= ID3V2_FILE_HEADER_SIZE, ID3V2_INVALID_FILE_SIZE);
 
-   const uint32_t cookedValue                  = _Fast_Sync_Int_Encode_32(*((uint32_t*)&data[ID3V2_FILE_SIZE_OFFSET]));
+   const uint32_t cookedValue                  = _Fast_Synchronize_32(*((uint32_t*)&data[ID3V2_FILE_SIZE_OFFSET]));
    *((uint32_t*)&data[ID3V2_FILE_SIZE_OFFSET]) = _Fast_Byte_Swap_32(cookedValue);
 
    return *((uint32_t*)&data[ID3V2_FILE_SIZE_OFFSET]);
@@ -313,4 +313,4 @@ uint8_t ID3V2_ENCODE_TEXT_ENCODING(const uint8_t encoding, uint8_t* data, const 
    return data[ID3V2_TEXT_ENCODING_OFFSET];
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

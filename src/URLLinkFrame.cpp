@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,7 +26,7 @@
 
 #include "URLLinkFrame.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 static FrameResource<URLLinkFrame> registry1("WCOM");
 static FrameResource<URLLinkFrame> registry2("WCOP");
@@ -79,4 +79,4 @@ bool URLLinkFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
    return allocated;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

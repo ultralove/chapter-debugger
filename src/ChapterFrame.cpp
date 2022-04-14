@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,7 +26,7 @@
 
 #include "ChapterFrame.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 static FrameResource<ChapterFrame> registry1("CHAP");
 
@@ -72,4 +72,4 @@ bool ChapterFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
    return allocated;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

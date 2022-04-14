@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,7 +29,7 @@
 
 #include "FrameFactory.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 template<class T> class FrameResource
 {
@@ -56,6 +56,6 @@ private:
    bool registered_ = false;
 };
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
 
 #endif // #ifndef __FRAME_RESOURCE_H_INCL__

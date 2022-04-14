@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+# Copyright (c) ultralove contributors (https://github.com/ultralove)
 #
 # The MIT License
 #
@@ -25,31 +25,31 @@
 ################################################################################
 
 cmake_minimum_required(VERSION 3.21)
-project(norad VERSION 1.0.0)
+project(id3dbg VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(WIN32)
-    set(ULTRASCHALL_TARGET_SYSTEM "win32")
+    set(ULTRASCHALL_TARGET_SYSTEM "windows")
 elseif(APPLE)
-    set(ULTRASCHALL_TARGET_SYSTEM "macos")
+    set(ULTRASCHALL_TARGET_SYSTEM "darwin")
 elseif(UNIX)
   execute_process(COMMAND uname -a RESULT_VARIABLE UNAME_RESULT OUTPUT_VARIABLE UNAME_OUTPUT OUTPUT_STRIP_TRAILING_WHITESPACE)
   if(UNAME_RESULT EQUAL 0)
     if(${UNAME_OUTPUT} MATCHES "[U|u]buntu")
         set(ULTRASCHALL_TARGET_SYSTEM "linux")
     else()
-      message(WARNING "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, macOS and Ubuntu Linux.")
+      message(WARNING "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, Darwin and Ubuntu Linux.")
     endif()
   else()
     message(WARNING "Failed to run uname, result: ${UNAME_RESULT}")
   endif()
 else()
-  message(FATAL_ERROR "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, macOS and Ubuntu Linux.")
+  message(FATAL_ERROR "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, Darwin and Ubuntu Linux.")
 endif()
 
-if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "macos")
+if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "darwin")
   if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
     message(STATUS "Building for x86_64 using clang ${CMAKE_CXX_COMPILER_VERSION}.")
     set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE INTERNAL "")

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -30,7 +30,7 @@
 #include "Frame.h"
 #include "FrameResource.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 class TextInformationFrame : public Frame
 {
@@ -49,6 +49,6 @@ private:
    bool AllocStringData(const uint8_t* data, const size_t dataSize);
 };
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
 
 #endif // #ifndef __TEXT_INFORMATION_FRAME_H_INCL__

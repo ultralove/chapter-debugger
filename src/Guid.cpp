@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License (MIT)
 //
@@ -34,7 +34,14 @@
 #ifdef _WIN32
    #include <rpc.h>
    #include <windows.h>
-void InitializeGuid(uint8_t* data, const size_t dataSize)
+#elif __APPLE__
+   #include <CoreFoundation/CoreFoundation.h>
+#else
+   #error "Unsupported platform"
+#endif
+
+#ifdef _WIN32
+static void InitializeGuid(uint8_t* data, const size_t dataSize)
 {
    PRECONDITION(data != nullptr);
    PRECONDITION(dataSize >= sizeof(UUID));
@@ -46,61 +53,23 @@ void InitializeGuid(uint8_t* data, const size_t dataSize)
    }
 }
 #elif __APPLE__
-   #include <CoreFoundation/CoreFoundation.h>
-void InitializeGuid(uint8_t* data, const size_t dataSize)
+static void InitializeGuid(uint8_t* data, const size_t dataSize)
 {
    CFUUIDRef uuidRef = CFUUIDCreate(nullptr);
 }
 #else
-   #error "Unsupported platform"
 #endif
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
-struct Guid::Impl
-{
-   uint8_t data_[16];
-
-   Impl() : data_{0} {}
-
-   ~Impl()
-   {
-      memset(data_, 0, sizeof(uint8_t) * 16);
-   }
-
-   Impl(const Impl& rhs) : data_{0}
-   {
-      *this = rhs;
-   }
-
-   Impl& operator=(const Impl& rhs)
-   {
-      if (this != &rhs) {
-         memcpy(data_, rhs.data_, sizeof(uint8_t) * 16);
-      }
-
-      return *this;
-   }
-
-   bool operator==(const Impl& rhs) const
-   {
-      return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) == 0;
-   }
-
-   bool operator<(const Impl& rhs) const
-   {
-      return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) < 0;
-   }
-};
-
-Guid::Guid() : impl_(new Guid::Impl()) {}
+Guid::Guid() : data_{0} {}
 
 Guid::~Guid()
 {
-   SafeDelete(impl_);
+   memset(data_, 0, sizeof(uint8_t) * 16);
 }
 
-Guid::Guid(const Guid& rhs) : impl_(nullptr)
+Guid::Guid(const Guid& rhs)
 {
    *this = rhs;
 }
@@ -108,8 +77,7 @@ Guid::Guid(const Guid& rhs) : impl_(nullptr)
 Guid& Guid::operator=(const Guid& rhs)
 {
    if (this != &rhs) {
-      SafeDelete(impl_);
-      impl_ = new Impl(*rhs.impl_);
+      memcpy(data_, rhs.data_, sizeof(uint8_t) * 16);
    }
 
    return *this;
@@ -117,18 +85,18 @@ Guid& Guid::operator=(const Guid& rhs)
 
 bool Guid::operator==(const Guid& rhs) const
 {
-   return impl_->operator==(*rhs.impl_);
+   return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) == 0;
 }
 
 bool Guid::operator<(const Guid& rhs) const
 {
-   return impl_->operator<(*rhs.impl_);
+   return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) < 0;
 }
 
 Guid Guid::New()
 {
    Guid guid;
-   InitializeGuid(guid.impl_->data_, sizeof(uint8_t) * 16);
+   InitializeGuid(guid.data_, sizeof(uint8_t) * 16);
    return guid;
 }
 
@@ -138,4 +106,4 @@ const Guid& Guid::Null()
    return self;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

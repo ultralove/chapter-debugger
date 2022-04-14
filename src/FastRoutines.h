@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -40,10 +40,10 @@
    #define _Fast_Byte_Swap_64(x) __builtin_bswap64(x)
 #endif
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
-uint32_t _Fast_Sync_Int_Decode_32(const uint32_t value);
-uint32_t _Fast_Sync_Int_Encode_32(const uint32_t value);
+uint32_t _Fast_Unsynchronize_32(const uint32_t value);
+uint32_t _Fast_Synchronize_32(const uint32_t value);
 
 /*
  * Unicode encoding conversion functions and their macros.
@@ -65,6 +65,6 @@ uint32_t _Fast_Conv_UTF32_To_UTF8(const uint32_t*, size_t*, uint8_t*, size_t*, i
 uint32_t _Fast_Conv_UTF8_To_UTF16(const uint8_t*, size_t*, uint16_t*, size_t*, int);
 uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t*, size_t*, uint32_t*, size_t*, int);
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
 
 #endif // #ifndef __FAST_ROUTINES_H_INCL__

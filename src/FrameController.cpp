@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,7 +29,7 @@
 #include "FrameFactory.h"
 #include "StringUtilities.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 FrameList FrameController::ParseFrames(const BinaryStream& stream)
 {
@@ -188,4 +188,4 @@ std::ostream& operator<<(std::ostream& os, const Frame* pFrame)
 
    return os;
 }
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

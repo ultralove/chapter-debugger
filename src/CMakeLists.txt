@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+# Copyright (c) ultralove contributors (https://github.com/ultralove)
 #
 # The MIT License
 #
@@ -25,22 +25,22 @@
 ################################################################################
 
 set(FRAMEWORK_INCLUDES
-  Globals.h
-	Common.h
-	FileUtilities.h
-  Guid.h
-  FastRoutines.h
 	BinaryStream.h
+	Common.h
+  FastRoutines.h
+	FileUtilities.h
+  Globals.h
+  Guid.h
 	SharedObject.h
 	StringUtilities.h
 )
 
 set(FRAMEWORK_SOURCES
-  Globals.cpp
-	FileUtilities.cpp
-  Guid.cpp
-  FastRoutines.cpp
 	BinaryStream.cpp
+  FastRoutines.cpp
+	FileUtilities.cpp
+  Globals.cpp
+  Guid.cpp
 	StringUtilities.cpp
 )
 
@@ -92,8 +92,8 @@ target_precompile_headers(norad PRIVATE
   Common.h
 )
 
-if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "win32")
+if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "windows")
   target_link_libraries(norad rpcrt4.lib)
-else(ULTRASCHALL_TARGET_SYSTEM} STREQUAL "macos")
+else(ULTRASCHALL_TARGET_SYSTEM} STREQUAL "darwin")
   target_link_libraries(norad "-framework CoreFoundation")
 endif()

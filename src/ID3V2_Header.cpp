@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,7 +26,7 @@
 
 #include "ID3V2_Header.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 ID3V2_Header::ID3V2_Header() {}
 
@@ -59,4 +59,4 @@ bool ID3V2_Header::IsValid() const
    return isInitialized && isVersion2 && isRevision3or4;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

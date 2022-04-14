@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,7 +29,7 @@
 #include "Frame.h"
 #include "ID3V2.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 FrameFactory::FrameFactory() {}
 
@@ -73,8 +73,8 @@ FrameFactory& FrameFactory::Instance()
 
 bool FrameFactory::CanCreate(const uint8_t* data, const size_t dataSize) const
 {
-   PRECONDITION_RETURN(data != nullptr, nullptr);
-   PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_ID_SIZE, nullptr);
+   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_ID_SIZE, false);
 
    const char idString[5] = {(char)data[0], (char)data[1], (char)data[2], (char)data[3], 0};
 
@@ -122,4 +122,4 @@ Frame* FrameFactory::Create(const uint8_t* data, const size_t dataSize) const
    return pFrame;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -32,7 +32,7 @@
 
 #include <CLI11.hpp>
 
-namespace dbg     = ultraschall::tools::chapdbg;
+namespace dbg     = ultralove::tools::chapdbg;
 
 bool suppressLogo = false;
 bool printVersion = false;
@@ -95,7 +95,7 @@ void PrintLogo()
 {
    if ((false == suppressLogo) && (false == printVersion)) {
       std::cout << "Ultraschall ID3v2 Frame Analyzer version " << dbg::Globals::version << std::endl
-                << "Copyright (c) ultraschall.fm. All rights reserved." << std::endl
+                << "Copyright (c) ultralove.fm. All rights reserved." << std::endl
                 << std::endl;
    }
 }

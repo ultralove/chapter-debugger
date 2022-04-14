@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -28,38 +28,40 @@
 
 #include <sys/errno.h>
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
-uint32_t _Fast_Sync_Int_Decode_32(const uint32_t value)
+uint32_t _Fast_Unsynchronize_32(const uint32_t value)
 {
-   uint32_t a, b, c, d, result = 0x0;
-   a      = value & 0xFF;
-   b      = (value >> 8) & 0xFF;
-   c      = (value >> 16) & 0xFF;
-   d      = (value >> 24) & 0xFF;
+   uint32_t result = 0;
 
-   result = result | a;
-   result = result | (b << 7);
-   result = result | (c << 14);
-   result = result | (d << 21);
+   uint32_t first  = value & 0xFF;
+   uint32_t second = (value >> 8) & 0xFF;
+   uint32_t third  = (value >> 16) & 0xFF;
+   uint32_t fourth = (value >> 24) & 0xFF;
+   result          = result | first;
+   result          = result | (second << 7);
+   result          = result | (third << 14);
+   result          = result | (fourth << 21);
 
    return result;
 }
 
-uint32_t _Fast_Sync_Int_Encode_32(const uint32_t value)
+uint32_t _Fast_Synchronize_32(const uint32_t value)
 {
-   uint32_t in = value;
-   uint32_t out, mask = 0x7F;
+   uint32_t result      = 0;
 
-   while (mask ^ 0x7FFFFFFF) {
-      out = in & ~mask;
-      out <<= 1;
-      out |= in & mask;
-      mask = ((mask + 1) << 8) - 1;
-      in   = out;
+   uint32_t valueBuffer = value;
+   uint32_t valueMask   = 0x7F;
+
+   while (valueMask ^ 0x7FFFFFFF) {
+      result = valueBuffer & ~valueMask;
+      result <<= 1;
+      result |= valueBuffer & valueMask;
+      valueMask   = ((valueMask + 1) << 8) - 1;
+      valueBuffer = result;
    }
 
-   return out;
+   return result;
 }
 
 /*
@@ -790,4 +792,4 @@ uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t* u8s, size_t* utf8len, uint32_t*
    return (0);
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

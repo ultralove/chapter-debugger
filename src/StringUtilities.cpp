@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -28,7 +28,7 @@
 
 #include "Common.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize)
 {
@@ -87,4 +87,4 @@ std::string IndentString(const size_t indentLevel)
    return std::string(indentLevel * 8, ' ');
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

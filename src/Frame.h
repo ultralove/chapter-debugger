@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -33,7 +33,7 @@
 #include "IFrame.h"
 #include "Malloc.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 class Frame : public IFrame
 {
@@ -79,6 +79,6 @@ inline uint16_t Frame::Flags() const
 typedef std::set<Frame*> FrameList;
 typedef std::map<Guid, Frame*> FrameDictionary;
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
 
 #endif // #ifndef __FRAME_H_INCL__

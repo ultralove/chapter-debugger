@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,7 +29,7 @@
 #include "FastRoutines.h"
 #include "StringUtilities.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 static FrameResource<TextInformationFrame> registry1("TALB");
 static FrameResource<TextInformationFrame> registry2("TBPM");
@@ -142,4 +142,4 @@ bool TextInformationFrame::ConfigureData(const uint8_t* data, const size_t dataS
    return true;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) The Ultraschall Project (http://ultraschall.fm)
+// Copyright(c) ultralove contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,7 +26,7 @@
 
 #include "CommentsFrame.h"
 
-namespace ultraschall { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace chapdbg {
 
 static FrameResource<CommentsFrame> registry1("COMM");
 static FrameResource<CommentsFrame> registry2("USLT");
@@ -74,4 +74,4 @@ bool CommentsFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
    return allocated;
 }
 
-}}} // namespace ultraschall::tools::chapdbg
+}}} // namespace ultralove::tools::chapdbg
