@@ -350,3 +350,6 @@ samples/
 
 # macOS
 .DS_Store
+
+# Custom
+_build/
