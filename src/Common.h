@@ -60,7 +60,7 @@
       return (b);                 \
    }
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 #define SafeRelease(a) \
    if ((a) != 0) {     \
@@ -80,6 +80,6 @@ template<class T> inline void SafeDeleteArray(T*& ptr)
    ptr = 0;
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __COMMON_H_INCL__

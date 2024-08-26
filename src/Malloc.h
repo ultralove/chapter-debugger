@@ -29,7 +29,7 @@
 
 #include <cstdlib>
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 template<typename T> class Malloc
 {
@@ -48,10 +48,12 @@ public:
 
    static T* Alloc(const T* data, const size_t dataSize)
    {
-      T* ptr = nullptr;
-      if ((dataSize == 0) && (data == nullptr)) {
+      T* ptr = 0;
+      if ((dataSize == 0) && (data == 0))
+      {
          ptr = Alloc(dataSize);
-         if (ptr != nullptr) {
+         if (ptr != 0)
+         {
             memcpy(ptr, data, dataSize);
          }
       }
@@ -60,13 +62,14 @@ public:
 
    static void Free(T*& ptr)
    {
-      if (ptr != nullptr) {
+      if (ptr != 0)
+      {
          free(ptr);
          ptr = 0;
       }
    }
 };
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __MALLOC_H_INCL__

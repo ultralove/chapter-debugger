@@ -33,13 +33,13 @@
 #include "IFrame.h"
 #include "Malloc.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class Frame : public IFrame
 {
 public:
    static bool IsValid(const uint8_t* data, const size_t dataSize);
-   bool IsValid() const;
+   bool        IsValid() const;
 
    inline uint32_t Id() const;
    inline uint32_t Size() const;
@@ -76,9 +76,9 @@ inline uint16_t Frame::Flags() const
    return flags_;
 }
 
-typedef std::set<Frame*> FrameList;
+typedef std::set<Frame*>       FrameList;
 typedef std::map<Guid, Frame*> FrameDictionary;
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FRAME_H_INCL__

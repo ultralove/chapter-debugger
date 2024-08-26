@@ -31,7 +31,7 @@
 #include "Common.h"
 #include "Frame.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class FrameController
 {
@@ -41,13 +41,13 @@ public:
    FrameList ParseFrames(const BinaryStream& stream);
 
 private:
-   static bool CompareRawFrameId(const uint32_t rawFrameId, const char* frameId, const size_t frameIdSize);
+   static bool   CompareRawFrameId(const uint32_t rawFrameId, const char* frameId, const size_t frameIdSize);
    static size_t ComputeSubframeOffset(const uint8_t* data, const size_t dataSize);
 
-   static void DumpRawHeader(const uint8_t* data, const size_t dataSize);
+   static void   DumpRawHeader(const uint8_t* data, const size_t dataSize);
    static size_t DumpRawFrame(const size_t indentLevel, const uint8_t* data, const size_t dataSize);
 };
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FRAME_CONTROLLER_H_INCL__

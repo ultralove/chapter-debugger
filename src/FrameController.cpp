@@ -29,30 +29,35 @@
 #include "FrameFactory.h"
 #include "StringUtilities.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 FrameList FrameController::ParseFrames(const BinaryStream& stream)
 {
-   PRECONDITION_RETURN(stream.Data() != nullptr, FrameList());
+   PRECONDITION_RETURN(stream.Data() != 0, FrameList());
    PRECONDITION_RETURN(stream.Size() > 0, FrameList());
 
    const FrameFactory& frameFactory = FrameFactory::Instance();
-   FrameDictionary frameDictionary;
-   size_t offset = ID3V2_FILE_HEADER_SIZE;
-   bool isValid  = true;
-   while ((true == isValid) && (offset < stream.Size())) {
-      const uint8_t* data    = stream.Data(offset);
-      const size_t dataSize  = stream.Size() - offset;
-      const size_t frameSize = ID3V2_DECODE_FRAME_SIZE(&data[ID3V2_FRAME_SIZE_OFFSET], ID3V2_FRAME_SIZE_SIZE);
-      if (frameSize > 0) {
-         if (frameFactory.CanCreate(data, ID3V2_FRAME_ID_SIZE) == true) {
+   FrameDictionary     frameDictionary;
+   size_t              offset  = ID3V2_FILE_HEADER_SIZE;
+   bool                isValid = true;
+   while ((true == isValid) && (offset < stream.Size()))
+   {
+      const uint8_t* data      = stream.Data(offset);
+      const size_t   dataSize  = stream.Size() - offset;
+      const size_t   frameSize = ID3V2_DECODE_FRAME_SIZE(&data[ID3V2_FRAME_SIZE_OFFSET], ID3V2_FRAME_SIZE_SIZE);
+      if (frameSize > 0)
+      {
+         if (frameFactory.CanCreate(data, ID3V2_FRAME_ID_SIZE) == true)
+         {
             Frame* pFrame = frameFactory.Create(data, dataSize);
-            if (pFrame != nullptr) {
+            if (pFrame != 0)
+            {
                frameDictionary.insert(std::make_pair(Guid::New(), pFrame));
             }
          }
       }
-      else { // invalid frame size
+      else
+      { // invalid frame size
          // std::cout << "Invalid frame size" << std::endl;
          isValid = false;
       }
@@ -67,14 +72,15 @@ FrameList FrameController::ParseFrames(const BinaryStream& stream)
 
 size_t FrameController::DumpRawFrames(const BinaryStream& stream)
 {
-   PRECONDITION_RETURN(stream.Data() != nullptr, ID3V2_INVALID_FRAME);
+   PRECONDITION_RETURN(stream.Data() != 0, ID3V2_INVALID_FRAME);
    PRECONDITION_RETURN(stream.Size() > 0, ID3V2_INVALID_FRAME);
 
    DumpRawHeader(stream.Data(0), ID3V2_FILE_HEADER_SIZE);
 
-   size_t offset = ID3V2_FILE_HEADER_SIZE;
-   bool isValid  = Frame::IsValid(stream.Data(offset), stream.Size() - offset);
-   while ((true == isValid) && (offset < stream.Size())) {
+   size_t offset  = ID3V2_FILE_HEADER_SIZE;
+   bool   isValid = Frame::IsValid(stream.Data(offset), stream.Size() - offset);
+   while ((true == isValid) && (offset < stream.Size()))
+   {
       offset += DumpRawFrame(0, stream.Data(offset), stream.Size());
       isValid = Frame::IsValid(stream.Data(offset), stream.Size() - offset);
    }
@@ -111,11 +117,12 @@ size_t FrameController::ComputeSubframeOffset(const uint8_t* data, const size_t 
    PRECONDITION_RETURN(data != 0, ID3V2_INVALID_SIZE_VALUE);
    PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_HEADER_SIZE, ID3V2_INVALID_SIZE_VALUE);
 
-   size_t offset    = ID3V2_FRAME_HEADER_SIZE;
-   const uint8_t* p = &data[offset];
+   size_t         offset = ID3V2_FRAME_HEADER_SIZE;
+   const uint8_t* p      = &data[offset];
 
    // Skip over element id;
-   while (*p != '\0') {
+   while (*p != '\0')
+   {
       p++;
       offset++;
    }
@@ -142,7 +149,7 @@ size_t FrameController::DumpRawFrame(const size_t indentLevel, const uint8_t* da
              << std::endl;
 
    static const uint32_t ID3V2_MAX_DATA_DISPLAY_SIZE = 512;
-   static const size_t ID3V2_MAX_DATA_ROW_SIZE       = 32;
+   static const size_t   ID3V2_MAX_DATA_ROW_SIZE     = 32;
 
    std::cout << IndentString(indentLevel) << "Data:" << std::endl;
    // HexDump(indentLevel, ID3V2_DATA_OFFSET(data, ID3V2_FRAME_DATA_OFFSET), std::min(size, ID3V2_MAX_DATA_DISPLAY_SIZE), ID3V2_MAX_DATA_ROW_SIZE);
@@ -151,11 +158,13 @@ size_t FrameController::DumpRawFrame(const size_t indentLevel, const uint8_t* da
    std::cout << std::endl;
 
    // Print sub-frames
-   if (CompareRawFrameId(id, "CHAP", ID3V2_FRAME_ID_SIZE) == true) {
+   if (CompareRawFrameId(id, "CHAP", ID3V2_FRAME_ID_SIZE) == true)
+   {
       size_t subframeOffset = ComputeSubframeOffset(data, ID3V2_FRAME_HEADER_SIZE + size);
-      while (subframeOffset < size) {
+      while (subframeOffset < size)
+      {
          const uint8_t* subframeData = &data[subframeOffset];
-         const size_t subFrameSize   = DumpRawFrame(indentLevel + 1, subframeData, size);
+         const size_t   subFrameSize = DumpRawFrame(indentLevel + 1, subframeData, size);
          subframeOffset += subFrameSize;
       }
    }
@@ -165,7 +174,7 @@ size_t FrameController::DumpRawFrame(const size_t indentLevel, const uint8_t* da
 
 bool FrameController::CompareRawFrameId(const uint32_t rawFrameId, const char* frameId, const size_t frameIdSize)
 {
-   PRECONDITION_RETURN(frameId != nullptr, false);
+   PRECONDITION_RETURN(frameId != 0, false);
    PRECONDITION_RETURN(frameIdSize > 0, false);
    PRECONDITION_RETURN(frameIdSize <= ID3V2_FRAME_ID_SIZE, false);
 
@@ -188,4 +197,4 @@ std::ostream& operator<<(std::ostream& os, const Frame* pFrame)
 
    return os;
 }
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

@@ -28,7 +28,7 @@
 
 #include <sys/errno.h>
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 uint32_t _Fast_Unsynchronize_32(const uint32_t value)
 {
@@ -48,12 +48,13 @@ uint32_t _Fast_Unsynchronize_32(const uint32_t value)
 
 uint32_t _Fast_Synchronize_32(const uint32_t value)
 {
-   uint32_t result      = 0;
+   uint32_t result = 0;
 
    uint32_t valueBuffer = value;
    uint32_t valueMask   = 0x7F;
 
-   while (valueMask ^ 0x7FFFFFFF) {
+   while (valueMask ^ 0x7FFF'FFFF)
+   {
       result = valueBuffer & ~valueMask;
       result <<= 1;
       result |= valueBuffer & valueMask;
@@ -73,11 +74,11 @@ uint32_t _Fast_Synchronize_32(const uint32_t value)
 #define UCONV_U16_LO_MIN       (0xdc00U)
 #define UCONV_U16_LO_MAX       (0xdfffU)
 #define UCONV_U16_BIT_SHIFT    (0x0400U)
-#define UCONV_U16_BIT_MASK     (0x0fffffU)
-#define UCONV_U16_START        (0x010000U)
+#define UCONV_U16_BIT_MASK     (0x0f'ffffU)
+#define UCONV_U16_START        (0x01'0000U)
 
 /* The maximum value of Unicode coding space and ASCII coding space. */
-#define UCONV_UNICODE_MAX      (0x10ffffU)
+#define UCONV_UNICODE_MAX      (0x10'ffffU)
 #define UCONV_ASCII_MAX        (0x7fU)
 
 /* The mask values for input and output endians. */
@@ -100,13 +101,13 @@ uint32_t _Fast_Synchronize_32(const uint32_t value)
 /* The Byte Order Mark (BOM) character in normal and reversed byte orderings. */
 #define UCONV_BOM_NORMAL     (0xfeffU)
 #define UCONV_BOM_SWAPPED    (0xfffeU)
-#define UCONV_BOM_SWAPPED_32 (0xfffe0000U)
+#define UCONV_BOM_SWAPPED_32 (0xfffe'0000U)
 
 /* UTF-32 boundaries based on UTF-8 character byte lengths. */
 #define UCONV_U8_ONE_BYTE    (0x7fU)
 #define UCONV_U8_TWO_BYTES   (0x7ffU)
 #define UCONV_U8_THREE_BYTES (0xffffU)
-#define UCONV_U8_FOUR_BYTES  (0x10ffffU)
+#define UCONV_U8_FOUR_BYTES  (0x10'ffffU)
 
 /* The common minimum and maximum values at the UTF-8 character bytes. */
 #define UCONV_U8_BYTE_MIN    (0x80U)
@@ -146,7 +147,7 @@ static const uint8_t remaining_bytes_tbl[0x100] = {
  * the first byte of a UTF-8 character.  Index is remaining bytes at above of
  * the character.
  */
-static const uint8_t u8_masks_tbl[6]           = {0x00, 0x1f, 0x0f, 0x07, 0x03, 0x01};
+static const uint8_t u8_masks_tbl[6] = {0x00, 0x1f, 0x0f, 0x07, 0x03, 0x01};
 
 /*
  * The following two vectors are to provide valid minimum and
@@ -218,31 +219,42 @@ static int check_endian(int flag, int* in, int* out)
 
    /* You cannot have both. */
    if (*in == UCONV_IN_ENDIAN_MASKS)
+   {
       return (EBADF);
+   }
 
    if (*in == 0)
+   {
       *in = UCONV_IN_NAT_ENDIAN;
+   }
 
    *out = flag & UCONV_OUT_ENDIAN_MASKS;
 
    /* You cannot have both. */
    if (*out == UCONV_OUT_ENDIAN_MASKS)
+   {
       return (EBADF);
+   }
 
    if (*out == 0)
+   {
       *out = UCONV_OUT_NAT_ENDIAN;
+   }
 
    return (0);
 }
 
 static bool check_bom16(const uint16_t* u16s, size_t u16l, int* in)
 {
-   if (u16l > 0) {
-      if (*u16s == UCONV_BOM_NORMAL) {
+   if (u16l > 0)
+   {
+      if (*u16s == UCONV_BOM_NORMAL)
+      {
          *in = UCONV_IN_NAT_ENDIAN;
          return (true);
       }
-      if (*u16s == UCONV_BOM_SWAPPED) {
+      if (*u16s == UCONV_BOM_SWAPPED)
+      {
          *in = UCONV_IN_REV_ENDIAN;
          return (true);
       }
@@ -253,12 +265,15 @@ static bool check_bom16(const uint16_t* u16s, size_t u16l, int* in)
 
 static bool check_bom32(const uint32_t* u32s, size_t u32l, int* in)
 {
-   if (u32l > 0) {
-      if (*u32s == UCONV_BOM_NORMAL) {
+   if (u32l > 0)
+   {
+      if (*u32s == UCONV_BOM_NORMAL)
+      {
          *in = UCONV_IN_NAT_ENDIAN;
          return (true);
       }
-      if (*u32s == UCONV_BOM_SWAPPED_32) {
+      if (*u32s == UCONV_BOM_SWAPPED_32)
+      {
          *in = UCONV_IN_REV_ENDIAN;
          return (true);
       }
@@ -269,26 +284,32 @@ static bool check_bom32(const uint32_t* u32s, size_t u32l, int* in)
 
 uint32_t _Fast_Conv_UTF16_To_UTF32(const uint16_t* u16s, size_t* utf16len, uint32_t* u32s, size_t* utf32len, int flag)
 {
-   int inendian;
-   int outendian;
-   size_t u16l;
-   size_t u32l;
+   int      inendian;
+   int      outendian;
+   size_t   u16l;
+   size_t   u32l;
    uint32_t hi;
    uint32_t lo;
-   bool do_not_ignore_null;
+   bool     do_not_ignore_null;
 
    /*
     * Do preliminary validity checks on parameters and collect info on
     * endians.
     */
    if (u16s == NULL || utf16len == NULL)
+   {
       return (EILSEQ);
+   }
 
    if (u32s == NULL || utf32len == NULL)
+   {
       return (E2BIG);
+   }
 
    if (check_endian(flag, &inendian, &outendian) != 0)
+   {
       return (EBADF);
+   }
 
    /*
     * Initialize input and output parameter buffer indices and
@@ -303,7 +324,9 @@ uint32_t _Fast_Conv_UTF16_To_UTF32(const uint16_t* u16s, size_t* utf16len, uint3
     * and if there is indeed one, process it.
     */
    if ((flag & UCONV_IN_ACCEPT_BOM) && check_bom16(u16s, *utf16len, &inendian))
+   {
       u16l++;
+   }
 
    /*
     * Reset inendian and outendian so that after this point, those can be
@@ -317,7 +340,9 @@ uint32_t _Fast_Conv_UTF16_To_UTF32(const uint16_t* u16s, size_t* utf16len, uint3
     * requested, save the BOM at the output buffer.
     */
    if (*utf16len > 0 && *utf32len > 0 && (flag & UCONV_OUT_EMIT_BOM))
+   {
       u32s[u32l++] = (outendian) ? UCONV_BOM_NORMAL : UCONV_BOM_SWAPPED_32;
+   }
 
    /*
     * Do conversion; if encounter a surrogate pair, assemble high and
@@ -325,30 +350,42 @@ uint32_t _Fast_Conv_UTF16_To_UTF32(const uint16_t* u16s, size_t* utf16len, uint3
     * exists alone, then, either it is an illegal (EILSEQ) or
     * invalid (EINVAL) value.
     */
-   for (; u16l < *utf16len; u16l++) {
+   for (; u16l < *utf16len; u16l++)
+   {
       if (u16s[u16l] == 0 && do_not_ignore_null)
+      {
          break;
+      }
 
       lo = (uint32_t)((inendian) ? u16s[u16l] : _Fast_Byte_Swap_16(u16s[u16l]));
 
-      if (lo >= UCONV_U16_HI_MIN && lo <= UCONV_U16_HI_MAX) {
+      if (lo >= UCONV_U16_HI_MIN && lo <= UCONV_U16_HI_MAX)
+      {
          if (hi)
+         {
             return (EILSEQ);
+         }
          hi = lo;
          continue;
       }
-      else if (lo >= UCONV_U16_LO_MIN && lo <= UCONV_U16_LO_MAX) {
+      else if (lo >= UCONV_U16_LO_MIN && lo <= UCONV_U16_LO_MAX)
+      {
          if (!hi)
+         {
             return (EILSEQ);
+         }
          lo = (((hi - UCONV_U16_HI_MIN) * UCONV_U16_BIT_SHIFT + lo - UCONV_U16_LO_MIN) & UCONV_U16_BIT_MASK) + UCONV_U16_START;
          hi = 0;
       }
-      else if (hi) {
+      else if (hi)
+      {
          return (EILSEQ);
       }
 
       if (u32l >= *utf32len)
+      {
          return (E2BIG);
+      }
 
       u32s[u32l++] = (outendian) ? lo : _Fast_Byte_Swap_32(lo);
    }
@@ -358,7 +395,9 @@ uint32_t _Fast_Conv_UTF16_To_UTF32(const uint16_t* u16s, size_t* utf16len, uint3
     * parameter is incomplete.
     */
    if (hi)
+   {
       return (EINVAL);
+   }
 
    /*
     * Save the number of consumed and saved characters. They do not
@@ -375,51 +414,69 @@ uint32_t _Fast_Conv_UTF16_To_UTF32(const uint16_t* u16s, size_t* utf16len, uint3
 
 uint32_t _Fast_Conv_UTF16_To_UTF8(const uint16_t* u16s, size_t* utf16len, uint8_t* u8s, size_t* utf8len, int flag)
 {
-   int inendian;
-   int outendian;
-   size_t u16l;
-   size_t u8l;
+   int      inendian;
+   int      outendian;
+   size_t   u16l;
+   size_t   u8l;
    uint32_t hi;
    uint32_t lo;
-   bool do_not_ignore_null;
+   bool     do_not_ignore_null;
 
    if (u16s == NULL || utf16len == NULL)
+   {
       return (EILSEQ);
+   }
 
    if (u8s == NULL || utf8len == NULL)
+   {
       return (E2BIG);
+   }
 
    if (check_endian(flag, &inendian, &outendian) != 0)
+   {
       return (EBADF);
+   }
 
    u16l = u8l         = 0;
    hi                 = 0;
    do_not_ignore_null = ((flag & UCONV_IGNORE_NULL) == 0);
 
    if ((flag & UCONV_IN_ACCEPT_BOM) && check_bom16(u16s, *utf16len, &inendian))
+   {
       u16l++;
+   }
 
    inendian &= UCONV_IN_NAT_ENDIAN;
 
-   for (; u16l < *utf16len; u16l++) {
+   for (; u16l < *utf16len; u16l++)
+   {
       if (u16s[u16l] == 0 && do_not_ignore_null)
+      {
          break;
+      }
 
       lo = (uint32_t)((inendian) ? u16s[u16l] : _Fast_Byte_Swap_16(u16s[u16l]));
 
-      if (lo >= UCONV_U16_HI_MIN && lo <= UCONV_U16_HI_MAX) {
+      if (lo >= UCONV_U16_HI_MIN && lo <= UCONV_U16_HI_MAX)
+      {
          if (hi)
+         {
             return (EILSEQ);
+         }
          hi = lo;
          continue;
       }
-      else if (lo >= UCONV_U16_LO_MIN && lo <= UCONV_U16_LO_MAX) {
+      else if (lo >= UCONV_U16_LO_MIN && lo <= UCONV_U16_LO_MAX)
+      {
          if (!hi)
+         {
             return (EILSEQ);
+         }
          lo = (((hi - UCONV_U16_HI_MIN) * UCONV_U16_BIT_SHIFT + lo - UCONV_U16_LO_MIN) & UCONV_U16_BIT_MASK) + UCONV_U16_START;
          hi = 0;
       }
-      else if (hi) {
+      else if (hi)
+      {
          return (EILSEQ);
       }
 
@@ -428,39 +485,54 @@ uint32_t _Fast_Conv_UTF16_To_UTF8(const uint16_t* u16s, size_t* utf16len, uint8_
        * Unicode coding space is between U+0000 and U+10FFFF;
        * anything bigger is an illegal character.
        */
-      if (lo <= UCONV_U8_ONE_BYTE) {
+      if (lo <= UCONV_U8_ONE_BYTE)
+      {
          if (u8l >= *utf8len)
+         {
             return (E2BIG);
+         }
          u8s[u8l++] = (uint8_t)lo;
       }
-      else if (lo <= UCONV_U8_TWO_BYTES) {
+      else if (lo <= UCONV_U8_TWO_BYTES)
+      {
          if ((u8l + 1) >= *utf8len)
+         {
             return (E2BIG);
+         }
          u8s[u8l++] = (uint8_t)(0xc0 | ((lo & 0x07c0) >> 6));
          u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x003f));
       }
-      else if (lo <= UCONV_U8_THREE_BYTES) {
+      else if (lo <= UCONV_U8_THREE_BYTES)
+      {
          if ((u8l + 2) >= *utf8len)
+         {
             return (E2BIG);
-         u8s[u8l++] = (uint8_t)(0xe0 | ((lo & 0x0f000) >> 12));
-         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x00fc0) >> 6));
-         u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x0003f));
+         }
+         u8s[u8l++] = (uint8_t)(0xe0 | ((lo & 0x0'f000) >> 12));
+         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x0'0fc0) >> 6));
+         u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x0'003f));
       }
-      else if (lo <= UCONV_U8_FOUR_BYTES) {
+      else if (lo <= UCONV_U8_FOUR_BYTES)
+      {
          if ((u8l + 3) >= *utf8len)
+         {
             return (E2BIG);
-         u8s[u8l++] = (uint8_t)(0xf0 | ((lo & 0x01c0000) >> 18));
-         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x003f000) >> 12));
-         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x0000fc0) >> 6));
-         u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x000003f));
+         }
+         u8s[u8l++] = (uint8_t)(0xf0 | ((lo & 0x01c'0000) >> 18));
+         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x003'f000) >> 12));
+         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x000'0fc0) >> 6));
+         u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x000'003f));
       }
-      else {
+      else
+      {
          return (EILSEQ);
       }
    }
 
    if (hi)
+   {
       return (EINVAL);
+   }
 
    *utf16len = u16l;
    *utf8len  = u8l;
@@ -470,38 +542,51 @@ uint32_t _Fast_Conv_UTF16_To_UTF8(const uint16_t* u16s, size_t* utf16len, uint8_
 
 uint32_t _Fast_Conv_UTF32_To_UTF16(const uint32_t* u32s, size_t* utf32len, uint16_t* u16s, size_t* utf16len, int flag)
 {
-   int inendian;
-   int outendian;
-   size_t u16l;
-   size_t u32l;
+   int      inendian;
+   int      outendian;
+   size_t   u16l;
+   size_t   u32l;
    uint32_t hi;
    uint32_t lo;
-   bool do_not_ignore_null;
+   bool     do_not_ignore_null;
 
    if (u32s == NULL || utf32len == NULL)
+   {
       return (EILSEQ);
+   }
 
    if (u16s == NULL || utf16len == NULL)
+   {
       return (E2BIG);
+   }
 
    if (check_endian(flag, &inendian, &outendian) != 0)
+   {
       return (EBADF);
+   }
 
    u16l = u32l        = 0;
    do_not_ignore_null = ((flag & UCONV_IGNORE_NULL) == 0);
 
    if ((flag & UCONV_IN_ACCEPT_BOM) && check_bom32(u32s, *utf32len, &inendian))
+   {
       u32l++;
+   }
 
    inendian &= UCONV_IN_NAT_ENDIAN;
    outendian &= UCONV_OUT_NAT_ENDIAN;
 
    if (*utf32len > 0 && *utf16len > 0 && (flag & UCONV_OUT_EMIT_BOM))
+   {
       u16s[u16l++] = (outendian) ? UCONV_BOM_NORMAL : UCONV_BOM_SWAPPED;
+   }
 
-   for (; u32l < *utf32len; u32l++) {
+   for (; u32l < *utf32len; u32l++)
+   {
       if (u32s[u32l] == 0 && do_not_ignore_null)
+      {
          break;
+      }
 
       hi = (inendian) ? u32s[u32l] : _Fast_Byte_Swap_32(u32s[u32l]);
 
@@ -511,31 +596,41 @@ uint32_t _Fast_Conv_UTF32_To_UTF16(const uint32_t* u32s, size_t* utf32len, uint1
        * character.
        */
       if (hi > UCONV_UNICODE_MAX)
+      {
          return (EILSEQ);
+      }
 
       /*
        * Anything bigger than U+FFFF must be converted into
        * a surrogate pair in UTF-16.
        */
-      if (hi >= UCONV_U16_START) {
+      if (hi >= UCONV_U16_START)
+      {
          lo = ((hi - UCONV_U16_START) % UCONV_U16_BIT_SHIFT) + UCONV_U16_LO_MIN;
          hi = ((hi - UCONV_U16_START) / UCONV_U16_BIT_SHIFT) + UCONV_U16_HI_MIN;
 
          if ((u16l + 1) >= *utf16len)
+         {
             return (E2BIG);
+         }
 
-         if (outendian) {
+         if (outendian)
+         {
             u16s[u16l++] = (uint16_t)hi;
             u16s[u16l++] = (uint16_t)lo;
          }
-         else {
+         else
+         {
             u16s[u16l++] = _Fast_Byte_Swap_16(((uint16_t)hi));
             u16s[u16l++] = _Fast_Byte_Swap_16(((uint16_t)lo));
          }
       }
-      else {
+      else
+      {
          if (u16l >= *utf16len)
+         {
             return (E2BIG);
+         }
          u16s[u16l++] = (outendian) ? (uint16_t)hi : _Fast_Byte_Swap_16(((uint16_t)hi));
       }
    }
@@ -548,63 +643,87 @@ uint32_t _Fast_Conv_UTF32_To_UTF16(const uint32_t* u32s, size_t* utf32len, uint1
 
 uint32_t _Fast_Conv_UTF32_To_UTF8(const uint32_t* u32s, size_t* utf32len, uint8_t* u8s, size_t* utf8len, int flag)
 {
-   int inendian;
-   int outendian;
-   size_t u32l;
-   size_t u8l;
+   int      inendian;
+   int      outendian;
+   size_t   u32l;
+   size_t   u8l;
    uint32_t lo;
-   bool do_not_ignore_null;
+   bool     do_not_ignore_null;
 
    if (u32s == NULL || utf32len == NULL)
+   {
       return (EILSEQ);
+   }
 
    if (u8s == NULL || utf8len == NULL)
+   {
       return (E2BIG);
+   }
 
    if (check_endian(flag, &inendian, &outendian) != 0)
+   {
       return (EBADF);
+   }
 
    u32l = u8l         = 0;
    do_not_ignore_null = ((flag & UCONV_IGNORE_NULL) == 0);
 
    if ((flag & UCONV_IN_ACCEPT_BOM) && check_bom32(u32s, *utf32len, &inendian))
+   {
       u32l++;
+   }
 
    inendian &= UCONV_IN_NAT_ENDIAN;
 
-   for (; u32l < *utf32len; u32l++) {
+   for (; u32l < *utf32len; u32l++)
+   {
       if (u32s[u32l] == 0 && do_not_ignore_null)
+      {
          break;
+      }
 
       lo = (inendian) ? u32s[u32l] : _Fast_Byte_Swap_32(u32s[u32l]);
 
-      if (lo <= UCONV_U8_ONE_BYTE) {
+      if (lo <= UCONV_U8_ONE_BYTE)
+      {
          if (u8l >= *utf8len)
+         {
             return (E2BIG);
+         }
          u8s[u8l++] = (uint8_t)lo;
       }
-      else if (lo <= UCONV_U8_TWO_BYTES) {
+      else if (lo <= UCONV_U8_TWO_BYTES)
+      {
          if ((u8l + 1) >= *utf8len)
+         {
             return (E2BIG);
+         }
          u8s[u8l++] = (uint8_t)(0xc0 | ((lo & 0x07c0) >> 6));
          u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x003f));
       }
-      else if (lo <= UCONV_U8_THREE_BYTES) {
+      else if (lo <= UCONV_U8_THREE_BYTES)
+      {
          if ((u8l + 2) >= *utf8len)
+         {
             return (E2BIG);
-         u8s[u8l++] = (uint8_t)(0xe0 | ((lo & 0x0f000) >> 12));
-         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x00fc0) >> 6));
-         u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x0003f));
+         }
+         u8s[u8l++] = (uint8_t)(0xe0 | ((lo & 0x0'f000) >> 12));
+         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x0'0fc0) >> 6));
+         u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x0'003f));
       }
-      else if (lo <= UCONV_U8_FOUR_BYTES) {
+      else if (lo <= UCONV_U8_FOUR_BYTES)
+      {
          if ((u8l + 3) >= *utf8len)
+         {
             return (E2BIG);
-         u8s[u8l++] = (uint8_t)(0xf0 | ((lo & 0x01c0000) >> 18));
-         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x003f000) >> 12));
-         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x0000fc0) >> 6));
-         u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x000003f));
+         }
+         u8s[u8l++] = (uint8_t)(0xf0 | ((lo & 0x01c'0000) >> 18));
+         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x003'f000) >> 12));
+         u8s[u8l++] = (uint8_t)(0x80 | ((lo & 0x000'0fc0) >> 6));
+         u8s[u8l++] = (uint8_t)(0x80 | (lo & 0x000'003f));
       }
-      else {
+      else
+      {
          return (EILSEQ);
       }
    }
@@ -617,24 +736,30 @@ uint32_t _Fast_Conv_UTF32_To_UTF8(const uint32_t* u32s, size_t* utf32len, uint8_
 
 uint32_t _Fast_Conv_UTF8_To_UTF16(const uint8_t* u8s, size_t* utf8len, uint16_t* u16s, size_t* utf16len, int flag)
 {
-   int inendian;
-   int outendian;
-   size_t u16l;
-   size_t u8l;
+   int      inendian;
+   int      outendian;
+   size_t   u16l;
+   size_t   u8l;
    uint32_t hi;
    uint32_t lo;
-   int remaining_bytes;
-   int first_b;
-   bool do_not_ignore_null;
+   int      remaining_bytes;
+   int      first_b;
+   bool     do_not_ignore_null;
 
    if (u8s == NULL || utf8len == NULL)
+   {
       return (EILSEQ);
+   }
 
    if (u16s == NULL || utf16len == NULL)
+   {
       return (E2BIG);
+   }
 
    if (check_endian(flag, &inendian, &outendian) != 0)
+   {
       return (EBADF);
+   }
 
    u16l = u8l         = 0;
    do_not_ignore_null = ((flag & UCONV_IGNORE_NULL) == 0);
@@ -642,11 +767,16 @@ uint32_t _Fast_Conv_UTF8_To_UTF16(const uint8_t* u8s, size_t* utf8len, uint16_t*
    outendian &= UCONV_OUT_NAT_ENDIAN;
 
    if (*utf8len > 0 && *utf16len > 0 && (flag & UCONV_OUT_EMIT_BOM))
+   {
       u16s[u16l++] = (outendian) ? UCONV_BOM_NORMAL : UCONV_BOM_SWAPPED;
+   }
 
-   for (; u8l < *utf8len;) {
+   for (; u8l < *utf8len;)
+   {
       if (u8s[u8l] == 0 && do_not_ignore_null)
+      {
          break;
+      }
 
       /*
        * Collect a UTF-8 character and convert it to a UTF-32
@@ -661,54 +791,72 @@ uint32_t _Fast_Conv_UTF8_To_UTF16(const uint8_t* u8s, size_t* utf8len, uint16_t*
        */
       hi = (uint32_t)u8s[u8l++];
 
-      if (hi > UCONV_ASCII_MAX) {
+      if (hi > UCONV_ASCII_MAX)
+      {
          if ((remaining_bytes = remaining_bytes_tbl[hi]) == 0)
+         {
             return (EILSEQ);
+         }
 
          first_b = hi;
          hi      = hi & u8_masks_tbl[remaining_bytes];
 
-         for (; remaining_bytes > 0; remaining_bytes--) {
+         for (; remaining_bytes > 0; remaining_bytes--)
+         {
             /*
              * If we have no more bytes, the current
              * UTF-8 character is incomplete.
              */
             if (u8l >= *utf8len)
+            {
                return (EINVAL);
+            }
 
             lo = (uint32_t)u8s[u8l++];
 
-            if (first_b) {
+            if (first_b)
+            {
                if (lo < valid_min_2nd_byte[first_b] || lo > valid_max_2nd_byte[first_b])
+               {
                   return (EILSEQ);
+               }
                first_b = 0;
             }
-            else if (lo < UCONV_U8_BYTE_MIN || lo > UCONV_U8_BYTE_MAX) {
+            else if (lo < UCONV_U8_BYTE_MIN || lo > UCONV_U8_BYTE_MAX)
+            {
                return (EILSEQ);
             }
             hi = (hi << UCONV_U8_BIT_SHIFT) | (lo & UCONV_U8_BIT_MASK);
          }
       }
 
-      if (hi >= UCONV_U16_START) {
+      if (hi >= UCONV_U16_START)
+      {
          lo = ((hi - UCONV_U16_START) % UCONV_U16_BIT_SHIFT) + UCONV_U16_LO_MIN;
          hi = ((hi - UCONV_U16_START) / UCONV_U16_BIT_SHIFT) + UCONV_U16_HI_MIN;
 
          if ((u16l + 1) >= *utf16len)
+         {
             return (E2BIG);
+         }
 
-         if (outendian) {
+         if (outendian)
+         {
             u16s[u16l++] = (uint16_t)hi;
             u16s[u16l++] = (uint16_t)lo;
          }
-         else {
+         else
+         {
             u16s[u16l++] = _Fast_Byte_Swap_16(((uint16_t)hi));
             u16s[u16l++] = _Fast_Byte_Swap_16(((uint16_t)lo));
          }
       }
-      else {
+      else
+      {
          if (u16l >= *utf16len)
+         {
             return (E2BIG);
+         }
 
          u16s[u16l++] = (outendian) ? (uint16_t)hi : _Fast_Byte_Swap_16(((uint16_t)hi));
       }
@@ -722,24 +870,30 @@ uint32_t _Fast_Conv_UTF8_To_UTF16(const uint8_t* u8s, size_t* utf8len, uint16_t*
 
 uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t* u8s, size_t* utf8len, uint32_t* u32s, size_t* utf32len, int flag)
 {
-   int inendian;
-   int outendian;
-   size_t u32l;
-   size_t u8l;
+   int      inendian;
+   int      outendian;
+   size_t   u32l;
+   size_t   u8l;
    uint32_t hi;
    uint32_t c;
-   int remaining_bytes;
-   int first_b;
-   bool do_not_ignore_null;
+   int      remaining_bytes;
+   int      first_b;
+   bool     do_not_ignore_null;
 
    if (u8s == NULL || utf8len == NULL)
+   {
       return (EILSEQ);
+   }
 
    if (u32s == NULL || utf32len == NULL)
+   {
       return (E2BIG);
+   }
 
    if (check_endian(flag, &inendian, &outendian) != 0)
+   {
       return (EBADF);
+   }
 
    u32l = u8l         = 0;
    do_not_ignore_null = ((flag & UCONV_IGNORE_NULL) == 0);
@@ -747,33 +901,48 @@ uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t* u8s, size_t* utf8len, uint32_t*
    outendian &= UCONV_OUT_NAT_ENDIAN;
 
    if (*utf8len > 0 && *utf32len > 0 && (flag & UCONV_OUT_EMIT_BOM))
+   {
       u32s[u32l++] = (outendian) ? UCONV_BOM_NORMAL : UCONV_BOM_SWAPPED_32;
+   }
 
-   for (; u8l < *utf8len;) {
+   for (; u8l < *utf8len;)
+   {
       if (u8s[u8l] == 0 && do_not_ignore_null)
+      {
          break;
+      }
 
       hi = (uint32_t)u8s[u8l++];
 
-      if (hi > UCONV_ASCII_MAX) {
+      if (hi > UCONV_ASCII_MAX)
+      {
          if ((remaining_bytes = remaining_bytes_tbl[hi]) == 0)
+         {
             return (EILSEQ);
+         }
 
          first_b = hi;
          hi      = hi & u8_masks_tbl[remaining_bytes];
 
-         for (; remaining_bytes > 0; remaining_bytes--) {
+         for (; remaining_bytes > 0; remaining_bytes--)
+         {
             if (u8l >= *utf8len)
+            {
                return (EINVAL);
+            }
 
             c = (uint32_t)u8s[u8l++];
 
-            if (first_b) {
+            if (first_b)
+            {
                if (c < valid_min_2nd_byte[first_b] || c > valid_max_2nd_byte[first_b])
+               {
                   return (EILSEQ);
+               }
                first_b = 0;
             }
-            else if (c < UCONV_U8_BYTE_MIN || c > UCONV_U8_BYTE_MAX) {
+            else if (c < UCONV_U8_BYTE_MIN || c > UCONV_U8_BYTE_MAX)
+            {
                return (EILSEQ);
             }
             hi = (hi << UCONV_U8_BIT_SHIFT) | (c & UCONV_U8_BIT_MASK);
@@ -781,7 +950,9 @@ uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t* u8s, size_t* utf8len, uint32_t*
       }
 
       if (u32l >= *utf32len)
+      {
          return (E2BIG);
+      }
 
       u32s[u32l++] = (outendian) ? hi : _Fast_Byte_Swap_32(hi);
    }
@@ -792,4 +963,4 @@ uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t* u8s, size_t* utf8len, uint32_t*
    return (0);
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

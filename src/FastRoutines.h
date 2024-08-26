@@ -40,7 +40,7 @@
    #define _Fast_Byte_Swap_64(x) __builtin_bswap64(x)
 #endif
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 uint32_t _Fast_Unsynchronize_32(const uint32_t value);
 uint32_t _Fast_Synchronize_32(const uint32_t value);
@@ -65,6 +65,6 @@ uint32_t _Fast_Conv_UTF32_To_UTF8(const uint32_t*, size_t*, uint8_t*, size_t*, i
 uint32_t _Fast_Conv_UTF8_To_UTF16(const uint8_t*, size_t*, uint16_t*, size_t*, int);
 uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t*, size_t*, uint32_t*, size_t*, int);
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FAST_ROUTINES_H_INCL__

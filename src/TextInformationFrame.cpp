@@ -29,7 +29,7 @@
 #include "FastRoutines.h"
 #include "StringUtilities.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 static FrameResource<TextInformationFrame> registry1("TALB");
 static FrameResource<TextInformationFrame> registry2("TBPM");
@@ -83,20 +83,23 @@ Frame* TextInformationFrame::Create()
 
 bool TextInformationFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
 {
-   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(data != 0, false);
    PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
    PRECONDITION_RETURN(IsValid() == true, false);
 
    std::cout << "----------------------------------------" << std::endl;
 
    encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET], ID3V2_TEXT_ENCODING_SIZE);
-   if (encoding_ == 0) { // ISO-8859-1
+   if (encoding_ == 0)
+   { // ISO-8859-1
       const char* InputBuffer = (char*)&data[ID3V2_TEXT_ENCODING_SIZE];
-      if (InputBuffer != nullptr) {
+      if (InputBuffer != 0)
+      {
          const size_t InputBufferSize  = dataSize - ID3V2_TEXT_ENCODING_SIZE;
          const size_t OutputBufferSize = InputBufferSize + 1;
-         char* OutputBuffer            = Malloc<char>::Alloc(InputBufferSize);
-         if (OutputBuffer != nullptr) {
+         char*        OutputBuffer     = Malloc<char>::Alloc(InputBufferSize);
+         if (OutputBuffer != 0)
+         {
             memcpy(OutputBuffer, InputBuffer, InputBufferSize);
             // std::cout << "InputBuffer = " << InputBufferSize << ", OutputBufferSize = " << OutputBufferSize << std::endl;
             std::cout << OutputBuffer << std::endl;
@@ -106,27 +109,32 @@ bool TextInformationFrame::ConfigureData(const uint8_t* data, const size_t dataS
    }
    else if ((encoding_ == 1) || (encoding_ == 2)) // UTF-16/UTF-16BE
    {
-      const uint16_t* InputBuffer = (uint16_t*)&data[ID3V2_TEXT_ENCODING_SIZE];
-      size_t InputBufferSize      = (dataSize - ID3V2_TEXT_ENCODING_SIZE) / sizeof(uint16_t);
-      size_t OutputBufferSize     = InputBufferSize * 2;
-      char* OutputBuffer          = Malloc<char>::Alloc(InputBufferSize * 2);
-      if (OutputBuffer != nullptr) {
+      const uint16_t* InputBuffer      = (uint16_t*)&data[ID3V2_TEXT_ENCODING_SIZE];
+      size_t          InputBufferSize  = (dataSize - ID3V2_TEXT_ENCODING_SIZE) / sizeof(uint16_t);
+      size_t          OutputBufferSize = InputBufferSize * 2;
+      char*           OutputBuffer     = Malloc<char>::Alloc(InputBufferSize * 2);
+      if (OutputBuffer != 0)
+      {
          uint32_t result =
             _Fast_Conv_UTF16_To_UTF8(InputBuffer, &InputBufferSize, (uint8_t*)OutputBuffer, &OutputBufferSize, UCONV_IN_ACCEPT_BOM | UCONV_IGNORE_NULL);
-         if (result == 0) {
+         if (result == 0)
+         {
             // std::cout << "InputBuffer = " << InputBufferSize << ", OutputBufferSize = " << OutputBufferSize << std::endl;
             std::cout << OutputBuffer << std::endl;
          }
          Malloc<char>::Free(OutputBuffer);
       }
    }
-   else if (encoding_ == 0) { // UTF-8
+   else if (encoding_ == 0)
+   { // UTF-8
       const char* InputBuffer = (char*)&data[ID3V2_TEXT_ENCODING_SIZE];
-      if (InputBuffer != nullptr) {
+      if (InputBuffer != 0)
+      {
          const size_t InputBufferSize  = dataSize - ID3V2_TEXT_ENCODING_SIZE;
          const size_t OutputBufferSize = InputBufferSize + 1;
-         char* OutputBuffer            = Malloc<char>::Alloc(InputBufferSize);
-         if (OutputBuffer != nullptr) {
+         char*        OutputBuffer     = Malloc<char>::Alloc(InputBufferSize);
+         if (OutputBuffer != 0)
+         {
             memcpy(OutputBuffer, InputBuffer, InputBufferSize);
             // std::cout << "InputBuffer = " << InputBufferSize << ", OutputBufferSize = " << OutputBufferSize << std::endl;
             std::cout << OutputBuffer << std::endl;
@@ -134,7 +142,8 @@ bool TextInformationFrame::ConfigureData(const uint8_t* data, const size_t dataS
          }
       }
    }
-   else {}
+   else
+   {}
 
    std::cout << "----------------------------------------" << std::endl;
    std::cout << std::endl;
@@ -142,4 +151,4 @@ bool TextInformationFrame::ConfigureData(const uint8_t* data, const size_t dataS
    return true;
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

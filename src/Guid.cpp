@@ -43,24 +43,25 @@
 #ifdef _WIN32
 static void InitializeGuid(uint8_t* data, const size_t dataSize)
 {
-   PRECONDITION(data != nullptr);
+   PRECONDITION(data != 0);
    PRECONDITION(dataSize >= sizeof(UUID));
 
-   UUID uuid         = {0};
+   UUID       uuid   = {0};
    RPC_STATUS status = UuidCreate(&uuid);
-   if (RPC_S_OK == status) {
+   if (RPC_S_OK == status)
+   {
       memcpy(data, &uuid, dataSize);
    }
 }
 #elif __APPLE__
 static void InitializeGuid(uint8_t* data, const size_t dataSize)
 {
-   CFUUIDRef uuidRef = CFUUIDCreate(nullptr);
+   CFUUIDRef uuidRef = CFUUIDCreate(0);
 }
 #else
 #endif
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 Guid::Guid() : data_{0} {}
 
@@ -76,7 +77,8 @@ Guid::Guid(const Guid& rhs)
 
 Guid& Guid::operator=(const Guid& rhs)
 {
-   if (this != &rhs) {
+   if (this != &rhs)
+   {
       memcpy(data_, rhs.data_, sizeof(uint8_t) * 16);
    }
 
@@ -106,4 +108,4 @@ const Guid& Guid::Null()
    return self;
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

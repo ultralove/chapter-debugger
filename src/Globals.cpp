@@ -26,8 +26,8 @@
 
 #include "Globals.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 const char* Globals::version = "7.0.1";
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

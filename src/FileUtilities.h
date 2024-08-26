@@ -31,11 +31,11 @@
 
 #include <string>
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
-bool FileExists(const std::string& filename);
+bool         FileExists(const std::string& filename);
 BinaryStream ReadFile(const std::string& filename);
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FILE_UTILITIES_H_INCL__

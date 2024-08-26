@@ -30,7 +30,7 @@
 #include "Common.h"
 #include "Frame.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class FrameFactory
 {
@@ -43,17 +43,17 @@ public:
    bool RegisterFrame(const uint32_t id, CREATE_FRAME_FUNCTION factoryFunction);
    void UnregisterFrame(const uint32_t id);
 
-   bool CanCreate(const uint8_t* data, const size_t dataSize) const;
+   bool   CanCreate(const uint8_t* data, const size_t dataSize) const;
    Frame* Create(const uint8_t* data, const size_t dataSize) const;
 
 private:
    FrameFactory();
 
    typedef std::map<uint32_t, CREATE_FRAME_FUNCTION> FunctionDictionary;
-   FunctionDictionary functions_;
-   mutable std::recursive_mutex functionsLock_;
+   FunctionDictionary                                functions_;
+   mutable std::recursive_mutex                      functionsLock_;
 };
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FRAME_FACTORY_H_INCL____

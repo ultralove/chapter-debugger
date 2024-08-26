@@ -26,7 +26,7 @@
 
 #include "URLLinkFrame.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 static FrameResource<URLLinkFrame> registry1("WCOM");
 static FrameResource<URLLinkFrame> registry2("WCOP");
@@ -50,7 +50,7 @@ Frame* URLLinkFrame::Create()
 
 bool URLLinkFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
 {
-   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(data != 0, false);
    PRECONDITION_RETURN(dataSize >= 0, false);
    PRECONDITION_RETURN(IsValid() == true, false);
 
@@ -59,7 +59,7 @@ bool URLLinkFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
 
 bool URLLinkFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
 {
-   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(data != 0, false);
    PRECONDITION_RETURN(dataSize >= 0, false);
 
    bool allocated = false;
@@ -67,16 +67,17 @@ bool URLLinkFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
    SafeDeleteArray(data_);
    dataSize_ = 0;
 
-   data_     = new uint8_t[dataSize + 1];
-   if (data_ != nullptr) {
+   data_ = new uint8_t[dataSize + 1];
+   if (data_ != 0)
+   {
       dataSize_ = dataSize;
       memcpy(data_, data, dataSize_);
       data_[dataSize_] = 0;
 
-      allocated        = true;
+      allocated = true;
    }
 
    return allocated;
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

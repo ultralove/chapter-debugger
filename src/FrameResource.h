@@ -29,7 +29,7 @@
 
 #include "FrameFactory.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 template<class T> class FrameResource
 {
@@ -45,17 +45,18 @@ public:
 
    ~FrameResource()
    {
-      if ((id_ != ID3V2_INVALID_FRAME_ID) && (true == registered_)) {
+      if ((id_ != ID3V2_INVALID_FRAME_ID) && (true == registered_))
+      {
          FrameFactory& frameFactory = FrameFactory::Instance();
          frameFactory.UnregisterFrame(id_);
       }
    }
 
 private:
-   uint32_t id_     = ID3V2_INVALID_FRAME_ID;
-   bool registered_ = false;
+   uint32_t id_         = ID3V2_INVALID_FRAME_ID;
+   bool     registered_ = false;
 };
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FRAME_RESOURCE_H_INCL__

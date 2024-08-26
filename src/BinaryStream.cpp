@@ -25,10 +25,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "BinaryStream.h"
-
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 BinaryStream::BinaryStream() {}
 
@@ -49,20 +48,24 @@ BinaryStream::BinaryStream(const BinaryStream& rhs)
 
 BinaryStream& BinaryStream::operator=(const BinaryStream& rhs)
 {
-   if (this != &rhs) {
+   if (this != &rhs)
+   {
       Write(rhs.Data(), rhs.Size());
    }
 
    return *this;
 }
 
-BinaryStream::BinaryStream(BinaryStream&& rhs) noexcept : items_(std::exchange(rhs.items_, nullptr)), itemCount_(std::exchange(rhs.itemCount_, 0)) {}
+BinaryStream::BinaryStream(BinaryStream&& rhs) noexcept :
+   items_(std::exchange(rhs.items_, static_cast<uint8_t*>(0))), itemCount_(std::exchange(rhs.itemCount_, 0))
+{}
 
 BinaryStream& BinaryStream::operator=(BinaryStream&& rhs) noexcept
 {
-   if (this != &rhs) {
+   if (this != &rhs)
+   {
       delete[] items_;
-      items_     = std::exchange(rhs.items_, nullptr);
+      items_     = std::exchange(rhs.items_, static_cast<uint8_t*>(0));
       itemCount_ = std::exchange(rhs.itemCount_, 0);
    }
 
@@ -89,12 +92,14 @@ size_t BinaryStream::Write(const size_t itemOffset, const uint8_t* items, const 
 
    size_t itemsWritten = 0;
 
-   if (Valid() == false) {
+   if (Valid() == false)
+   {
       AllocItems(itemCount);
    }
-   else if ((itemOffset + itemCount) > itemCount_) {
-      uint8_t* currentItems   = items_;
-      size_t currentItemCount = itemCount_;
+   else if ((itemOffset + itemCount) > itemCount_)
+   {
+      uint8_t* currentItems     = items_;
+      size_t   currentItemCount = itemCount_;
 
       AllocItems(itemCount);
       ReplaceItems(currentItems, currentItemCount);
@@ -103,7 +108,8 @@ size_t BinaryStream::Write(const size_t itemOffset, const uint8_t* items, const 
       currentItemCount = 0;
    }
 
-   if ((Valid() == true) && (itemCount_ >= (itemOffset + itemCount))) {
+   if ((Valid() == true) && (itemCount_ >= (itemOffset + itemCount)))
+   {
       memcpy(&items_[itemOffset * sizeof(uint8_t)], items, itemCount * sizeof(uint8_t));
       itemsWritten = itemCount;
    }
@@ -133,9 +139,11 @@ void BinaryStream::AllocItems(const size_t itemCount)
 {
    Reset();
 
-   if (itemCount > 0) {
+   if (itemCount > 0)
+   {
       items_ = new uint8_t[itemCount * sizeof(uint8_t)];
-      if (items_ != 0) {
+      if (items_ != 0)
+      {
          itemCount_ = itemCount;
       }
    }
@@ -149,4 +157,4 @@ void BinaryStream::ReplaceItems(const uint8_t* items, const size_t itemCount)
    memcpy(items_, items, itemCount * sizeof(uint8_t));
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

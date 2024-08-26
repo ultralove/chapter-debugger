@@ -30,7 +30,7 @@
 #include <atomic>
 #include <cstdint>
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class SharedObject
 {
@@ -43,7 +43,8 @@ public:
    inline int32_t Release() const
    {
       const int32_t refCount = --refCount_;
-      if (refCount == 0) {
+      if (refCount == 0)
+      {
          delete this;
       }
       return refCount;
@@ -51,12 +52,13 @@ public:
 
 protected:
    SharedObject() : refCount_(1) {}
+
    virtual ~SharedObject() {}
 
 private:
    mutable std::atomic<int32_t> refCount_;
 };
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __SHARED_OBJECT_H_INCL__

@@ -26,7 +26,7 @@
 
 #include "AttachedPictureFrame.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 static FrameResource<AttachedPictureFrame> registry1("APIC");
 
@@ -43,7 +43,7 @@ Frame* AttachedPictureFrame::Create()
 
 bool AttachedPictureFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
 {
-   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(data != 0, false);
    PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
    PRECONDITION_RETURN(IsValid() == true, false);
 
@@ -53,7 +53,7 @@ bool AttachedPictureFrame::ConfigureData(const uint8_t* data, const size_t dataS
 
 bool AttachedPictureFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
 {
-   PRECONDITION_RETURN(data != nullptr, false);
+   PRECONDITION_RETURN(data != 0, false);
    PRECONDITION_RETURN(dataSize >= 0, false);
 
    bool allocated = false;
@@ -61,16 +61,17 @@ bool AttachedPictureFrame::AllocStringData(const uint8_t* data, const size_t dat
    SafeDeleteArray(data_);
    dataSize_ = 0;
 
-   data_     = new uint8_t[dataSize + 1];
-   if (data_ != nullptr) {
+   data_ = new uint8_t[dataSize + 1];
+   if (data_ != 0)
+   {
       dataSize_ = dataSize;
       memcpy(data_, data, dataSize_);
       data_[dataSize_] = 0;
 
-      allocated        = true;
+      allocated = true;
    }
 
    return allocated;
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

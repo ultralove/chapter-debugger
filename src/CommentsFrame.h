@@ -30,7 +30,7 @@
 #include "Frame.h"
 #include "FrameResource.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class CommentsFrame : public Frame
 {
@@ -42,20 +42,20 @@ public:
    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
 
 private:
-   uint8_t encoding_       = ID3V2_INVALID_TEXT_ENCODING;
+   uint8_t encoding_ = ID3V2_INVALID_TEXT_ENCODING;
 
-   uint8_t* language_      = nullptr;
-   size_t languageSize_    = ID3V2_INVALID_TEXT_SIZE;
+   uint8_t* language_     = 0;
+   size_t   languageSize_ = ID3V2_INVALID_TEXT_SIZE;
 
-   uint8_t* description    = nullptr;
-   size_t descriptionSize_ = ID3V2_INVALID_TEXT_SIZE;
+   uint8_t* description      = 0;
+   size_t   descriptionSize_ = ID3V2_INVALID_TEXT_SIZE;
 
-   uint8_t* data_          = nullptr;
-   size_t dataSize_        = ID3V2_INVALID_TEXT_SIZE;
+   uint8_t* data_     = 0;
+   size_t   dataSize_ = ID3V2_INVALID_TEXT_SIZE;
 
    bool AllocStringData(const uint8_t* data, const size_t dataSize);
 };
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __COMMENTS_FRAME_H_INCL__

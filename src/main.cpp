@@ -32,7 +32,7 @@
 
 #include <CLI/CLI.hpp>
 
-namespace dbg = ultralove::tools::chapdbg;
+namespace dbg = ultralove::tools::norad;
 
 bool suppressLogo = false;
 bool printVersion = false;

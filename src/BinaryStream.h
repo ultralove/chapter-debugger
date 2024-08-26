@@ -29,7 +29,7 @@
 
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class BinaryStream
 {
@@ -48,20 +48,20 @@ public:
    bool operator==(const BinaryStream& rhs) const;
 
    const uint8_t* Data(const size_t itemOffset = 0) const;
-   size_t Size() const;
-   bool Valid() const;
+   size_t         Size() const;
+   bool           Valid() const;
 
-   size_t Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount);
+   size_t        Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount);
    inline size_t Write(const uint8_t* items, const size_t itemCount);
 
-   size_t Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const;
+   size_t        Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const;
    inline size_t Read(uint8_t* items, const size_t itemCount) const;
 
    void Reset();
 
 private:
-   uint8_t* items_   = 0;
-   size_t itemCount_ = 0;
+   uint8_t* items_     = 0;
+   size_t   itemCount_ = 0;
 
    void AllocItems(const size_t itemCount = 0);
    void ReplaceItems(const uint8_t* items, const size_t itemCount);
@@ -87,6 +87,6 @@ inline size_t BinaryStream::Read(uint8_t* items, const size_t itemCount) const
    return Read(0, items, itemCount);
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifdef __BINARY_STREAM_H_INCL__

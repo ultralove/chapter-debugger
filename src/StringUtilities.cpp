@@ -28,7 +28,7 @@
 
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize)
 {
@@ -48,15 +48,19 @@ void HexDump(const size_t identLevel, const uint8_t* data, const size_t dataSize
    PRECONDITION(rowSize > 0);
 
    const size_t actualDataSize = std::min(dataSize, displayDataSize);
-   size_t offset               = 0;
-   while (offset < actualDataSize) {
+   size_t       offset         = 0;
+   while (offset < actualDataSize)
+   {
       std::cout << IndentString(identLevel);
 
-      for (size_t i = 0; i < rowSize; i++) {
-         if ((offset + i) < actualDataSize) {
+      for (size_t i = 0; i < rowSize; i++)
+      {
+         if ((offset + i) < actualDataSize)
+         {
             std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)data[offset + i] << " ";
          }
-         else {
+         else
+         {
             std::cout << "   ";
          }
       }
@@ -64,11 +68,14 @@ void HexDump(const size_t identLevel, const uint8_t* data, const size_t dataSize
       std::cout << "| ";
 
       const size_t chunkSize = ((actualDataSize - offset) < rowSize) ? (actualDataSize - offset) : rowSize;
-      for (size_t j = 0; j < chunkSize; j++) {
-         if (std::isprint(data[offset + j])) {
+      for (size_t j = 0; j < chunkSize; j++)
+      {
+         if (std::isprint(data[offset + j]))
+         {
             std::cout << data[offset + j];
          }
-         else {
+         else
+         {
             std::cout << ".";
          }
       }
@@ -77,7 +84,8 @@ void HexDump(const size_t identLevel, const uint8_t* data, const size_t dataSize
       std::cout << std::endl;
    }
 
-   if (displayDataSize < dataSize) {
+   if (displayDataSize < dataSize)
+   {
       std::cout << IndentString(identLevel) << "<truncated>" << std::endl;
    }
 }
@@ -87,4 +95,4 @@ std::string IndentString(const size_t indentLevel)
    return std::string(indentLevel * 8, ' ');
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad

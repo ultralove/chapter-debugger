@@ -27,7 +27,7 @@
 #ifndef __GUID_H_INCL__
 #define __GUID_H_INCL__
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class Guid
 {
@@ -40,7 +40,7 @@ public:
    bool operator==(const Guid& rhs) const;
    bool operator<(const Guid& rhs) const;
 
-   static Guid New();
+   static Guid        New();
    static const Guid& Null();
 
 private:
@@ -49,6 +49,6 @@ private:
    Guid();
 };
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __GUID_H_INCL__

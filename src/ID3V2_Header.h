@@ -30,7 +30,7 @@
 #include "Common.h"
 #include "ID3V2.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class ID3V2_Header
 {
@@ -39,19 +39,19 @@ public:
    ID3V2_Header(const uint8_t* data, const size_t dataSize);
 
    inline const std::vector<uint8_t>& Id() const;
-   inline uint8_t Version() const;
-   inline uint8_t Revision() const;
-   inline uint8_t Flags() const;
-   inline uint32_t Size() const;
+   inline uint8_t                     Version() const;
+   inline uint8_t                     Revision() const;
+   inline uint8_t                     Flags() const;
+   inline uint32_t                    Size() const;
 
    bool IsValid() const;
 
 private:
-   std::vector<uint8_t> id_ = ID3V2_INVALID_ID;
-   uint8_t version_         = ID3V2_INVALID_VERSION;
-   uint8_t revision_        = ID3V2_INVALID_REVISION;
-   uint8_t flags_           = ID3V2_INVALID_FLAGS;
-   uint32_t size_           = ID3V2_INVALID_SIZE;
+   std::vector<uint8_t> id_       = ID3V2_INVALID_ID;
+   uint8_t              version_  = ID3V2_INVALID_VERSION;
+   uint8_t              revision_ = ID3V2_INVALID_REVISION;
+   uint8_t              flags_    = ID3V2_INVALID_FLAGS;
+   uint32_t             size_     = ID3V2_INVALID_SIZE;
 };
 
 inline const std::vector<uint8_t>& ID3V2_Header::Id() const
@@ -84,6 +84,6 @@ inline uint32_t ID3V2_Header::Size() const
    return size_;
 }
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __ID3V2_HEADER_H_INCL__

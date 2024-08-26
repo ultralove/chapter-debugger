@@ -29,7 +29,7 @@
 
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace chapdbg {
+namespace ultralove { namespace tools { namespace norad {
 
 class IFrame
 {
@@ -41,6 +41,6 @@ protected:
    virtual ~IFrame() {}
 };
 
-}}} // namespace ultralove::tools::chapdbg
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __IFRAME_H_INCL__
