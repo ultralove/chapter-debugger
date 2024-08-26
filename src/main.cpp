@@ -30,9 +30,9 @@
 #include "FrameController.h"
 #include "Globals.h"
 
-#include <CLI11.hpp>
+#include <CLI/CLI.hpp>
 
-namespace dbg     = ultralove::tools::chapdbg;
+namespace dbg = ultralove::tools::chapdbg;
 
 bool suppressLogo = false;
 bool printVersion = false;
@@ -46,7 +46,6 @@ int g = 0;
 
 int main(int argc, char** argv)
 {
-   // CLI::App app{"Ultraschall ID3v2 Frame Analyzer version 0.1.0 for x64"};
    CLI::App app;
    app.allow_extras();
    app.add_flag("--nologo", suppressLogo, "Do not display the startup banner and copyright message");
@@ -54,38 +53,47 @@ int main(int argc, char** argv)
    app.add_flag("-r,--raw", rawFrames, "Print unprocessed frame data");
 
    std::string errorMessage;
-   int errorCode = 0;
-   try {
+   int         errorCode = 0;
+   try
+   {
       app.parse(argc, argv);
       PrintLogo();
       PrintVersion();
    }
-   catch (const CLI::ParseError& e) {
+   catch (const CLI::ParseError& e)
+   {
       PrintLogo();
       PrintVersion();
       app.exit(e);
    }
 
-   if (app.remaining_size() > 0) {
-      for (std::string arg : app.remaining()) {
-         if (dbg::FileExists(arg) == true) {
+   if (app.remaining_size() > 0)
+   {
+      for (std::string arg : app.remaining())
+      {
+         if (dbg::FileExists(arg) == true)
+         {
             dbg::FrameController controller;
-            dbg::BinaryStream stream = dbg::ReadFile(arg);
-            if (false == rawFrames) {
+            dbg::BinaryStream    stream = dbg::ReadFile(arg);
+            if (false == rawFrames)
+            {
                dbg::FrameList frames = controller.ParseFrames(stream);
             }
-            else {
+            else
+            {
                dbg::FrameController::DumpRawFrames(stream);
             }
          }
-         else {
+         else
+         {
             errorMessage = "Can't open '" + arg + "' for read.";
             PrintError(errorMessage);
          }
       }
    }
-   else {
-      std::cout << app.help() << std::endl;
+   else
+   {
+      // std::cout << app.help() << std::endl;
    }
 
    return 0;
@@ -93,16 +101,18 @@ int main(int argc, char** argv)
 
 void PrintLogo()
 {
-   if ((false == suppressLogo) && (false == printVersion)) {
-      std::cout << "Ultraschall ID3v2 Frame Analyzer version " << dbg::Globals::version << std::endl
-                << "Copyright (c) ultralove.fm. All rights reserved." << std::endl
+   if ((false == suppressLogo) && (false == printVersion))
+   {
+      std::cout << "NORAD - ID3v2 Frame Analyzer version " << dbg::Globals::version << std::endl
+                << "Copyright (c) Ultralove Contributors. All rights reserved." << std::endl
                 << std::endl;
    }
 }
 
 void PrintVersion()
 {
-   if (true == printVersion) {
+   if (true == printVersion)
+   {
       std::cout << dbg::Globals::version << std::endl << std::endl;
    }
 }

@@ -28,6 +28,6 @@
 
 namespace ultralove { namespace tools { namespace chapdbg {
 
-const char* Globals::version = "5.0.3";
+const char* Globals::version = "7.0.1";
 
 }}} // namespace ultralove::tools::chapdbg
