@@ -92,8 +92,8 @@ target_precompile_headers(norad PRIVATE
   Common.h
 )
 
-if(${ULTRASCHALL_TARGET_SYSTEM} STREQUAL "windows")
+if(${NORAD_TARGET_SYSTEM} STREQUAL "windows")
   target_link_libraries(norad rpcrt4.lib)
-else(ULTRASCHALL_TARGET_SYSTEM} STREQUAL "darwin")
+else(NORAD_TARGET_SYSTEM} STREQUAL "darwin")
   target_link_libraries(norad "-framework CoreFoundation")
 endif()
