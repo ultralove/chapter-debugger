@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,34 +29,35 @@
 
 #include "FrameFactory.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-template<class T> class FrameResource
-{
+template <class T> class FrameResource {
 public:
-   FrameResource(const std::string& name)
-   {
-      PRECONDITION(name.size() >= ID3V2_FRAME_ID_SIZE);
+  FrameResource(const std::string &name) {
+    PRECONDITION(name.size() >= ID3V2_FRAME_ID_SIZE);
 
-      id_                        = ID3V2_DECODE_FRAME_ID(reinterpret_cast<const uint8_t*>(name.c_str()), ID3V2_FRAME_ID_SIZE);
-      FrameFactory& frameFactory = FrameFactory::Instance();
-      registered_                = frameFactory.RegisterFrame(id_, T::Create);
-   }
+    id_ = ID3V2_DECODE_FRAME_ID(reinterpret_cast<const uint8_t *>(name.c_str()),
+                                ID3V2_FRAME_ID_SIZE);
+    FrameFactory &frameFactory = FrameFactory::Instance();
+    registered_ = frameFactory.RegisterFrame(id_, T::Create);
+  }
 
-   ~FrameResource()
-   {
-      if ((id_ != ID3V2_INVALID_FRAME_ID) && (true == registered_))
-      {
-         FrameFactory& frameFactory = FrameFactory::Instance();
-         frameFactory.UnregisterFrame(id_);
-      }
-   }
+  ~FrameResource() {
+    if ((id_ != ID3V2_INVALID_FRAME_ID) && (true == registered_)) {
+      FrameFactory &frameFactory = FrameFactory::Instance();
+      frameFactory.UnregisterFrame(id_);
+    }
+  }
 
 private:
-   uint32_t id_         = ID3V2_INVALID_FRAME_ID;
-   bool     registered_ = false;
+  uint32_t id_ = ID3V2_INVALID_FRAME_ID;
+  bool registered_ = false;
 };
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove
 
 #endif // #ifndef __FRAME_RESOURCE_H_INCL__

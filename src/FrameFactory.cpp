@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,107 +29,107 @@
 #include "Frame.h"
 #include "ID3V2.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
 FrameFactory::FrameFactory() {}
 
-FrameFactory::~FrameFactory()
-{
-   std::lock_guard<std::recursive_mutex> lock(functionsLock_);
-   functions_.clear();
+FrameFactory::~FrameFactory() {
+  std::lock_guard<std::recursive_mutex> lock(functionsLock_);
+  functions_.clear();
 }
 
-bool FrameFactory::RegisterFrame(const uint32_t id, CREATE_FRAME_FUNCTION factoryFunction)
-{
-   PRECONDITION_RETURN(id != ID3V2_INVALID_FRAME_ID, false);
-   PRECONDITION_RETURN(factoryFunction != 0, false);
+bool FrameFactory::RegisterFrame(const uint32_t id,
+                                 CREATE_FRAME_FUNCTION factoryFunction) {
+  PRECONDITION_RETURN(id != ID3V2_INVALID_FRAME_ID, false);
+  PRECONDITION_RETURN(factoryFunction != 0, false);
 
-   std::lock_guard<std::recursive_mutex> lock(functionsLock_);
+  std::lock_guard<std::recursive_mutex> lock(functionsLock_);
 
-   bool                                     registered       = false;
-   const FunctionDictionary::const_iterator functionIterator = functions_.find(id);
-   if (functionIterator == functions_.end())
-   {
-      registered = functions_.insert(std::pair<uint32_t, CREATE_FRAME_FUNCTION>(id, factoryFunction)).second;
-   }
+  bool registered = false;
+  const FunctionDictionary::const_iterator functionIterator =
+      functions_.find(id);
+  if (functionIterator == functions_.end()) {
+    registered = functions_
+                     .insert(std::pair<uint32_t, CREATE_FRAME_FUNCTION>(
+                         id, factoryFunction))
+                     .second;
+  }
 
-   return registered;
+  return registered;
 }
 
-void FrameFactory::UnregisterFrame(const uint32_t id)
-{
-   std::lock_guard<std::recursive_mutex> lock(functionsLock_);
+void FrameFactory::UnregisterFrame(const uint32_t id) {
+  std::lock_guard<std::recursive_mutex> lock(functionsLock_);
 
-   const FunctionDictionary::const_iterator functionIterator = functions_.find(id);
-   if (functionIterator != functions_.end())
-   {
-      functions_.erase(functionIterator);
-   }
+  const FunctionDictionary::const_iterator functionIterator =
+      functions_.find(id);
+  if (functionIterator != functions_.end()) {
+    functions_.erase(functionIterator);
+  }
 }
 
-FrameFactory& FrameFactory::Instance()
-{
-   static FrameFactory self;
-   return self;
+FrameFactory &FrameFactory::Instance() {
+  static FrameFactory self;
+  return self;
 }
 
-bool FrameFactory::CanCreate(const uint8_t* data, const size_t dataSize) const
-{
-   PRECONDITION_RETURN(data != 0, false);
-   PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_ID_SIZE, false);
+bool FrameFactory::CanCreate(const uint8_t *data, const size_t dataSize) const {
+  PRECONDITION_RETURN(data != 0, false);
+  PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_ID_SIZE, false);
 
-   const char idString[5] = {(char)data[0], (char)data[1], (char)data[2], (char)data[3], 0};
+  const char idString[5] = {(char)data[0], (char)data[1], (char)data[2],
+                            (char)data[3], 0};
 
-   const uint32_t id        = ID3V2_DECODE_FRAME_ID(&data[ID3V2_FRAME_ID_OFFSET], ID3V2_FRAME_ID_SIZE);
-   const bool     canCreate = functions_.find(id) != functions_.end();
-   if (canCreate == true)
-   {
-      std::cout << "Creating frame with id '" << idString << "'" << std::endl;
-   }
-   else
-   {
-      std::cout << "Found unknown frame with id '" << idString << "'" << std::endl;
-   }
+  const uint32_t id =
+      ID3V2_DECODE_FRAME_ID(&data[ID3V2_FRAME_ID_OFFSET], ID3V2_FRAME_ID_SIZE);
+  const bool canCreate = functions_.find(id) != functions_.end();
+  if (canCreate == true) {
+    std::cout << "Creating frame with id '" << idString << "'" << std::endl;
+  } else {
+    std::cout << "Found unknown frame with id '" << idString << "'"
+              << std::endl;
+  }
 
-   return canCreate;
+  return canCreate;
 }
 
-Frame* FrameFactory::Create(const uint8_t* data, const size_t dataSize) const
-{
-   PRECONDITION_RETURN(data != 0, 0);
-   PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_HEADER_SIZE, 0);
+Frame *FrameFactory::Create(const uint8_t *data, const size_t dataSize) const {
+  PRECONDITION_RETURN(data != 0, 0);
+  PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_HEADER_SIZE, 0);
 
-   std::lock_guard<std::recursive_mutex> lock(functionsLock_);
+  std::lock_guard<std::recursive_mutex> lock(functionsLock_);
 
-   Frame*         pFrame = 0;
-   const uint32_t id     = ID3V2_DECODE_FRAME_ID(&data[ID3V2_FRAME_ID_OFFSET], ID3V2_FRAME_ID_SIZE);
-   if (id != ID3V2_INVALID_FRAME_ID)
-   {
-      const FunctionDictionary::const_iterator functionIterator = functions_.find(id);
-      if (functionIterator != functions_.end())
-      {
-         CREATE_FRAME_FUNCTION factoryFunction = functionIterator->second;
-         if (factoryFunction != 0)
-         {
-            pFrame = (*factoryFunction)();
-            if (pFrame != 0)
-            {
-               bool isConfigured = pFrame->ConfigureHeader(&data[ID3V2_FILE_HEADER_OFFSET], ID3V2_FILE_HEADER_SIZE);
-               if (true == isConfigured)
-               {
-                  isConfigured = pFrame->ConfigureData(&data[ID3V2_FRAME_HEADER_OFFSET], pFrame->Size());
-               }
+  Frame *pFrame = 0;
+  const uint32_t id =
+      ID3V2_DECODE_FRAME_ID(&data[ID3V2_FRAME_ID_OFFSET], ID3V2_FRAME_ID_SIZE);
+  if (id != ID3V2_INVALID_FRAME_ID) {
+    const FunctionDictionary::const_iterator functionIterator =
+        functions_.find(id);
+    if (functionIterator != functions_.end()) {
+      CREATE_FRAME_FUNCTION factoryFunction = functionIterator->second;
+      if (factoryFunction != 0) {
+        pFrame = (*factoryFunction)();
+        if (pFrame != 0) {
+          bool isConfigured = pFrame->ConfigureHeader(
+              &data[ID3V2_FILE_HEADER_OFFSET], ID3V2_FILE_HEADER_SIZE);
+          if (true == isConfigured) {
+            isConfigured = pFrame->ConfigureData(
+                &data[ID3V2_FRAME_HEADER_OFFSET], pFrame->Size());
+          }
 
-               if (false == isConfigured)
-               {
-                  SafeDelete(pFrame);
-               }
-            }
-         }
+          if (false == isConfigured) {
+            SafeDelete(pFrame);
+          }
+        }
       }
-   }
+    }
+  }
 
-   return pFrame;
+  return pFrame;
 }
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove

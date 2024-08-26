@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,51 +26,50 @@
 
 #include "TableOfContentsFrame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
 static FrameResource<TableOfContentsFrame> registry1("CTOC");
 
-TableOfContentsFrame::~TableOfContentsFrame()
-{
-   SafeDeleteArray(data_);
-   dataSize_ = 0;
+TableOfContentsFrame::~TableOfContentsFrame() {
+  SafeDeleteArray(data_);
+  dataSize_ = 0;
 }
 
-Frame* TableOfContentsFrame::Create()
-{
-   return new TableOfContentsFrame();
+Frame *TableOfContentsFrame::Create() { return new TableOfContentsFrame(); }
+
+bool TableOfContentsFrame::ConfigureData(const uint8_t *data,
+                                         const size_t dataSize) {
+  PRECONDITION_RETURN(data != 0, false);
+  PRECONDITION_RETURN(dataSize >= 0, false);
+  PRECONDITION_RETURN(IsValid() == true, false);
+
+  return AllocStringData(data, dataSize);
 }
 
-bool TableOfContentsFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
-{
-   PRECONDITION_RETURN(data != 0, false);
-   PRECONDITION_RETURN(dataSize >= 0, false);
-   PRECONDITION_RETURN(IsValid() == true, false);
+bool TableOfContentsFrame::AllocStringData(const uint8_t *data,
+                                           const size_t dataSize) {
+  PRECONDITION_RETURN(data != 0, false);
+  PRECONDITION_RETURN(dataSize >= 0, false);
 
-   return AllocStringData(data, dataSize);
+  bool allocated = false;
+
+  SafeDeleteArray(data_);
+  dataSize_ = 0;
+
+  data_ = new uint8_t[dataSize + 1];
+  if (data_ != 0) {
+    dataSize_ = dataSize;
+    memcpy(data_, data, dataSize_);
+    data_[dataSize_] = 0;
+
+    allocated = true;
+  }
+
+  return allocated;
 }
 
-bool TableOfContentsFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
-{
-   PRECONDITION_RETURN(data != 0, false);
-   PRECONDITION_RETURN(dataSize >= 0, false);
-
-   bool allocated = false;
-
-   SafeDeleteArray(data_);
-   dataSize_ = 0;
-
-   data_ = new uint8_t[dataSize + 1];
-   if (data_ != 0)
-   {
-      dataSize_ = dataSize;
-      memcpy(data_, data, dataSize_);
-      data_[dataSize_] = 0;
-
-      allocated = true;
-   }
-
-   return allocated;
-}
-
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove

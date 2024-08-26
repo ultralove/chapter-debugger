@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -31,11 +31,15 @@
 
 #include <string>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-bool         FileExists(const std::string& filename);
-BinaryStream ReadFile(const std::string& filename);
+bool FileExists(const std::string &filename);
+BinaryStream ReadFile(const std::string &filename);
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove
 
 #endif // #ifndef __FILE_UTILITIES_H_INCL__

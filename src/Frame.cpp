@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,46 +26,55 @@
 
 #include "Frame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-bool Frame::ConfigureHeader(const uint8_t* data, const size_t dataSize)
-{
-   PRECONDITION_RETURN(data != 0, false);
-   PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_HEADER_SIZE, false);
-   PRECONDITION_RETURN(id_ == ID3V2_INVALID_FRAME_ID, false);
-   PRECONDITION_RETURN(size_ == ID3V2_INVALID_FRAME_SIZE, false);
-   PRECONDITION_RETURN(flags_ == ID3V2_INVALID_FRAME_FLAGS, false);
+bool Frame::ConfigureHeader(const uint8_t *data, const size_t dataSize) {
+  PRECONDITION_RETURN(data != 0, false);
+  PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_HEADER_SIZE, false);
+  PRECONDITION_RETURN(id_ == ID3V2_INVALID_FRAME_ID, false);
+  PRECONDITION_RETURN(size_ == ID3V2_INVALID_FRAME_SIZE, false);
+  PRECONDITION_RETURN(flags_ == ID3V2_INVALID_FRAME_FLAGS, false);
 
-   id_    = ID3V2_DECODE_FRAME_ID(&data[ID3V2_FRAME_ID_OFFSET], ID3V2_FRAME_ID_SIZE);
-   size_  = ID3V2_DECODE_FRAME_SIZE(&data[ID3V2_FRAME_SIZE_OFFSET], ID3V2_FRAME_SIZE_SIZE);
-   flags_ = ID3V2_DECODE_FRAME_FLAGS(&data[ID3V2_FRAME_FLAGS_OFFSET], ID3V2_FRAME_FLAGS_SIZE);
+  id_ =
+      ID3V2_DECODE_FRAME_ID(&data[ID3V2_FRAME_ID_OFFSET], ID3V2_FRAME_ID_SIZE);
+  size_ = ID3V2_DECODE_FRAME_SIZE(&data[ID3V2_FRAME_SIZE_OFFSET],
+                                  ID3V2_FRAME_SIZE_SIZE);
+  flags_ = ID3V2_DECODE_FRAME_FLAGS(&data[ID3V2_FRAME_FLAGS_OFFSET],
+                                    ID3V2_FRAME_FLAGS_SIZE);
 
-   const bool isValid = IsValid();
-   if (false == isValid)
-   {
-      id_    = ID3V2_INVALID_FRAME_ID;
-      size_  = ID3V2_INVALID_FRAME_SIZE;
-      flags_ = ID3V2_INVALID_FRAME_FLAGS;
-   }
+  const bool isValid = IsValid();
+  if (false == isValid) {
+    id_ = ID3V2_INVALID_FRAME_ID;
+    size_ = ID3V2_INVALID_FRAME_SIZE;
+    flags_ = ID3V2_INVALID_FRAME_FLAGS;
+  }
 
-   return isValid;
+  return isValid;
 }
 
-bool Frame::IsValid(const uint8_t* data, const size_t dataSize)
-{
-   PRECONDITION_RETURN(data != 0, false);
-   PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_HEADER_SIZE, false);
+bool Frame::IsValid(const uint8_t *data, const size_t dataSize) {
+  PRECONDITION_RETURN(data != 0, false);
+  PRECONDITION_RETURN(dataSize >= ID3V2_FRAME_HEADER_SIZE, false);
 
-   const bool isConforming = (isalnum(data[0]) != 0) && (isalnum(data[1]) != 0) && (isalnum(data[2]) != 0) && (isalnum(data[3]) != 0);
-   return isConforming;
+  const bool isConforming = (isalnum(data[0]) != 0) &&
+                            (isalnum(data[1]) != 0) &&
+                            (isalnum(data[2]) != 0) && (isalnum(data[3]) != 0);
+  return isConforming;
 }
 
-bool Frame::IsValid() const
-{
-   const bool isInitialized = (id_ != ID3V2_INVALID_FRAME_ID) & (size_ != ID3V2_INVALID_FRAME_SIZE) && (flags_ != ID3V2_INVALID_FRAME_FLAGS);
-   const bool isConforming =
-      (isalnum(((uint8_t*)&id_)[0]) != 0) && (isalnum(((uint8_t*)&id_)[1]) != 0) && (isalnum(((uint8_t*)&id_)[2]) != 0) && (isalnum(((uint8_t*)&id_)[3]) != 0);
-   return isInitialized && isConforming;
+bool Frame::IsValid() const {
+  const bool isInitialized =
+      (id_ != ID3V2_INVALID_FRAME_ID) & (size_ != ID3V2_INVALID_FRAME_SIZE) &&
+      (flags_ != ID3V2_INVALID_FRAME_FLAGS);
+  const bool isConforming = (isalnum(((uint8_t *)&id_)[0]) != 0) &&
+                            (isalnum(((uint8_t *)&id_)[1]) != 0) &&
+                            (isalnum(((uint8_t *)&id_)[2]) != 0) &&
+                            (isalnum(((uint8_t *)&id_)[3]) != 0);
+  return isInitialized && isConforming;
 }
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove

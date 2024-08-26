@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -30,35 +30,33 @@
 #include <atomic>
 #include <cstdint>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-class SharedObject
-{
+class SharedObject {
 public:
-   inline int32_t AddRef() const
-   {
-      return ++refCount_;
-   }
+  inline int32_t AddRef() const { return ++refCount_; }
 
-   inline int32_t Release() const
-   {
-      const int32_t refCount = --refCount_;
-      if (refCount == 0)
-      {
-         delete this;
-      }
-      return refCount;
-   }
+  inline int32_t Release() const {
+    const int32_t refCount = --refCount_;
+    if (refCount == 0) {
+      delete this;
+    }
+    return refCount;
+  }
 
 protected:
-   SharedObject() : refCount_(1) {}
+  SharedObject() : refCount_(1) {}
 
-   virtual ~SharedObject() {}
+  virtual ~SharedObject() {}
 
 private:
-   mutable std::atomic<int32_t> refCount_;
+  mutable std::atomic<int32_t> refCount_;
 };
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove
 
 #endif // #ifndef __SHARED_OBJECT_H_INCL__

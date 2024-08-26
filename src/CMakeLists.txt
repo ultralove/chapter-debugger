@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Copyright (c) ultralove contributors (https://github.com/ultralove)
+# Copyright (c) Ultralove Contributors (https://github.com/ultralove)
 #
 # The MIT License
 #

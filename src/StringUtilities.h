@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,17 +29,24 @@
 
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize = 16);
-void HexDump(const size_t indentLevel, const uint8_t* data, const size_t dataSize, const size_t rowSize = 16);
-void HexDump(const size_t indentLevel, const uint8_t* data, const size_t dataSize, const size_t displayDataSize, const size_t rowSize);
+void HexDump(const uint8_t *data, const size_t dataSize,
+             const size_t rowSize = 16);
+void HexDump(const size_t indentLevel, const uint8_t *data,
+             const size_t dataSize, const size_t rowSize = 16);
+void HexDump(const size_t indentLevel, const uint8_t *data,
+             const size_t dataSize, const size_t displayDataSize,
+             const size_t rowSize);
 
 std::string IndentString(const size_t indentLevel);
 
-class UsupportedEncodingException : public std::exception
-{};
+class UsupportedEncodingException : public std::exception {};
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove
 
 #endif // #ifndef __STRING_UTILITIES_H_INCL__

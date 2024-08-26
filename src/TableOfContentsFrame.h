@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -30,24 +30,27 @@
 #include "Frame.h"
 #include "FrameResource.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-class TableOfContentsFrame : public Frame
-{
+class TableOfContentsFrame : public Frame {
 public:
-   virtual ~TableOfContentsFrame();
+  virtual ~TableOfContentsFrame();
 
-   static Frame* Create();
+  static Frame *Create();
 
-   virtual bool ConfigureData(const uint8_t* data, const size_t dataSize);
+  virtual bool ConfigureData(const uint8_t *data, const size_t dataSize);
 
 private:
-   uint8_t* data_     = 0;
-   size_t   dataSize_ = ID3V2_INVALID_TEXT_SIZE;
+  uint8_t *data_ = 0;
+  size_t dataSize_ = ID3V2_INVALID_TEXT_SIZE;
 
-   bool AllocStringData(const uint8_t* data, const size_t dataSize);
+  bool AllocStringData(const uint8_t *data, const size_t dataSize);
 };
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove
 
 #endif // #ifndef __TABLE_OF_CONTENTS_FRAME_H_INCL__

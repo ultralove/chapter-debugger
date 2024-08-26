@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,52 +26,53 @@
 
 #include "AttachedPictureFrame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
 static FrameResource<AttachedPictureFrame> registry1("APIC");
 
-AttachedPictureFrame::~AttachedPictureFrame()
-{
-   SafeDeleteArray(data_);
-   dataSize_ = 0;
+AttachedPictureFrame::~AttachedPictureFrame() {
+  SafeDeleteArray(data_);
+  dataSize_ = 0;
 }
 
-Frame* AttachedPictureFrame::Create()
-{
-   return new AttachedPictureFrame();
+Frame *AttachedPictureFrame::Create() { return new AttachedPictureFrame(); }
+
+bool AttachedPictureFrame::ConfigureData(const uint8_t *data,
+                                         const size_t dataSize) {
+  PRECONDITION_RETURN(data != 0, false);
+  PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
+  PRECONDITION_RETURN(IsValid() == true, false);
+
+  encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET],
+                                         ID3V2_TEXT_ENCODING_SIZE);
+  return AllocStringData(&data[ID3V2_TEXT_OFFSET],
+                         dataSize - ID3V2_TEXT_ENCODING_SIZE);
 }
 
-bool AttachedPictureFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
-{
-   PRECONDITION_RETURN(data != 0, false);
-   PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
-   PRECONDITION_RETURN(IsValid() == true, false);
+bool AttachedPictureFrame::AllocStringData(const uint8_t *data,
+                                           const size_t dataSize) {
+  PRECONDITION_RETURN(data != 0, false);
+  PRECONDITION_RETURN(dataSize >= 0, false);
 
-   encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET], ID3V2_TEXT_ENCODING_SIZE);
-   return AllocStringData(&data[ID3V2_TEXT_OFFSET], dataSize - ID3V2_TEXT_ENCODING_SIZE);
+  bool allocated = false;
+
+  SafeDeleteArray(data_);
+  dataSize_ = 0;
+
+  data_ = new uint8_t[dataSize + 1];
+  if (data_ != 0) {
+    dataSize_ = dataSize;
+    memcpy(data_, data, dataSize_);
+    data_[dataSize_] = 0;
+
+    allocated = true;
+  }
+
+  return allocated;
 }
 
-bool AttachedPictureFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
-{
-   PRECONDITION_RETURN(data != 0, false);
-   PRECONDITION_RETURN(dataSize >= 0, false);
-
-   bool allocated = false;
-
-   SafeDeleteArray(data_);
-   dataSize_ = 0;
-
-   data_ = new uint8_t[dataSize + 1];
-   if (data_ != 0)
-   {
-      dataSize_ = dataSize;
-      memcpy(data_, data, dataSize_);
-      data_[dataSize_] = 0;
-
-      allocated = true;
-   }
-
-   return allocated;
-}
-
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -29,18 +29,21 @@
 
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-class IFrame
-{
+class IFrame {
 public:
-   virtual bool ConfigureHeader(const uint8_t* data, const size_t dataSize) = 0;
-   virtual bool ConfigureData(const uint8_t* data, const size_t dataSize)   = 0;
+  virtual bool ConfigureHeader(const uint8_t *data, const size_t dataSize) = 0;
+  virtual bool ConfigureData(const uint8_t *data, const size_t dataSize) = 0;
 
 protected:
-   virtual ~IFrame() {}
+  virtual ~IFrame() {}
 };
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove
 
 #endif // #ifndef __IFRAME_H_INCL__

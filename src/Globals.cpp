@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -26,8 +26,12 @@
 
 #include "Globals.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-const char* Globals::version = "7.0.1";
+const char *Globals::version = "7.0.1";
 
-}}} // namespace ultralove::tools::norad
+}
+} // namespace tools
+} // namespace ultralove

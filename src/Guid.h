@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License (MIT)
 //
@@ -27,28 +27,31 @@
 #ifndef __GUID_H_INCL__
 #define __GUID_H_INCL__
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-class Guid
-{
+class Guid {
 public:
-   ~Guid();
+  ~Guid();
 
-   Guid(const Guid& rhs);
-   Guid& operator=(const Guid& rhs);
+  Guid(const Guid &rhs);
+  Guid &operator=(const Guid &rhs);
 
-   bool operator==(const Guid& rhs) const;
-   bool operator<(const Guid& rhs) const;
+  bool operator==(const Guid &rhs) const;
+  bool operator<(const Guid &rhs) const;
 
-   static Guid        New();
-   static const Guid& Null();
+  static Guid New();
+  static const Guid &Null();
 
 private:
-   uint8_t data_[16];
+  uint8_t data_[16];
 
-   Guid();
+  Guid();
 };
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove
 
 #endif // #ifndef __GUID_H_INCL__

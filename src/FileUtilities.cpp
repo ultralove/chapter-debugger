@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -30,51 +30,49 @@
 
 #include <fstream>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-bool FileExists(const std::string& filename)
-{
-   bool fileExists = false;
+bool FileExists(const std::string &filename) {
+  bool fileExists = false;
 
-   std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
-   if (file.is_open() == true)
-   {
-      fileExists = true;
-      file.close();
-   }
+  std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
+  if (file.is_open() == true) {
+    fileExists = true;
+    file.close();
+  }
 
-   return fileExists;
+  return fileExists;
 }
 
-BinaryStream ReadFile(const std::string& filename)
-{
-   PRECONDITION_RETURN(filename.empty() == false, BinaryStream());
+BinaryStream ReadFile(const std::string &filename) {
+  PRECONDITION_RETURN(filename.empty() == false, BinaryStream());
 
-   BinaryStream  stream;
-   std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
-   if (file.is_open() == true)
-   {
-      const size_t dataSize = static_cast<size_t>(file.tellg());
-      uint8_t*     data     = new uint8_t[dataSize];
-      if (data != 0)
+  BinaryStream stream;
+  std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
+  if (file.is_open() == true) {
+    const size_t dataSize = static_cast<size_t>(file.tellg());
+    uint8_t *data = new uint8_t[dataSize];
+    if (data != 0) {
+      file.seekg(std::ios::beg); // rewind fp
+      file.read(reinterpret_cast<char *>(data), dataSize);
+      if (file) // overwritten to return io status
       {
-         file.seekg(std::ios::beg); // rewind fp
-         file.read(reinterpret_cast<char*>(data), dataSize);
-         if (file) // overwritten to return io status
-         {
-            if (stream.Write(data, dataSize) != dataSize)
-            {
-               stream.Reset();
-            }
-         }
-
-         SafeDeleteArray(data);
+        if (stream.Write(data, dataSize) != dataSize) {
+          stream.Reset();
+        }
       }
 
-      file.close();
-   }
+      SafeDeleteArray(data);
+    }
 
-   return stream;
+    file.close();
+  }
+
+  return stream;
 }
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove

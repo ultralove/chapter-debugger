@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -36,89 +36,75 @@ namespace dbg = ultralove::tools::norad;
 
 bool suppressLogo = false;
 bool printVersion = false;
-bool rawFrames    = false;
+bool rawFrames = false;
 
 void PrintLogo();
 void PrintVersion();
-void PrintError(const std::string& errorMessage);
+void PrintError(const std::string &errorMessage);
 
 int g = 0;
 
-int main(int argc, char** argv)
-{
-   CLI::App app;
-   app.allow_extras();
-   app.add_flag("--nologo", suppressLogo, "Do not display the startup banner and copyright message");
-   app.add_flag("--version", printVersion, "Display compiler version information");
-   app.add_flag("-r,--raw", rawFrames, "Print unprocessed frame data");
+int main(int argc, char **argv) {
+  CLI::App app;
+  app.allow_extras();
+  app.add_flag("--nologo", suppressLogo,
+               "Do not display the startup banner and copyright message");
+  app.add_flag("--version", printVersion,
+               "Display compiler version information");
+  app.add_flag("-r,--raw", rawFrames, "Print unprocessed frame data");
 
-   std::string errorMessage;
-   int         errorCode = 0;
-   try
-   {
-      app.parse(argc, argv);
-      PrintLogo();
-      PrintVersion();
-   }
-   catch (const CLI::ParseError& e)
-   {
-      PrintLogo();
-      PrintVersion();
-      app.exit(e);
-   }
+  std::string errorMessage;
+  int errorCode = 0;
+  try {
+    app.parse(argc, argv);
+    PrintLogo();
+    PrintVersion();
+  } catch (const CLI::ParseError &e) {
+    PrintLogo();
+    PrintVersion();
+    app.exit(e);
+  }
 
-   if (app.remaining_size() > 0)
-   {
-      for (std::string arg : app.remaining())
-      {
-         if (dbg::FileExists(arg) == true)
-         {
-            dbg::FrameController controller;
-            dbg::BinaryStream    stream = dbg::ReadFile(arg);
-            if (false == rawFrames)
-            {
-               dbg::FrameList frames = controller.ParseFrames(stream);
-            }
-            else
-            {
-               dbg::FrameController::DumpRawFrames(stream);
-            }
-         }
-         else
-         {
-            errorMessage = "Can't open '" + arg + "' for read.";
-            PrintError(errorMessage);
-         }
+  if (app.remaining_size() > 0) {
+    for (std::string arg : app.remaining()) {
+      if (dbg::FileExists(arg) == true) {
+        dbg::FrameController controller;
+        dbg::BinaryStream stream = dbg::ReadFile(arg);
+        if (false == rawFrames) {
+          dbg::FrameList frames = controller.ParseFrames(stream);
+        } else {
+          dbg::FrameController::DumpRawFrames(stream);
+        }
+      } else {
+        errorMessage = "Can't open '" + arg + "' for read.";
+        PrintError(errorMessage);
       }
-   }
-   else
-   {
-      // std::cout << app.help() << std::endl;
-   }
+    }
+  } else {
+    // std::cout << app.help() << std::endl;
+  }
 
-   return 0;
+  return 0;
 }
 
-void PrintLogo()
-{
-   if ((false == suppressLogo) && (false == printVersion))
-   {
-      std::cout << "NORAD - ID3v2 Frame Analyzer version " << dbg::Globals::version << std::endl
-                << "Copyright (c) Ultralove Contributors. All rights reserved." << std::endl
-                << std::endl;
-   }
+void PrintLogo() {
+  if ((false == suppressLogo) && (false == printVersion)) {
+    std::cout << "NORAD - ID3v2 Frame Analyzer version "
+              << dbg::Globals::version << std::endl
+              << "Copyright (c) Ultralove Contributors. All rights reserved."
+              << std::endl
+              << std::endl;
+  }
 }
 
-void PrintVersion()
-{
-   if (true == printVersion)
-   {
-      std::cout << dbg::Globals::version << std::endl << std::endl;
-   }
+void PrintVersion() {
+  if (true == printVersion) {
+    std::cout << dbg::Globals::version << std::endl << std::endl;
+  }
 }
 
-void PrintError(const std::string& errorMessage)
-{
-   std::cout << errorMessage << std::endl;
-   std::cout << "Run with --help for more information." << std::endl << std::endl;
+void PrintError(const std::string &errorMessage) {
+  std::cout << errorMessage << std::endl;
+  std::cout << "Run with --help for more information." << std::endl
+            << std::endl;
 }

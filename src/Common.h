@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright(c) ultralove contributors (https://github.com/ultralove)
+// Copyright(c) Ultralove Contributors (https://github.com/ultralove)
 //
 // The MIT License
 //
@@ -43,43 +43,45 @@
 #include <vector>
 
 #ifndef _WIN32
-   #define IN
-   #define OUT
-   #define INOUT
+#define IN
+#define OUT
+#define INOUT
 #endif // #ifndef _WIN32
 
 #include "SharedObject.h"
 
-#define PRECONDITION(a) \
-   if (!(a)) {          \
-      return;           \
-   }
+#define PRECONDITION(a)                                                        \
+  if (!(a)) {                                                                  \
+    return;                                                                    \
+  }
 
-#define PRECONDITION_RETURN(a, b) \
-   if (!(a)) {                    \
-      return (b);                 \
-   }
+#define PRECONDITION_RETURN(a, b)                                              \
+  if (!(a)) {                                                                  \
+    return (b);                                                                \
+  }
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove {
+namespace tools {
+namespace norad {
 
-#define SafeRelease(a) \
-   if ((a) != 0) {     \
-      a->Release();    \
-      a = 0;           \
-   }
+#define SafeRelease(a)                                                         \
+  if ((a) != 0) {                                                              \
+    a->Release();                                                              \
+    a = 0;                                                                     \
+  }
 
-template<class T> inline void SafeDelete(T*& ptr)
-{
-   delete ptr;
-   ptr = 0;
+template <class T> inline void SafeDelete(T *&ptr) {
+  delete ptr;
+  ptr = 0;
 }
 
-template<class T> inline void SafeDeleteArray(T*& ptr)
-{
-   delete[] ptr;
-   ptr = 0;
+template <class T> inline void SafeDeleteArray(T *&ptr) {
+  delete[] ptr;
+  ptr = 0;
 }
 
-}}} // namespace ultralove::tools::norad
+} // namespace norad
+} // namespace tools
+} // namespace ultralove
 
 #endif // #ifndef __COMMON_H_INCL__
