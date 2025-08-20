@@ -26,12 +26,8 @@
 
 #include "Globals.h"
 
-namespace ultralove {
-namespace tools {
-namespace norad {
+namespace ultralove { namespace tools { namespace norad {
 
-const char *Globals::version = "7.0.1";
+const char* Globals::version = "7.0.1";
 
-}
-} // namespace tools
-} // namespace ultralove
+}}} // namespace ultralove::tools::norad

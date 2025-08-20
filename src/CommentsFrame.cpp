@@ -26,53 +26,53 @@
 
 #include "CommentsFrame.h"
 
-namespace ultralove {
-namespace tools {
-namespace norad {
+namespace ultralove { namespace tools { namespace norad {
 
 static FrameResource<CommentsFrame> registry1("COMM");
 static FrameResource<CommentsFrame> registry2("USLT");
 
-CommentsFrame::~CommentsFrame() {
-  SafeDeleteArray(data_);
-  dataSize_ = 0;
+CommentsFrame::~CommentsFrame()
+{
+   SafeDeleteArray(data_);
+   dataSize_ = 0;
 }
 
-Frame *CommentsFrame::Create() { return new CommentsFrame(); }
-
-bool CommentsFrame::ConfigureData(const uint8_t *data, const size_t dataSize) {
-  PRECONDITION_RETURN(data != 0, false);
-  PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
-  PRECONDITION_RETURN(IsValid() == true, false);
-
-  encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET],
-                                         ID3V2_TEXT_ENCODING_SIZE);
-  return AllocStringData(&data[ID3V2_TEXT_OFFSET],
-                         dataSize - ID3V2_TEXT_ENCODING_SIZE);
+Frame* CommentsFrame::Create()
+{
+   return new CommentsFrame();
 }
 
-bool CommentsFrame::AllocStringData(const uint8_t *data,
-                                    const size_t dataSize) {
-  PRECONDITION_RETURN(data != 0, false);
-  PRECONDITION_RETURN(dataSize >= 0, false);
+bool CommentsFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
+{
+   PRECONDITION_RETURN(data != 0, false);
+   PRECONDITION_RETURN(dataSize >= ID3V2_TEXT_ENCODING_SIZE, false);
+   PRECONDITION_RETURN(IsValid() == true, false);
 
-  bool allocated = false;
-
-  SafeDeleteArray(data_);
-  dataSize_ = 0;
-
-  data_ = new uint8_t[dataSize + 1];
-  if (data_ != 0) {
-    dataSize_ = dataSize;
-    memcpy(data_, data, dataSize_);
-    data_[dataSize_] = 0;
-
-    allocated = true;
-  }
-
-  return allocated;
+   encoding_ = ID3V2_DECODE_TEXT_ENCODING(&data[ID3V2_TEXT_ENCODING_OFFSET], ID3V2_TEXT_ENCODING_SIZE);
+   return AllocStringData(&data[ID3V2_TEXT_OFFSET], dataSize - ID3V2_TEXT_ENCODING_SIZE);
 }
 
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+bool CommentsFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
+{
+   PRECONDITION_RETURN(data != 0, false);
+   PRECONDITION_RETURN(dataSize >= 0, false);
+
+   bool allocated = false;
+
+   SafeDeleteArray(data_);
+   dataSize_ = 0;
+
+   data_ = new uint8_t[dataSize + 1];
+   if (data_ != 0)
+   {
+      dataSize_ = dataSize;
+      memcpy(data_, data, dataSize_);
+      data_[dataSize_] = 0;
+
+      allocated = true;
+   }
+
+   return allocated;
+}
+
+}}} // namespace ultralove::tools::norad

@@ -33,52 +33,50 @@
 #include "IFrame.h"
 #include "Malloc.h"
 
-namespace ultralove {
-namespace tools {
-namespace norad {
-
-class Frame : public IFrame {
+namespace ultralove { namespace tools { namespace norad {
+class Frame : public IFrame
+{
 public:
-  static bool IsValid(const uint8_t *data, const size_t dataSize);
-  bool IsValid() const;
+    static bool IsValid(const uint8_t* data, const size_t dataSize);
+    bool        IsValid() const;
 
-  inline uint32_t Id() const;
-  inline uint32_t Size() const;
-  inline uint16_t Flags() const;
+    inline uint32_t Id() const;
+    inline uint32_t Size() const;
+    inline uint16_t Flags() const;
 
-  virtual bool ConfigureHeader(const uint8_t *data, const size_t dataSize);
+    virtual bool ConfigureHeader(const uint8_t* data, const size_t dataSize);
 
 protected:
-  void SetId(const uint32_t id);
-  void SetSize(const uint32_t size);
-  void SetFlags(const uint16_t flags);
+    void SetId(const uint32_t id);
+    void SetSize(const uint32_t size);
+    void SetFlags(const uint16_t flags);
 
 private:
-  uint32_t id_ = ID3V2_INVALID_FRAME_ID;
-  uint32_t size_ = ID3V2_INVALID_FRAME_SIZE;
-  uint16_t flags_ = ID3V2_INVALID_FRAME_FLAGS;
+    uint32_t id_    = ID3V2_INVALID_FRAME_ID;
+    uint32_t size_  = ID3V2_INVALID_FRAME_SIZE;
+    uint16_t flags_ = ID3V2_INVALID_FRAME_FLAGS;
 };
 
-inline uint32_t Frame::Id() const {
-  PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_ID);
-  return id_;
+inline uint32_t Frame::Id() const
+{
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_ID);
+    return id_;
 }
 
-inline uint32_t Frame::Size() const {
-  PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_SIZE);
-  return size_;
+inline uint32_t Frame::Size() const
+{
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_SIZE);
+    return size_;
 }
 
-inline uint16_t Frame::Flags() const {
-  PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_FLAGS);
-  return flags_;
+inline uint16_t Frame::Flags() const
+{
+    PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_FRAME_FLAGS);
+    return flags_;
 }
 
-typedef std::set<Frame *> FrameList;
-typedef std::map<Guid, Frame *> FrameDictionary;
-
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+typedef std::set<Frame*>       FrameList;
+typedef std::map<Guid, Frame*> FrameDictionary;
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FRAME_H_INCL__

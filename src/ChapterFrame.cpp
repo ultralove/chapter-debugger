@@ -26,48 +26,51 @@
 
 #include "ChapterFrame.h"
 
-namespace ultralove {
-namespace tools {
-namespace norad {
+namespace ultralove { namespace tools { namespace norad {
 
 static FrameResource<ChapterFrame> registry1("CHAP");
 
-ChapterFrame::~ChapterFrame() {
-  SafeDeleteArray(data_);
-  dataSize_ = 0;
+ChapterFrame::~ChapterFrame()
+{
+   SafeDeleteArray(data_);
+   dataSize_ = 0;
 }
 
-Frame *ChapterFrame::Create() { return new ChapterFrame(); }
-
-bool ChapterFrame::ConfigureData(const uint8_t *data, const size_t dataSize) {
-  PRECONDITION_RETURN(data != 0, false);
-  PRECONDITION_RETURN(dataSize >= 0, false);
-  PRECONDITION_RETURN(IsValid() == true, false);
-
-  return AllocStringData(data, dataSize);
+Frame* ChapterFrame::Create()
+{
+   return new ChapterFrame();
 }
 
-bool ChapterFrame::AllocStringData(const uint8_t *data, const size_t dataSize) {
-  PRECONDITION_RETURN(data != 0, false);
-  PRECONDITION_RETURN(dataSize >= 0, false);
+bool ChapterFrame::ConfigureData(const uint8_t* data, const size_t dataSize)
+{
+   PRECONDITION_RETURN(data != 0, false);
+   PRECONDITION_RETURN(dataSize >= 0, false);
+   PRECONDITION_RETURN(IsValid() == true, false);
 
-  bool allocated = false;
-
-  SafeDeleteArray(data_);
-  dataSize_ = 0;
-
-  data_ = new uint8_t[dataSize + 1];
-  if (data_ != 0) {
-    dataSize_ = dataSize;
-    memcpy(data_, data, dataSize_);
-    data_[dataSize_] = 0;
-
-    allocated = true;
-  }
-
-  return allocated;
+   return AllocStringData(data, dataSize);
 }
 
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+bool ChapterFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
+{
+   PRECONDITION_RETURN(data != 0, false);
+   PRECONDITION_RETURN(dataSize >= 0, false);
+
+   bool allocated = false;
+
+   SafeDeleteArray(data_);
+   dataSize_ = 0;
+
+   data_ = new uint8_t[dataSize + 1];
+   if (data_ != 0)
+   {
+      dataSize_ = dataSize;
+      memcpy(data_, data, dataSize_);
+      data_[dataSize_] = 0;
+
+      allocated = true;
+   }
+
+   return allocated;
+}
+
+}}} // namespace ultralove::tools::norad

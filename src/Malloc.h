@@ -29,43 +29,45 @@
 
 #include <cstdlib>
 
-namespace ultralove {
-namespace tools {
-namespace norad {
-
-template <typename T> class Malloc {
+namespace ultralove { namespace tools { namespace norad {
+template<typename T> class Malloc
+{
 public:
-  static size_t Size(const size_t size) {
-    return (size > 0) ? (size * sizeof(T)) : sizeof(T);
-  }
-
-  static T *Alloc(const size_t size) {
-    T *ptr = (T *)malloc(Size(size));
-    memset(ptr, 0, Size(size));
-    return ptr;
-  }
-
-  static T *Alloc(const T *data, const size_t dataSize) {
-    T *ptr = 0;
-    if ((dataSize == 0) && (data == 0)) {
-      ptr = Alloc(dataSize);
-      if (ptr != 0) {
-        memcpy(ptr, data, dataSize);
-      }
+    static size_t Size(const size_t size)
+    {
+        return (size > 0) ? (size * sizeof(T)) : sizeof(T);
     }
-    return ptr;
-  }
 
-  static void Free(T *&ptr) {
-    if (ptr != 0) {
-      free(ptr);
-      ptr = 0;
+    static T* Alloc(const size_t size)
+    {
+        T* ptr = (T*)malloc(Size(size));
+        memset(ptr, 0, Size(size));
+        return ptr;
     }
-  }
+
+    static T* Alloc(const T* data, const size_t dataSize)
+    {
+        T* ptr = 0;
+        if ((dataSize == 0) && (data == 0))
+        {
+            ptr = Alloc(dataSize);
+            if (ptr != 0)
+            {
+                memcpy(ptr, data, dataSize);
+            }
+        }
+        return ptr;
+    }
+
+    static void Free(T*& ptr)
+    {
+        if (ptr != 0)
+        {
+            free(ptr);
+            ptr = 0;
+        }
+    }
 };
-
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __MALLOC_H_INCL__

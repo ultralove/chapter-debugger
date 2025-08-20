@@ -29,21 +29,16 @@
 
 #include "Common.h"
 
-namespace ultralove {
-namespace tools {
-namespace norad {
-
-class IFrame {
+namespace ultralove { namespace tools { namespace norad {
+class IFrame
+{
 public:
-  virtual bool ConfigureHeader(const uint8_t *data, const size_t dataSize) = 0;
-  virtual bool ConfigureData(const uint8_t *data, const size_t dataSize) = 0;
+    virtual bool ConfigureHeader(const uint8_t* data, const size_t dataSize) = 0;
+    virtual bool ConfigureData(const uint8_t* data, const size_t dataSize)   = 0;
 
 protected:
-  virtual ~IFrame() {}
+    virtual ~IFrame() {}
 };
-
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __IFRAME_H_INCL__

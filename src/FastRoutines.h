@@ -31,19 +31,16 @@
 #include <cstdlib>
 
 #ifdef __MSCVER
-#define _Fast_Byte_Swap_16(x) _byteswap_ushort(x)
-#define _Fast_Byte_Swap_32(x) _byteswap_ulong(x)
-#define _Fast_Byte_Swap_64(x) _byteswap_uint64(x)
+    #define _Fast_Byte_Swap_16(x) _byteswap_ushort(x)
+    #define _Fast_Byte_Swap_32(x) _byteswap_ulong(x)
+    #define _Fast_Byte_Swap_64(x) _byteswap_uint64(x)
 #else
-#define _Fast_Byte_Swap_16(x) __builtin_bswap16(x)
-#define _Fast_Byte_Swap_32(x) __builtin_bswap32(x)
-#define _Fast_Byte_Swap_64(x) __builtin_bswap64(x)
+    #define _Fast_Byte_Swap_16(x) __builtin_bswap16(x)
+    #define _Fast_Byte_Swap_32(x) __builtin_bswap32(x)
+    #define _Fast_Byte_Swap_64(x) __builtin_bswap64(x)
 #endif
 
-namespace ultralove {
-namespace tools {
-namespace norad {
-
+namespace ultralove { namespace tools { namespace norad {
 uint32_t _Fast_Unsynchronize_32(const uint32_t value);
 uint32_t _Fast_Synchronize_32(const uint32_t value);
 
@@ -60,21 +57,12 @@ uint32_t _Fast_Synchronize_32(const uint32_t value);
 #define UCONV_IN_ACCEPT_BOM 0x0080
 #define UCONV_OUT_EMIT_BOM 0x0100
 
-uint32_t _Fast_Conv_UTF16_To_UTF32(const uint16_t *, size_t *, uint32_t *,
-                                   size_t *, int);
-uint32_t _Fast_Conv_UTF16_To_UTF8(const uint16_t *, size_t *, uint8_t *,
-                                  size_t *, int);
-uint32_t _Fast_Conv_UTF32_To_UTF16(const uint32_t *, size_t *, uint16_t *,
-                                   size_t *, int);
-uint32_t _Fast_Conv_UTF32_To_UTF8(const uint32_t *, size_t *, uint8_t *,
-                                  size_t *, int);
-uint32_t _Fast_Conv_UTF8_To_UTF16(const uint8_t *, size_t *, uint16_t *,
-                                  size_t *, int);
-uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t *, size_t *, uint32_t *,
-                                  size_t *, int);
-
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+uint32_t _Fast_Conv_UTF16_To_UTF32(const uint16_t*, size_t*, uint32_t*, size_t*, int);
+uint32_t _Fast_Conv_UTF16_To_UTF8(const uint16_t*, size_t*, uint8_t*, size_t*, int);
+uint32_t _Fast_Conv_UTF32_To_UTF16(const uint32_t*, size_t*, uint16_t*, size_t*, int);
+uint32_t _Fast_Conv_UTF32_To_UTF8(const uint32_t*, size_t*, uint8_t*, size_t*, int);
+uint32_t _Fast_Conv_UTF8_To_UTF16(const uint8_t*, size_t*, uint16_t*, size_t*, int);
+uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t*, size_t*, uint32_t*, size_t*, int);
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FAST_ROUTINES_H_INCL__

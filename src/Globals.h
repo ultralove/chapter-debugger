@@ -29,16 +29,11 @@
 
 #include <string>
 
-namespace ultralove {
-namespace tools {
-namespace norad {
-
-struct Globals {
-  static const char *version;
+namespace ultralove { namespace tools { namespace norad {
+struct Globals
+{
+    static const char* version;
 };
-
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __GLOBALS_H_INCL__

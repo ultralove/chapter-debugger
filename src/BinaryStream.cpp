@@ -27,120 +27,134 @@
 #include "BinaryStream.h"
 #include "Common.h"
 
-namespace ultralove {
-namespace tools {
-namespace norad {
+namespace ultralove { namespace tools { namespace norad {
 
 BinaryStream::BinaryStream() {}
 
-BinaryStream::~BinaryStream() { Reset(); }
-
-BinaryStream::BinaryStream(const uint8_t *items, const size_t itemCount) {
-  Write(items, itemCount);
+BinaryStream::~BinaryStream()
+{
+   Reset();
 }
 
-BinaryStream::BinaryStream(const BinaryStream &rhs) { *this = rhs; }
-
-BinaryStream &BinaryStream::operator=(const BinaryStream &rhs) {
-  if (this != &rhs) {
-    Write(rhs.Data(), rhs.Size());
-  }
-
-  return *this;
+BinaryStream::BinaryStream(const uint8_t* items, const size_t itemCount)
+{
+   Write(items, itemCount);
 }
 
-BinaryStream::BinaryStream(BinaryStream &&rhs) noexcept
-    : items_(std::exchange(rhs.items_, static_cast<uint8_t *>(0))),
-      itemCount_(std::exchange(rhs.itemCount_, 0)) {}
-
-BinaryStream &BinaryStream::operator=(BinaryStream &&rhs) noexcept {
-  if (this != &rhs) {
-    delete[] items_;
-    items_ = std::exchange(rhs.items_, static_cast<uint8_t *>(0));
-    itemCount_ = std::exchange(rhs.itemCount_, 0);
-  }
-
-  return *this;
+BinaryStream::BinaryStream(const BinaryStream& rhs)
+{
+   *this = rhs;
 }
 
-bool BinaryStream::operator==(const BinaryStream &rhs) const {
-  return (Data() == rhs.Data()) && (Size() == rhs.Size());
+BinaryStream& BinaryStream::operator=(const BinaryStream& rhs)
+{
+   if (this != &rhs)
+   {
+      Write(rhs.Data(), rhs.Size());
+   }
+
+   return *this;
 }
 
-inline const uint8_t *BinaryStream::Data(const size_t itemOffset) const {
-  PRECONDITION_RETURN(items_ != 0, 0);
-  PRECONDITION_RETURN(itemOffset < itemCount_, 0);
+BinaryStream::BinaryStream(BinaryStream&& rhs) noexcept :
+   items_(std::exchange(rhs.items_, static_cast<uint8_t*>(0))), itemCount_(std::exchange(rhs.itemCount_, 0))
+{}
 
-  return &items_[itemOffset];
+BinaryStream& BinaryStream::operator=(BinaryStream&& rhs) noexcept
+{
+   if (this != &rhs)
+   {
+      delete[] items_;
+      items_     = std::exchange(rhs.items_, static_cast<uint8_t*>(0));
+      itemCount_ = std::exchange(rhs.itemCount_, 0);
+   }
+
+   return *this;
 }
 
-size_t BinaryStream::Write(const size_t itemOffset, const uint8_t *items,
-                           const size_t itemCount) {
-  PRECONDITION_RETURN(items != 0, false);
-  PRECONDITION_RETURN(itemCount > 0, false);
-
-  size_t itemsWritten = 0;
-
-  if (Valid() == false) {
-    AllocItems(itemCount);
-  } else if ((itemOffset + itemCount) > itemCount_) {
-    uint8_t *currentItems = items_;
-    size_t currentItemCount = itemCount_;
-
-    AllocItems(itemCount);
-    ReplaceItems(currentItems, currentItemCount);
-
-    SafeDeleteArray(currentItems);
-    currentItemCount = 0;
-  }
-
-  if ((Valid() == true) && (itemCount_ >= (itemOffset + itemCount))) {
-    memcpy(&items_[itemOffset * sizeof(uint8_t)], items,
-           itemCount * sizeof(uint8_t));
-    itemsWritten = itemCount;
-  }
-
-  return itemsWritten;
+bool BinaryStream::operator==(const BinaryStream& rhs) const
+{
+   return (Data() == rhs.Data()) && (Size() == rhs.Size());
 }
 
-size_t BinaryStream::Read(const size_t itemOffset, uint8_t *items,
-                          const size_t itemCount) const {
-  PRECONDITION_RETURN(items_ != 0, 0);
-  PRECONDITION_RETURN(itemCount_ > 0, 0);
-  PRECONDITION_RETURN(items != 0, 0);
-  PRECONDITION_RETURN(itemCount > 0, 0);
+inline const uint8_t* BinaryStream::Data(const size_t itemOffset) const
+{
+   PRECONDITION_RETURN(items_ != 0, 0);
+   PRECONDITION_RETURN(itemOffset < itemCount_, 0);
 
-  const size_t resultItemCount = ((itemOffset + itemCount) <= itemCount_)
-                                     ? itemCount
-                                     : (itemCount_ - itemOffset);
-  memcpy(items, &items_[itemOffset * sizeof(uint8_t)],
-         resultItemCount * sizeof(uint8_t));
-  return resultItemCount;
+   return &items_[itemOffset];
 }
 
-void BinaryStream::Reset() {
-  itemCount_ = 0;
-  SafeDeleteArray(items_);
+size_t BinaryStream::Write(const size_t itemOffset, const uint8_t* items, const size_t itemCount)
+{
+   PRECONDITION_RETURN(items != 0, false);
+   PRECONDITION_RETURN(itemCount > 0, false);
+
+   size_t itemsWritten = 0;
+
+   if (Valid() == false)
+   {
+      AllocItems(itemCount);
+   }
+   else if ((itemOffset + itemCount) > itemCount_)
+   {
+      uint8_t* currentItems     = items_;
+      size_t   currentItemCount = itemCount_;
+
+      AllocItems(itemCount);
+      ReplaceItems(currentItems, currentItemCount);
+
+      SafeDeleteArray(currentItems);
+      currentItemCount = 0;
+   }
+
+   if ((Valid() == true) && (itemCount_ >= (itemOffset + itemCount)))
+   {
+      memcpy(&items_[itemOffset * sizeof(uint8_t)], items, itemCount * sizeof(uint8_t));
+      itemsWritten = itemCount;
+   }
+
+   return itemsWritten;
 }
 
-void BinaryStream::AllocItems(const size_t itemCount) {
-  Reset();
+size_t BinaryStream::Read(const size_t itemOffset, uint8_t* items, const size_t itemCount) const
+{
+   PRECONDITION_RETURN(items_ != 0, 0);
+   PRECONDITION_RETURN(itemCount_ > 0, 0);
+   PRECONDITION_RETURN(items != 0, 0);
+   PRECONDITION_RETURN(itemCount > 0, 0);
 
-  if (itemCount > 0) {
-    items_ = new uint8_t[itemCount * sizeof(uint8_t)];
-    if (items_ != 0) {
-      itemCount_ = itemCount;
-    }
-  }
+   const size_t resultItemCount = ((itemOffset + itemCount) <= itemCount_) ? itemCount : (itemCount_ - itemOffset);
+   memcpy(items, &items_[itemOffset * sizeof(uint8_t)], resultItemCount * sizeof(uint8_t));
+   return resultItemCount;
 }
 
-void BinaryStream::ReplaceItems(const uint8_t *items, const size_t itemCount) {
-  PRECONDITION(items_ != 0);
-  PRECONDITION(itemCount_ <= itemCount);
-
-  memcpy(items_, items, itemCount * sizeof(uint8_t));
+void BinaryStream::Reset()
+{
+   itemCount_ = 0;
+   SafeDeleteArray(items_);
 }
 
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+void BinaryStream::AllocItems(const size_t itemCount)
+{
+   Reset();
+
+   if (itemCount > 0)
+   {
+      items_ = new uint8_t[itemCount * sizeof(uint8_t)];
+      if (items_ != 0)
+      {
+         itemCount_ = itemCount;
+      }
+   }
+}
+
+void BinaryStream::ReplaceItems(const uint8_t* items, const size_t itemCount)
+{
+   PRECONDITION(items_ != 0);
+   PRECONDITION(itemCount_ <= itemCount);
+
+   memcpy(items_, items, itemCount * sizeof(uint8_t));
+}
+
+}}} // namespace ultralove::tools::norad

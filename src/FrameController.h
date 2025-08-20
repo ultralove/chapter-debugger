@@ -31,29 +31,21 @@
 #include "Common.h"
 #include "Frame.h"
 
-namespace ultralove {
-namespace tools {
-namespace norad {
-
-class FrameController {
+namespace ultralove { namespace tools { namespace norad {
+class FrameController
+{
 public:
-  static size_t DumpRawFrames(const BinaryStream &stream);
+    static size_t DumpRawFrames(const BinaryStream& stream);
 
-  FrameList ParseFrames(const BinaryStream &stream);
+    FrameList ParseFrames(const BinaryStream& stream);
 
 private:
-  static bool CompareRawFrameId(const uint32_t rawFrameId, const char *frameId,
-                                const size_t frameIdSize);
-  static size_t ComputeSubframeOffset(const uint8_t *data,
-                                      const size_t dataSize);
+    static bool   CompareRawFrameId(const uint32_t rawFrameId, const char* frameId, const size_t frameIdSize);
+    static size_t ComputeSubframeOffset(const uint8_t* data, const size_t dataSize);
 
-  static void DumpRawHeader(const uint8_t *data, const size_t dataSize);
-  static size_t DumpRawFrame(const size_t indentLevel, const uint8_t *data,
-                             const size_t dataSize);
+    static void   DumpRawHeader(const uint8_t* data, const size_t dataSize);
+    static size_t DumpRawFrame(const size_t indentLevel, const uint8_t* data, const size_t dataSize);
 };
-
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FRAME_CONTROLLER_H_INCL__

@@ -43,9 +43,9 @@
 #include <vector>
 
 #ifndef _WIN32
-#define IN
-#define OUT
-#define INOUT
+    #define IN
+    #define OUT
+    #define INOUT
 #endif // #ifndef _WIN32
 
 #include "SharedObject.h"
@@ -60,28 +60,24 @@
     return (b);                                                                \
   }
 
-namespace ultralove {
-namespace tools {
-namespace norad {
-
+namespace ultralove { namespace tools { namespace norad {
 #define SafeRelease(a)                                                         \
   if ((a) != 0) {                                                              \
     a->Release();                                                              \
     a = 0;                                                                     \
   }
 
-template <class T> inline void SafeDelete(T *&ptr) {
-  delete ptr;
-  ptr = 0;
+template<class T> inline void SafeDelete(T*& ptr)
+{
+    delete ptr;
+    ptr = 0;
 }
 
-template <class T> inline void SafeDeleteArray(T *&ptr) {
-  delete[] ptr;
-  ptr = 0;
+template<class T> inline void SafeDeleteArray(T*& ptr)
+{
+    delete[] ptr;
+    ptr = 0;
 }
-
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __COMMON_H_INCL__

@@ -31,15 +31,9 @@
 
 #include <string>
 
-namespace ultralove {
-namespace tools {
-namespace norad {
-
-bool FileExists(const std::string &filename);
-BinaryStream ReadFile(const std::string &filename);
-
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+namespace ultralove { namespace tools { namespace norad {
+bool         FileExists(const std::string& filename);
+BinaryStream ReadFile(const std::string& filename);
+}}} // namespace ultralove::tools::norad
 
 #endif // #ifndef __FILE_UTILITIES_H_INCL__

@@ -32,69 +32,80 @@
 #include <cstdlib>
 
 #ifdef _WIN32
-#include <rpc.h>
-#include <windows.h>
+   #include <rpc.h>
+   #include <windows.h>
 #elif __APPLE__
-#include <CoreFoundation/CoreFoundation.h>
+   #include <CoreFoundation/CoreFoundation.h>
 #else
-#error "Unsupported platform"
+   #error "Unsupported platform"
 #endif
 
 #ifdef _WIN32
-static void InitializeGuid(uint8_t *data, const size_t dataSize) {
-  PRECONDITION(data != 0);
-  PRECONDITION(dataSize >= sizeof(UUID));
+static void InitializeGuid(uint8_t* data, const size_t dataSize)
+{
+   PRECONDITION(data != 0);
+   PRECONDITION(dataSize >= sizeof(UUID));
 
-  UUID uuid = {0};
-  RPC_STATUS status = UuidCreate(&uuid);
-  if (RPC_S_OK == status) {
-    memcpy(data, &uuid, dataSize);
-  }
+   UUID       uuid   = {0};
+   RPC_STATUS status = UuidCreate(&uuid);
+   if (RPC_S_OK == status)
+   {
+      memcpy(data, &uuid, dataSize);
+   }
 }
 #elif __APPLE__
-static void InitializeGuid(uint8_t *data, const size_t dataSize) {
-  CFUUIDRef uuidRef = CFUUIDCreate(0);
+static void InitializeGuid(uint8_t* data, const size_t dataSize)
+{
+   CFUUIDRef uuidRef = CFUUIDCreate(0);
 }
 #else
 #endif
 
-namespace ultralove {
-namespace tools {
-namespace norad {
+namespace ultralove { namespace tools { namespace norad {
 
 Guid::Guid() : data_{0} {}
 
-Guid::~Guid() { memset(data_, 0, sizeof(uint8_t) * 16); }
-
-Guid::Guid(const Guid &rhs) { *this = rhs; }
-
-Guid &Guid::operator=(const Guid &rhs) {
-  if (this != &rhs) {
-    memcpy(data_, rhs.data_, sizeof(uint8_t) * 16);
-  }
-
-  return *this;
+Guid::~Guid()
+{
+   memset(data_, 0, sizeof(uint8_t) * 16);
 }
 
-bool Guid::operator==(const Guid &rhs) const {
-  return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) == 0;
+Guid::Guid(const Guid& rhs)
+{
+   *this = rhs;
 }
 
-bool Guid::operator<(const Guid &rhs) const {
-  return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) < 0;
+Guid& Guid::operator=(const Guid& rhs)
+{
+   if (this != &rhs)
+   {
+      memcpy(data_, rhs.data_, sizeof(uint8_t) * 16);
+   }
+
+   return *this;
 }
 
-Guid Guid::New() {
-  Guid guid;
-  InitializeGuid(guid.data_, sizeof(uint8_t) * 16);
-  return guid;
+bool Guid::operator==(const Guid& rhs) const
+{
+   return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) == 0;
 }
 
-const Guid &Guid::Null() {
-  static Guid self;
-  return self;
+bool Guid::operator<(const Guid& rhs) const
+{
+   return memcmp(data_, rhs.data_, sizeof(uint8_t) * 16) < 0;
 }
 
-} // namespace norad
-} // namespace tools
-} // namespace ultralove
+Guid Guid::New()
+{
+   Guid guid;
+   InitializeGuid(guid.data_, sizeof(uint8_t) * 16);
+   return guid;
+}
+
+const Guid& Guid::Null()
+{
+   static Guid self;
+   return self;
+}
+
+}}} // namespace ultralove::tools::norad
