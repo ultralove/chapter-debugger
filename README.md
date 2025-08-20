@@ -6,7 +6,7 @@
 
 ChapDBG is a powerful command-line tool for analyzing ID3v2 metadata frames in audio files. Built with modern C++20, it provides detailed inspection capabilities for ID3v2 tags, supporting both processed and raw frame analysis.
 
-## 🎯 Features
+## Features
 
 - **Comprehensive ID3v2 Support**: Parse and analyze various ID3v2 frame types
 - **Multiple Output Modes**: View processed frame data or raw binary dumps
@@ -23,7 +23,7 @@ ChapDBG is a powerful command-line tool for analyzing ID3v2 metadata frames in a
 - **Table of Contents Frames** (CTOC)
 - **Comment Frames** (COMM)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -73,7 +73,7 @@ chapdbg song1.mp3 song2.mp3 album/*.mp3
 chapdbg --nologo --version
 ```
 
-## 📖 Usage Examples
+## Usage Examples
 
 ### Analyze ID3v2 Frames
 
@@ -99,7 +99,7 @@ $ chapdbg *.mp3
 [Processes all MP3 files in current directory]
 ```
 
-## 🛠️ Command Line Options
+## Command Line Options
 
 | Option | Short | Description |
 |--------|-------|-------------|
@@ -108,7 +108,7 @@ $ chapdbg *.mp3
 | `--raw` | `-r` | Display unprocessed raw frame data |
 | `--help` | `-h` | Show help information |
 
-## 🏗️ Building from Source
+## Building from Source
 
 ### Development Setup
 
@@ -148,7 +148,7 @@ $ chapdbg *.mp3
 - Use Visual Studio 2019+ or Build Tools
 - CMake will automatically detect and configure MSVC
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run with sample files
@@ -159,7 +159,7 @@ cd build
 ./chapdbg --raw ../test_files/sample.mp3
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 chapdbg/
@@ -178,7 +178,7 @@ chapdbg/
     └── ...                # Additional utilities
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see our contributing guidelines:
 
@@ -196,7 +196,7 @@ We welcome contributions! Please see our contributing guidelines:
 - Update documentation as needed
 - Ensure cross-platform compatibility
 
-## 📋 Requirements
+## Requirements
 
 ### Runtime Requirements
 
@@ -212,17 +212,17 @@ We welcome contributions! Please see our contributing guidelines:
 
 - [CLI11](https://github.com/CLIUtils/CLI11) v2.4.1 - Command line parsing
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🏷️ Version Information
+## Version Information
 
 - **Current Version**: 7.0.1
 - **ID3v2 Support**: Comprehensive frame type coverage
 - **Build System**: CMake with modern C++ standards
 
-## 🐛 Issue Reporting
+## Issue Reporting
 
 Found a bug or have a feature request? Please open an issue on our [GitHub Issues](https://github.com/heikopanjas/chapdbg/issues) page.
 
@@ -234,7 +234,7 @@ When reporting issues, please include:
 - Command line used
 - Expected vs actual behavior
 
-## 🔗 Related Projects
+## Related Projects
 
 - [Ultralove](https://github.com/ultralove) - Organization homepage
 - [ID3v2 Specification](http://id3.org/id3v2.4.0-structure) - Official ID3v2.4 documentation
