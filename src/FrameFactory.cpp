@@ -29,7 +29,7 @@
 #include "Frame.h"
 #include "ID3V2.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 FrameFactory::FrameFactory() {}
 
@@ -132,4 +132,4 @@ Frame* FrameFactory::Create(const uint8_t* data, const size_t dataSize) const
    return pFrame;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

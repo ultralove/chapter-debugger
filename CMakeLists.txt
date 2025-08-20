@@ -25,20 +25,20 @@
 ################################################################################
 
 cmake_minimum_required(VERSION 3.23)
-project(norad VERSION 1.0.0)
+project(chapdbg VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(WIN32)
-    set(NORAD_TARGET_SYSTEM "windows")
+    set(CHAPDBG_TARGET_SYSTEM "windows")
 elseif(APPLE)
-    set(NORAD_TARGET_SYSTEM "darwin")
+    set(CHAPDBG_TARGET_SYSTEM "darwin")
 elseif(UNIX)
   execute_process(COMMAND uname -a RESULT_VARIABLE UNAME_RESULT OUTPUT_VARIABLE UNAME_OUTPUT OUTPUT_STRIP_TRAILING_WHITESPACE)
   if(UNAME_RESULT EQUAL 0)
     if(${UNAME_OUTPUT} MATCHES "[U|u]buntu")
-        set(NORAD_TARGET_SYSTEM "linux")
+        set(CHAPDBG_TARGET_SYSTEM "linux")
     else()
       message(WARNING "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, Darwin and Ubuntu Linux.")
     endif()
@@ -49,7 +49,7 @@ else()
   message(FATAL_ERROR "Unsupported platform: " ${UNAME_OUTPUT} ". Supported platforms are Windows, Darwin and Ubuntu Linux.")
 endif()
 
-if(${NORAD_TARGET_SYSTEM} STREQUAL "darwin")
+if(${CHAPDBG_TARGET_SYSTEM} STREQUAL "darwin")
   if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
     message(STATUS "Building for x86_64 using clang ${CMAKE_CXX_COMPILER_VERSION}.")
     set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13 CACHE INTERNAL "")
@@ -99,4 +99,4 @@ include_directories(
 add_subdirectory(src)
 
 # binary goes to '${CMAKE_INSTALL_PREFIX}/bin' by default, this is '/usr/local/bin'.
-install(TARGETS norad DESTINATION bin)
+install(TARGETS chapdbg DESTINATION bin)

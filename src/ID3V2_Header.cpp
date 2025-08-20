@@ -26,7 +26,7 @@
 
 #include "ID3V2_Header.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 ID3V2_Header::ID3V2_Header() {}
 
@@ -59,4 +59,4 @@ bool ID3V2_Header::IsValid() const
    return isInitialized && isVersion2 && isRevision3or4;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

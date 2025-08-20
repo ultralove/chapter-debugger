@@ -29,7 +29,7 @@
 #include "Common.h"
 #include "FastRoutines.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 uint32_t ID3V2_DECODE_FILE_ID(const uint8_t* data, const size_t dataSize)
 {
@@ -327,4 +327,4 @@ uint8_t ID3V2_ENCODE_TEXT_ENCODING(const uint8_t encoding, uint8_t* data, const 
    return data[ID3V2_TEXT_ENCODING_OFFSET];
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

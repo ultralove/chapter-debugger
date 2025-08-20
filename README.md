@@ -1,10 +1,10 @@
-# Norad - ID3v2 Frame Analyzer
+# ChapDBG - ID3v2 Frame Analyzer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg)](https://en.cppreference.com/w/cpp/20)
 [![CMake](https://img.shields.io/badge/CMake-3.23%2B-green.svg)](https://cmake.org/)
 
-Norad is a powerful command-line tool for analyzing ID3v2 metadata frames in audio files. Built with modern C++20, it provides detailed inspection capabilities for ID3v2 tags, supporting both processed and raw frame analysis.
+ChapDBG is a powerful command-line tool for analyzing ID3v2 metadata frames in audio files. Built with modern C++20, it provides detailed inspection capabilities for ID3v2 tags, supporting both processed and raw frame analysis.
 
 ## 🎯 Features
 
@@ -39,8 +39,8 @@ Norad is a powerful command-line tool for analyzing ID3v2 metadata frames in aud
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/heikopanjas/norad.git
-   cd norad
+   git clone https://github.com/ultralove/chapter-debugger.git
+   cd chapter-debugger
    ```
 
 2. **Build the project**
@@ -61,16 +61,16 @@ Norad is a powerful command-line tool for analyzing ID3v2 metadata frames in aud
 
 ```bash
 # Analyze an audio file with ID3v2 tags
-norad your_audio_file.mp3
+chapdbg your_audio_file.mp3
 
 # View raw frame data
-norad --raw your_audio_file.mp3
+chapdbg --raw your_audio_file.mp3
 
 # Multiple files
-norad song1.mp3 song2.mp3 album/*.mp3
+chapdbg song1.mp3 song2.mp3 album/*.mp3
 
 # Suppress logo and show version
-norad --nologo --version
+chapdbg --nologo --version
 ```
 
 ## 📖 Usage Examples
@@ -78,8 +78,8 @@ norad --nologo --version
 ### Analyze ID3v2 Frames
 
 ```bash
-$ norad example.mp3
-NORAD - ID3v2 Frame Analyzer version 7.0.1
+$ chapdbg example.mp3
+CHAPDBG - ID3v2 Frame Analyzer version 7.0.1
 Copyright (c) Ultralove Contributors. All rights reserved.
 
 [Frame analysis output will be displayed here]
@@ -88,14 +88,14 @@ Copyright (c) Ultralove Contributors. All rights reserved.
 ### Raw Frame Inspection
 
 ```bash
-$ norad --raw example.mp3
+$ chapdbg --raw example.mp3
 [Raw binary frame data in hexadecimal format]
 ```
 
 ### Batch Processing
 
 ```bash
-$ norad *.mp3
+$ chapdbg *.mp3
 [Processes all MP3 files in current directory]
 ```
 
@@ -115,8 +115,8 @@ $ norad *.mp3
 1. **Clone with dependencies**
 
    ```bash
-   git clone https://github.com/heikopanjas/norad.git
-   cd norad
+   git clone https://github.com/ultralove/chapter-debugger.git
+   cd chapter-debugger
    ```
 
 2. **Configure build**
@@ -153,16 +153,16 @@ $ norad *.mp3
 ```bash
 # Run with sample files
 cd build
-./norad ../test_files/*.mp3
+./chapdbg ../test_files/*.mp3
 
 # Test raw output
-./norad --raw ../test_files/sample.mp3
+./chapdbg --raw ../test_files/sample.mp3
 ```
 
 ## 📁 Project Structure
 
 ```text
-norad/
+chapdbg/
 ├── CMakeLists.txt          # Main build configuration
 ├── LICENSE                 # MIT license
 ├── README.md              # This file
@@ -224,7 +224,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🐛 Issue Reporting
 
-Found a bug or have a feature request? Please open an issue on our [GitHub Issues](https://github.com/heikopanjas/norad/issues) page.
+Found a bug or have a feature request? Please open an issue on our [GitHub Issues](https://github.com/heikopanjas/chapdbg/issues) page.
 
 When reporting issues, please include:
 
@@ -241,4 +241,4 @@ When reporting issues, please include:
 
 ---
 
-**Norad** - Analyzing ID3v2 metadata with precision and performance.
+**ChapDBG** - Analyzing ID3v2 metadata with precision and performance.

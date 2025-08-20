@@ -61,7 +61,7 @@ static void InitializeGuid(uint8_t* data, const size_t dataSize)
 #else
 #endif
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 Guid::Guid() : data_{0} {}
 
@@ -108,4 +108,4 @@ const Guid& Guid::Null()
    return self;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

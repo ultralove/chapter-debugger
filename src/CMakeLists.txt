@@ -79,7 +79,7 @@ set(APPLICATION_SOURCES
 )
 
 
-add_executable(norad
+add_executable(chapdbg
 	${FRAMEWORK_INCLUDES}
 	${FRAMEWORK_SOURCES}
 	${ID3V2_INCLUDES}
@@ -88,12 +88,12 @@ add_executable(norad
 	${APPLICATION_SOURCES}
 )
 
-target_precompile_headers(norad PRIVATE
+target_precompile_headers(chapdbg PRIVATE
   Common.h
 )
 
-if(${NORAD_TARGET_SYSTEM} STREQUAL "windows")
-  target_link_libraries(norad rpcrt4.lib)
-else(NORAD_TARGET_SYSTEM} STREQUAL "darwin")
-  target_link_libraries(norad "-framework CoreFoundation")
+if(${CHAPDBG_TARGET_SYSTEM} STREQUAL "windows")
+  target_link_libraries(chapdbg rpcrt4.lib)
+else(CHAPDBG_TARGET_SYSTEM} STREQUAL "darwin")
+  target_link_libraries(chapdbg "-framework CoreFoundation")
 endif()

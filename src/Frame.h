@@ -33,7 +33,7 @@
 #include "IFrame.h"
 #include "Malloc.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 class Frame : public IFrame
 {
 public:
@@ -77,6 +77,6 @@ inline uint16_t Frame::Flags() const
 
 typedef std::set<Frame*>       FrameList;
 typedef std::map<Guid, Frame*> FrameDictionary;
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __FRAME_H_INCL__

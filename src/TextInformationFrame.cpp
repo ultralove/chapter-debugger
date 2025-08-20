@@ -29,7 +29,7 @@
 #include "FastRoutines.h"
 #include "StringUtilities.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 static FrameResource<TextInformationFrame> registry1("TALB");
 static FrameResource<TextInformationFrame> registry2("TBPM");
@@ -154,4 +154,4 @@ bool TextInformationFrame::ConfigureData(const uint8_t* data, const size_t dataS
    return true;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

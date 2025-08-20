@@ -29,7 +29,7 @@
 
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 class BinaryStream
 {
 public:
@@ -85,6 +85,6 @@ inline size_t BinaryStream::Read(uint8_t* items, const size_t itemCount) const
 {
     return Read(0, items, itemCount);
 }
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifdef __BINARY_STREAM_H_INCL__

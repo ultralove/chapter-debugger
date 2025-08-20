@@ -26,7 +26,7 @@
 
 #include "URLLinkFrame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 static FrameResource<URLLinkFrame> registry1("WCOM");
 static FrameResource<URLLinkFrame> registry2("WCOP");
@@ -80,4 +80,4 @@ bool URLLinkFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
    return allocated;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

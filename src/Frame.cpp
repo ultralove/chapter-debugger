@@ -26,7 +26,7 @@
 
 #include "Frame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 bool Frame::ConfigureHeader(const uint8_t* data, const size_t dataSize)
 {
@@ -68,4 +68,4 @@ bool Frame::IsValid() const
    return isInitialized && isConforming;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

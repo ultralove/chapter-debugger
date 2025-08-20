@@ -27,7 +27,7 @@
 #include "BinaryStream.h"
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 BinaryStream::BinaryStream() {}
 
@@ -157,4 +157,4 @@ void BinaryStream::ReplaceItems(const uint8_t* items, const size_t itemCount)
    memcpy(items_, items, itemCount * sizeof(uint8_t));
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

@@ -26,7 +26,7 @@
 
 #include "AttachedPictureFrame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 static FrameResource<AttachedPictureFrame> registry1("APIC");
 
@@ -74,4 +74,4 @@ bool AttachedPictureFrame::AllocStringData(const uint8_t* data, const size_t dat
    return allocated;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

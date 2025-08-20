@@ -30,7 +30,7 @@
 #include "Frame.h"
 #include "FrameResource.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 class URLLinkFrame : public Frame
 {
 public:
@@ -46,6 +46,6 @@ private:
 
     bool AllocStringData(const uint8_t* data, const size_t dataSize);
 };
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __URL_LINK_FRAME_H_INCL__

@@ -31,9 +31,9 @@
 
 #include <string>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 bool         FileExists(const std::string& filename);
 BinaryStream ReadFile(const std::string& filename);
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __FILE_UTILITIES_H_INCL__

@@ -26,7 +26,7 @@
 
 #include "ChapterFrame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 static FrameResource<ChapterFrame> registry1("CHAP");
 
@@ -73,4 +73,4 @@ bool ChapterFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
    return allocated;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

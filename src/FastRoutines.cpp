@@ -28,7 +28,7 @@
 
 #include <sys/errno.h>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 uint32_t _Fast_Unsynchronize_32(const uint32_t value)
 {
@@ -963,4 +963,4 @@ uint32_t _Fast_Conv_UTF8_To_UTF32(const uint8_t* u8s, size_t* utf8len, uint32_t*
    return (0);
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

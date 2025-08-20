@@ -30,7 +30,7 @@
 
 #include <fstream>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 bool FileExists(const std::string& filename)
 {
@@ -77,4 +77,4 @@ BinaryStream ReadFile(const std::string& filename)
    return stream;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

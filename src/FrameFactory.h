@@ -30,7 +30,7 @@
 #include "Common.h"
 #include "Frame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 class FrameFactory
 {
 public:
@@ -52,6 +52,6 @@ private:
     FunctionDictionary                                functions_;
     mutable std::recursive_mutex                      functionsLock_;
 };
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __FRAME_FACTORY_H_INCL____

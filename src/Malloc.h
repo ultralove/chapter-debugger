@@ -29,7 +29,7 @@
 
 #include <cstdlib>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 template<typename T> class Malloc
 {
 public:
@@ -68,6 +68,6 @@ public:
         }
     }
 };
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __MALLOC_H_INCL__

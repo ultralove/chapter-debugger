@@ -32,7 +32,7 @@
 
 #include <CLI/CLI.hpp>
 
-namespace dbg = ultralove::tools::norad;
+namespace dbg = ultralove::chapdbg;
 
 bool suppressLogo = false;
 bool printVersion = false;
@@ -103,7 +103,7 @@ void PrintLogo()
 {
    if ((false == suppressLogo) && (false == printVersion))
    {
-      std::cout << "NORAD - ID3v2 Frame Analyzer version " << dbg::Globals::version << std::endl
+      std::cout << "CHAPDBG - ID3v2 Frame Analyzer version " << dbg::Globals::version << std::endl
                 << "Copyright (c) Ultralove Contributors. All rights reserved." << std::endl
                 << std::endl;
    }

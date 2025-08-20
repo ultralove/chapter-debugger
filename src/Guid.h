@@ -27,7 +27,7 @@
 #ifndef __GUID_H_INCL__
 #define __GUID_H_INCL__
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 class Guid
 {
 public:
@@ -47,6 +47,6 @@ private:
 
     Guid();
 };
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __GUID_H_INCL__

@@ -30,7 +30,7 @@
 #include "Common.h"
 #include "ID3V2.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 class ID3V2_Header
 {
 public:
@@ -82,6 +82,6 @@ inline uint32_t ID3V2_Header::Size() const
     PRECONDITION_RETURN(IsValid() == true, ID3V2_INVALID_SIZE);
     return size_;
 }
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __ID3V2_HEADER_H_INCL__

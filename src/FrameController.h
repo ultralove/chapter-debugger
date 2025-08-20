@@ -31,7 +31,7 @@
 #include "Common.h"
 #include "Frame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 class FrameController
 {
 public:
@@ -46,6 +46,6 @@ private:
     static void   DumpRawHeader(const uint8_t* data, const size_t dataSize);
     static size_t DumpRawFrame(const size_t indentLevel, const uint8_t* data, const size_t dataSize);
 };
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __FRAME_CONTROLLER_H_INCL__

@@ -28,7 +28,7 @@
 
 #include "Common.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 void HexDump(const uint8_t* data, const size_t dataSize, const size_t rowSize)
 {
@@ -95,4 +95,4 @@ std::string IndentString(const size_t indentLevel)
    return std::string(indentLevel * 8, ' ');
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

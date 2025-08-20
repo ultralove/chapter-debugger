@@ -29,7 +29,7 @@
 #include "FrameFactory.h"
 #include "StringUtilities.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 FrameList FrameController::ParseFrames(const BinaryStream& stream)
 {
@@ -198,4 +198,4 @@ std::ostream& operator<<(std::ostream& os, const Frame* pFrame)
 
    return os;
 }
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

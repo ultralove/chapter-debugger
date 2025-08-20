@@ -26,7 +26,7 @@
 
 #include "CommentsFrame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 static FrameResource<CommentsFrame> registry1("COMM");
 static FrameResource<CommentsFrame> registry2("USLT");
@@ -75,4 +75,4 @@ bool CommentsFrame::AllocStringData(const uint8_t* data, const size_t dataSize)
    return allocated;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg

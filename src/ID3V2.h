@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 static const size_t ID3V2_INVALID_SIZE_VALUE = static_cast<size_t>(-1);
 #define ID3V2_DATA_OFFSET(a, b) (&(a)[(b)])
 
@@ -149,6 +149,6 @@ typedef struct _tagID3V2_STRING
 
 uint8_t ID3V2_DECODE_TEXT_ENCODING(const uint8_t* data, const size_t dataSize);
 uint8_t ID3V2_ENCODE_TEXT_ENCODING(const uint8_t encoding, uint8_t* data, const size_t dataSize);
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __ID3V2_H_INCL__

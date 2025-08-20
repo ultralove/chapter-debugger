@@ -30,7 +30,7 @@
 #include <atomic>
 #include <cstdint>
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 class SharedObject
 {
 public:
@@ -57,6 +57,6 @@ protected:
 private:
     mutable std::atomic<int32_t> refCount_;
 };
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
 
 #endif // #ifndef __SHARED_OBJECT_H_INCL__

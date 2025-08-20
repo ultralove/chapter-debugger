@@ -26,7 +26,7 @@
 
 #include "TableOfContentsFrame.h"
 
-namespace ultralove { namespace tools { namespace norad {
+namespace ultralove { namespace chapdbg {
 
 static FrameResource<TableOfContentsFrame> registry1("CTOC");
 
@@ -73,4 +73,4 @@ bool TableOfContentsFrame::AllocStringData(const uint8_t* data, const size_t dat
    return allocated;
 }
 
-}}} // namespace ultralove::tools::norad
+}} // namespace ultralove::chapdbg
